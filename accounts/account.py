@@ -11,17 +11,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def user_login(request):
+    redirect_to = request.REQUEST.get('next', '')
+    print redirect_to
     if request.method == "POST":
         form = LoginForm(request=request, data=request.POST)
-        # print form
+        next = request.POST.get("next","/")
         if form.is_valid():
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(next)
         else:
-            return render_to_response('user/login.html', {"form": form},RequestContext(request))
+            return render_to_response('user/login.html', {"form": form,"next":next},RequestContext(request))
     else:
         if request.user.is_authenticated():
-            return HttpResponseRedirect('/')
-    return render_to_response('user/login.html', RequestContext(request))
+            return HttpResponseRedirect(redirect_to)
+    return render_to_response('user/login.html',{"next":redirect_to},RequestContext(request))
 
 
 @login_required

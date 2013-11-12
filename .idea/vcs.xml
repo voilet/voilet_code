@@ -2,6 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="E:/halite" vcs="Git" />
+    <mapping directory="F:/salt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="F:/salt_data" vcs="hg4idea" />
+    <mapping directory="F:/salt_data" vcs="hg4idea" />
   </component>
 </project>
 

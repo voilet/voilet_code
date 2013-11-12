@@ -21,8 +21,9 @@ xadmin.autodiscover()
 # xversion.registe_models()
 
 urlpatterns = patterns('',
-    url(r'admin', include(xadmin.site.urls)),
+    url(r'', include(xadmin.site.urls)),
     #url(r'^$', 'server_idc.value_class.index.Index'),
+    url(r'^voilet/test/$', 'server_idc.value_class.index.Index'),
     #用户登录注册
     #(r'^accounts/login/$', 'django.contrib.auth.views.login',{'template_name': 'login.html'}),
     (r'^accounts/login/$', 'accounts.account.user_login',),
@@ -30,13 +31,13 @@ urlpatterns = patterns('',
     (r'^accounts/loginout/$', 'accounts.views.logout_view'),
     #(r'^users/loginout/$', 'users.user_models.logout_view'),
     #salt_ui
-    url(r'^$','salt_ui.views.index.auto'),
-    url(r'^overview$','salt_ui.views.index.overview'),
-    url(r'^minions$','salt_ui.views.index.minions'),
-     url(r'^minion$','salt_ui.views.index.minion'),
-    url(r'^execute$','salt_ui.views.index.execute'),
-    url(r'^detail$','salt_ui.views.index.detail'),
-    url(r'^getjobinfo$','salt_ui.views.index.getjobinfo'),
-    url(r'^service$','salt_ui.views.index.service'),
+    #url(r'^$','salt_ui.views.index.auto'),
+    #url(r'^overview$','salt_ui.views.index.overview'),
+    #url(r'^minions$','salt_ui.views.index.minions'),
+    #url(r'^minion$','salt_ui.views.index.minion'),
+    #url(r'^execute$','salt_ui.views.index.execute'),
+    #url(r'^detail$','salt_ui.views.index.detail'),
+    #url(r'^getjobinfo$','salt_ui.views.index.getjobinfo'),
+    #url(r'^service$','salt_ui.views.index.service'),
 )
 

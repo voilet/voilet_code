@@ -1,3 +1,15 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+#=============================================================================
+#     FileName:
+#         Desc:
+#       Author: 苦咖啡
+#        Email: voilet@qq.com
+#     HomePage: http://blog.kukafei520.net
+#      Version: 0.0.1
+#      History:
+#=============================================================================
+
 from django.db import models
 
 
@@ -16,7 +28,7 @@ class IDC(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = u"IDC"
+        verbose_name = u"IDC机房"
         verbose_name_plural = verbose_name
 
 SERVER_STATUS = (
@@ -70,7 +82,7 @@ class Host(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = u"Host"
+        verbose_name = u"服务器"
         verbose_name_plural = verbose_name
 
 
@@ -87,7 +99,7 @@ class MaintainLog(models.Model):
                                                self.maintain_type, self.hard_type)
 
     class Meta:
-        verbose_name = u"Maintain Log"
+        verbose_name = u"维护日志"
         verbose_name_plural = verbose_name
 
 
@@ -97,13 +109,14 @@ class HostGroup(models.Model):
     description = models.TextField()
     hosts = models.ManyToManyField(
         Host, verbose_name=u'Hosts', blank=True, related_name='groups')
-
-    class Meta:
-        verbose_name = u"Host Group"
-        verbose_name_plural = verbose_name
-
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name = u"服务器组"
+        verbose_name_plural = verbose_name
+
+
 
 
 class AccessRecord(models.Model):
@@ -112,7 +125,7 @@ class AccessRecord(models.Model):
     view_count = models.IntegerField()
 
     class Meta:
-        verbose_name = u"Access Record"
+        verbose_name = u"图表"
         verbose_name_plural = verbose_name
 
     def __unicode__(self):

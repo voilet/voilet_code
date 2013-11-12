@@ -52,7 +52,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'zh-cn'
+LANGUAGE_CODE = 'zh-CN'
 
 LANGUAGES = (
     ('en', gettext('English')),
@@ -160,7 +160,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'server_idc',
     'accounts',
-    'salt_ui',
+    #'salt_ui',
 )
 
 DATE_FORMAT = 'Y-m-d'
@@ -212,3 +212,6 @@ LOGGING = {
 #EMAIL_HOST_PASSWORD = ''
 #EMAIL_USE_TLS = True
 ##EMAIL_USE_TLS = False
+
+
+

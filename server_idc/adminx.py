@@ -1,8 +1,21 @@
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+#=============================================================================
+#     FileName:
+#         Desc:
+#       Author: 苦咖啡
+#        Email: voilet@qq.com
+#     HomePage: http://blog.kukafei520.net
+#      Version: 0.0.1
+#   LastChange: 
+#      History:
+#=============================================================================
+
+
 import xadmin
 from xadmin import views
-from models import *
-from xadmin.layout import *
-
+from models import IDC, Host, MaintainLog, HostGroup, AccessRecord
+from xadmin.layout import Main, TabHolder, Tab, Fieldset, Row, Col, AppendedText, Side
 from xadmin.plugins.inline import Inline
 from xadmin.plugins.batch import BatchChangeAction
 
@@ -10,7 +23,7 @@ from xadmin.plugins.batch import BatchChangeAction
 class MainDashboard(object):
     widgets = [
         [
-            {"type": "html", "title": "Test Widget", "content": "<h3> Welcome to Xadmin! </h3><p>Join Online Group: <br/>QQ Qun :20444469</p>"},
+            {"type": "html", "title": "Test Widget", "content": "<h3> Welcome to Xadmin! </h3><p>Join Online Group: <br/>QQ Qun : 282936295</p>"},
             {"type": "chart", "model": "app.accessrecord", 'chart': 'user_count', 'params': {'_p_date__gte': '2013-01-08', 'p': 1, '_p_date__lt': '2013-01-29'}},
             {"type": "list", "model": "app.host", 'params': {
                 'o':'-guarantee_date'}},
@@ -20,7 +33,7 @@ class MainDashboard(object):
             {"type": "addform", "model": MaintainLog},
         ]
     ]
-xadmin.site.register(views.website.IndexView, MainDashboard)
+xadmin.site.register(views.IndexView, MainDashboard)
 
 
 class BaseSetting(object):
@@ -31,9 +44,12 @@ xadmin.site.register(views.BaseAdminView, BaseSetting)
 
 class GolbeSetting(object):
     globe_search_models = [Host, IDC]
+    menu_style = "accordion"    #折叠菜单属性
     globe_models_icon = {
         Host: 'laptop', IDC: 'cloud'
     }
+
+
 xadmin.site.register(views.CommAdminView, GolbeSetting)
 
 
