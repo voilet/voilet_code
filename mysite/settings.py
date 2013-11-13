@@ -206,12 +206,12 @@ LOGGING = {
 
 #smtp
 
-#EMAIL_HOST = 'smtp.qq.com'
-#EMAIL_PORT = '25'
-#EMAIL_HOST_USER = 'voilet@qq.com'
-#EMAIL_HOST_PASSWORD = ''
-#EMAIL_USE_TLS = True
-##EMAIL_USE_TLS = False
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = 'voilet@qq.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+#EMAIL_USE_TLS = False
 
 
 
