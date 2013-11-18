@@ -5,8 +5,6 @@ import re
 import md5
 import json
 
-
-
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
@@ -23,7 +21,7 @@ def auto(request):
     context.update(csrf(request))
     services = Service.objects.all()
     context['services'] = services
-    return render_to_response('default/auto_sidebar.html',context,context_instance=RequestContext(request))
+    return render_to_response('index.html',context,context_instance=RequestContext(request))
 
 
 def overview(request):
@@ -155,6 +153,7 @@ def service(request):
             Service.objects.get(id=id).delete()
         services = Service.objects.all()
         context['services'] = services
+        salt_list = salt_api.overview()
         return render_to_response('default/auto_service.html', context)
         #return render_to_response('default/auto_sidebar.html',context,context_instance=RequestContext(request))
     else:

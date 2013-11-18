@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://F:/fabric_tools/.idea/fabric_tools.iml" filepath="F:/fabric_tools/.idea/fabric_tools.iml" />
       <module fileurl="file://E:/halite/halite/.idea/halite.iml" filepath="E:/halite/halite/.idea/halite.iml" />
+      <module fileurl="file://F:/nginx_23salt/.idea/nginx_23salt.iml" filepath="F:/nginx_23salt/.idea/nginx_23salt.iml" />
+      <module fileurl="file://F:/ngx_lua_waf/.idea/ngx_lua_waf.iml" filepath="F:/ngx_lua_waf/.idea/ngx_lua_waf.iml" />
       <module fileurl="file://F:/python_project/.idea/python_project.iml" filepath="F:/python_project/.idea/python_project.iml" />
       <module fileurl="file://F:/salt/.idea/salt.iml" filepath="F:/salt/.idea/salt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/salt_app.iml" filepath="$PROJECT_DIR$/.idea/salt_app.iml" />

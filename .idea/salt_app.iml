@@ -19,6 +19,8 @@
     <orderEntry type="module" module-name="salt" />
     <orderEntry type="module" module-name="fabric_tools" />
     <orderEntry type="module" module-name="salt_data" />
+    <orderEntry type="module" module-name="ngx_lua_waf" />
+    <orderEntry type="module" module-name="nginx_23salt" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="myDocStringFormat" value="Plain" />

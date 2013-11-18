@@ -160,7 +160,8 @@ INSTALLED_APPS = (
     'crispy_forms',
     'server_idc',
     'accounts',
-    #'salt_ui',
+    'op',
+    'salt_ui',
 )
 
 DATE_FORMAT = 'Y-m-d'

@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="E:/halite" vcs="Git" />
+    <mapping directory="F:/ngx_lua_waf" vcs="Git" />
     <mapping directory="F:/salt" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="F:/salt_data" vcs="hg4idea" />

@@ -14,6 +14,7 @@ from django import forms
 
 from django.db import models
 
+
 class Service(models.Model):
     name = models.CharField(max_length=50)
     target = models.TextField()
@@ -32,3 +33,14 @@ class Script(models.Model):
     class Meta:
         db_table = 'script'
 
+class AccessRecord(models.Model):
+    date = models.DateField()
+    user_count = models.IntegerField()
+    view_count = models.IntegerField()
+
+    class Meta:
+        verbose_name = u"自动化运维"
+        verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return "%s Access Record" % self.date.strftime('%Y-%m-%d')
