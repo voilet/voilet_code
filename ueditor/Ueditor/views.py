@@ -10,6 +10,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
+#import Image
 import base64
 import os
 import time

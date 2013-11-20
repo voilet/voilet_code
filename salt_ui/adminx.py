@@ -14,10 +14,12 @@ from django.contrib import admin
 import xadmin
 from xadmin import views
 from models import  AccessRecord
-from xadmin.layout import Main, TabHolder, Tab, Fieldset, Row, Col, AppendedText, Side
-from xadmin.plugins.inline import Inline
-from xadmin.plugins.batch import BatchChangeAction
-
+from django.contrib import admin
+import xadmin
+from salt_class_api import *
+from django.template import loader,Context
+from django.template.response import  TemplateResponse
+from django.http import  HttpResponse
 
 class MaintainInline(object):
     extra = 1
@@ -58,6 +60,96 @@ class AccessRecordAdmin(object):
     list_display = ('test')
 
 
-
-
 xadmin.site.register(AccessRecord,AccessRecordAdmin)
+
+
+
+import yaml,json
+from xadmin.views import BaseAdminView
+from xadmin.views.base import filter_hook
+
+class TestAdminView(BaseAdminView):
+    def get(self, request):
+        print "*" * 100
+        salt_status = commands.getoutput("salt-run manage.status")
+        test = yaml.load(salt_status)
+        print test['up']
+        return render_to_response('test.html',{'title':"django-xadmin",'contacts':test})
+
+xadmin.site.register_view(r'test_view/$', TestAdminView, name='for_test')
+
+
+#
+#
+#from xadmin.views.base import CommAdminView
+#
+#
+#class AdminSettings(object):
+#
+#    def get_site_menu(self):
+#        Article = "http://xxx.xxx"
+#        Category = "http://xxx"
+#        return (
+#            {'title': '内容管理', 'perm': self.get_model_perm(Article, 'change'), 'menus':(
+#                {'title': '游戏资料', 'icon': 'info-sign', 'url': self.get_model_url(Article, 'changelist') + '?_rel_categories__id__exact=2'},
+#                {'title': '网站文章', 'icon': 'file', 'url': self.get_model_url(Article, 'changelist') + '?_rel_categories__id__exact=1'},
+#            )},
+#            {'title': '分类管理', 'perm': self.get_model_perm(Category, 'change'), 'menus':(
+#                {'title': '主要分类', 'url': self.get_model_url(Category, 'changelist') + '?_p_parent__isnull=True'},
+#                {'title': '游戏资料', 'url': self.get_model_url(Category, 'changelist') + '?_rel_parent__id__exact=2'},
+#            )},
+#        )
+#
+#xadmin.site.register(CommAdminView, AdminSettings)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

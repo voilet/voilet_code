@@ -1,0 +1,14 @@
+<script>
+$(document).ready(function(){
+  $("#btn_cmd").click(function(){
+        $.ajax({
+       type: "GET",
+       url: "/salt/3"})  .done(function( data ) {
+        $("#salt_cmd").html(data);
+      });
+  });
+});
+</script>
+
+
+

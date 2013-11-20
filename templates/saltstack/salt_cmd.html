@@ -1,0 +1,37 @@
+
+
+<form method="POST" id="form-add-modal" class="navbar-form navbar-left" role="search" onsubmit="return false" >
+    <div class="form-group">
+        <input type="text" class="form-control" maxlength="100" size="100"/>
+    </div><span class="cmd_voilet" style="width:30px;font-size:16px;font-weight:bold;color:red;margin-left:20px;margin-right:20px;">cmd.run</span><button type="submit" class="btn btn-default">执行</button>
+</form>
+<p id="salt_cmd_run"></p>
+<script>
+    function addserver() {
+        newserver_name = $("#addsv").val();
+        function makeaddroom(data){
+            var htmls = ['<option selected="selected" value="">---------</option>'];
+            for (var key in data){
+                htmls.push('<option value="' + key + '">' + data[key] + '</option>');
+            }
+            $('#id_Server_engine_room').html(htmls.join(''));
+        }
+        $.ajax({
+           type: "POST",
+           url: "/salt/4",
+           data: $("#form-add-modal").serialize(),
+           dataType:'json',
+           complete: function(msg){
+                var data = eval('('+msg.responseText+')');
+                if (data && data.code == 1){
+{#                    $("#id_Server_engine_room").app;#}
+                    $("#modal-container-449168").modal('hide');
+                    if (data.server) makeaddroom(data.server);
+                } else{
+                    alert('添加失败');
+                }
+           }
+        });
+    }
+</script>
+{#{% include "default/jquery.html" %}#}
