@@ -71,11 +71,23 @@ def salt_cmd(request):
         salt_text = request.POST
         if salt_text['salt_cmd']:
             client = salt_api.client
-            cmd = client.cmd('*', 'cmd.run', [salt_text['salt_cmd']])
-            context["cmd_run"]=cmd
-            context["salt_cmd"]=salt_text['salt_cmd']
-            context.update(csrf(request))
-            return render_to_response('saltstack/salt_cmd_run.html',context)
+            salt_cmd_lr = salt_text['salt_cmd']
+            salt_cmd_lr = str(salt_cmd_lr)
+            salt_cmd_lr = salt_cmd_lr.split()
+            print len(salt_cmd_lr)
+            if len(salt_cmd_lr) >1 :
+                cmd = client.cmd( salt_cmd_lr[0] , 'cmd.run', salt_cmd_lr[1])
+                print cmd
+                context["cmd_run"]=cmd
+                context["salt_cmd"]=salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_run.html',context)
+            else:
+                cmd = client.cmd("*", 'cmd.run', salt_text['salt_cmd'])
+                context["cmd_run"]=cmd
+                context["salt_cmd"]=salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_run.html',context)
         else:
             return render_to_response('saltstack/salt_cmd_run.html',context)
 
