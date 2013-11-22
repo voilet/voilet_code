@@ -25,6 +25,8 @@ xadmin.autodiscover()
 urlpatterns = patterns('',
     #salt_ui
     url(r'(?P<id>\d+)/$',salt_ui.views.index.salt_status),
+    url(r'cmd/$',salt_ui.views.index.salt_cmd),
+    url(r'garins/$',salt_ui.views.index.salt_garins),
     url(r'',salt_ui.views.index.salt_index),
     #url(r'^$','salt_ui.views.index.auto'),
     #url(r'^overview$','salt_ui.views.index.overview'),
