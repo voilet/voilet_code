@@ -4,7 +4,12 @@
     <div>
 {#        {{ cmd_run}}#}
     {% for k, v in cmd_run.items %}
-    <h3>{{ k }}</h3><pre>{{ v|linebreaks }}</pre>
+    <h3>{{ k }}</h3>
+        <pre>
+        {% for l, i  in  v.items %}
+          {{ l }}:{{ i }}
+        {% endfor %}
+        </pre>
     {% endfor %}
         </div>
     {% else %}

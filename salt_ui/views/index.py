@@ -18,6 +18,9 @@ import commands,json,yaml
 import subprocess
 from salt_ui.api import *
 
+from django.views.decorators.csrf import csrf_protect
+from django.core.context_processors import csrf
+
 
 @login_required
 def auto(request):
@@ -47,18 +50,51 @@ def salt_status(request,id):
         context['master_status']=master_status
         context['live']= live
         context['dean']= dean
+        context.update(csrf(request))
         return render_to_response('saltstack/salt_status.html',context)
     if id == 2:
         proc = subprocess.Popen('salt-key', stdout=subprocess.PIPE)
         salt_key = proc.stdout.read().replace('\n','<br>')
         context["salt_key"]=salt_key
+        context.update(csrf(request))
         return render_to_response('saltstack/salt_key.html',context)
     if id == 3:
+        context.update(csrf(request))
         return render_to_response('saltstack/salt_cmd.html',context)
+
+
+@login_required
+@csrf_protect
+def salt_cmd(request):
+    context = {}
     if request.method == 'POST':
-        client = salt_api.client
-        cmd = client.cmd('*', 'cmd.run', ['ls -l'])
-        context["cmd_run"]=cmd
-        print context
-        return render_to_response('saltstack/salt_cmd_run.html',context)
-        #grains = client.cmd(target, 'grains.items')
+        salt_text = request.POST
+        if salt_text['salt_cmd']:
+            client = salt_api.client
+            cmd = client.cmd('*', 'cmd.run', [salt_text['salt_cmd']])
+            context["cmd_run"]=cmd
+            context["salt_cmd"]=salt_text['salt_cmd']
+            context.update(csrf(request))
+            return render_to_response('saltstack/salt_cmd_run.html',context)
+        else:
+            return render_to_response('saltstack/salt_cmd_run.html',context)
+
+@login_required
+@csrf_protect
+def salt_garins(request):
+    context = {}
+    if request.method == 'POST':
+        salt_text = request.POST
+        if salt_text['salt_cmd']:
+            client = salt_api.client
+            cmd = client.cmd(salt_text['salt_cmd'], 'grains.items')
+            context['cmd_run'] = cmd
+            context['salt_cmd'] = salt_text['salt_cmd']
+            context.update(csrf(request))
+            return render_to_response('saltstack/salt_cmd_grains_run.html',context)
+        else:
+            return render_to_response('saltstack/salt_cmd_grains_run.html',context)
+    else:
+        context.update(csrf(request))
+        return render_to_response('saltstack/salt_garins.html',context)
+
