@@ -15,7 +15,8 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 import xadmin
-import salt_ui.urls
+#import salt_ui.urls
+import op.urls
 xadmin.autodiscover()
 
 # from xadmin.plugins import xversion
@@ -30,8 +31,7 @@ urlpatterns = patterns('',
     (r'^accounts/register/$', 'accounts.views.register'),
     (r'^accounts/loginout/$', 'accounts.views.logout_view'),
     #url(r'^$', 'op.views.index'),
-    url(r'^op/$', 'op.views.index'),
-    url(r'^opadd/$', 'op.views.OP_POST'),
+
     #搜索
     # url(r'^search/$', 'assets.views.search'),
     #编缉器
@@ -41,14 +41,10 @@ urlpatterns = patterns('',
     url(r'^ueditor_scrawlUp$','ueditor.Ueditor.views.ueditor_ScrawUp'),
     url(r'^ueditor_getMovie$','ueditor.Ueditor.views.ueditor_getMovie'),
     url(r'^ueditor_imageManager$','ueditor.Ueditor.views.ueditor_imageManager'),
-    #报障终级页
-    url(r'^op/list/(?P<id>\d+)/$', 'op.views.OP_select'),
-    #用户列表
-    url(r'^op/user_list/(?P<id>\d+)/$', 'op.views.user_id'),
-    #修改
-    url(r'^op/user_edit/(?P<id>\d+)/$', 'op.views.OP_edit'),
+    #报障
+    url(r'op/', include(op.urls)),
     #salt_ui
-    url(r'salt/', include(salt_ui.urls)),
-    url(r'^$','salt_ui.views.index.auto'),
+    #url(r'salt/', include(salt_ui.urls)),
+    #url(r'^$','salt_ui.views.index.auto'),
 )
 

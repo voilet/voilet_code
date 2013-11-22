@@ -102,7 +102,6 @@ STATICFILES_DIRS = (
     ('fonts',os.path.join(STATIC_ROOT,'fonts').replace('\\','/') ),
     ('extra',os.path.join(STATIC_ROOT,'extra').replace('\\','/') ),
     ('bootstrap',os.path.join(STATIC_ROOT,'bootstrap').replace('\\','/') ),
-    ('bootstrapv3',os.path.join(STATIC_ROOT,'bootstrap').replace('\\','/') ),
 )
 
 # List of finder classes that know how to find static files in
@@ -163,7 +162,7 @@ INSTALLED_APPS = (
     'server_idc',
     'accounts',
     'op',
-    'salt_ui',
+    #'salt_ui',
 )
 
 DATE_FORMAT = 'Y-m-d'

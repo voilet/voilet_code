@@ -1,4 +1,5 @@
-{% include "op_header.html" %}
+{% include "default/header.html" %}
+{% include "default/op_left.html" %}
 {% load pagination_tags %}
 {% autopaginate contacts 20 %}
 <div class="container-fluid">
@@ -72,4 +73,4 @@
 	</div>
 </div>
 
-{% include "op_bottom.html" %}
+{% include "default/footer.html" %}

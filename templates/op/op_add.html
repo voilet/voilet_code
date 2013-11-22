@@ -1,149 +1,50 @@
-{% include 'op_header.html' %}
-<script type="text/javascript" charset="utf-8">
-    window.UEDITOR_HOME_URL = "/static/js/ueditor/";
-</script>
-
-<script type="text/javascript" charset="utf-8" src="/static/js/ueditor/editor_config.js"></script>
-<script type="text/javascript" charset="utf-8" src="/static/js/ueditor/editor_all_min.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/js/ueditor/themes/default/ueditor.css"/>
+{% include "default/header.html" %}
+{% include "default/op_left.html" %}
 
 
-			<form class="form-horizontal" method="post">
-                <div class="voilet_left">
-{#                 {%csrf_token%}#}
-{#				<div class="control-group">#}
-{#					 <label class="control-label" for="name">姓名</label>#}
-{#					<div class="controls">#}
-{#                        {{ uf.user_name }}#}
-{#					</div>#}
-{#				</div>#}
-                <div class="control-group">
-					 <label class="control-label" for="name">故障类型</label>
-					<div class="controls">
-						{{ uf.fault_type }}
-					</div>
-				</div>
-                <div class="control-group">
-					 <label class="control-label" for="name">报障来源</label>
-					<div class="controls">
-						{{ uf.Source }}
-					</div>
-				</div>
-                <div class="control-group">
-					 <label class="control-label" for="name">故障描述</label>
-					<div class="controls">
-						<input name="title" id="id_title" type="text" />
-					</div>
-				</div>
-                <div class="control-group">
-					 <label class="control-label" for="name">发生时间</label>
-					<div class="controls">
-						<input name="Occur_date" id="id_Occur_date" type="text" />
-					</div>
-				</div>
-                <div class="control-group">
-					 <label class="control-label" for="name">发现时间</label>
-					<div class="controls">
-						<input name="Discovery_date" id="id_Discovery_date" type="text" />
-					</div>
-				</div>
-                <div class="control-group">
-					 <label class="control-label" for="name">解决时间</label>
-					<div class="controls">
-						<input name="Solve_date" id="id_Solve_date" type="text" />
-					</div>
-				</div>
-                </div>
-                <div class="voilet_right">
-                <div class="control-group">
-					 <label class="control-label"  for="name">处理过程分析</label>
-					<div class="controls">
-{#						<input name="content" style="height:200px;width:400px" id="id_content" type="text" />#}
-                        <textarea id="editor" name="content" style="width:600px;height:500px;"></textarea>
-{#                        {{article.content}}#}
-					</div>
-				</div>
-{#                <div class="control-group">#}
-{#					 <label class="control-label" for="name">上传图片</label>#}
-{#					<div class="controls">#}
-{#						<input type="file" name="headImg" id="id_headImg" />#}
-{#					</div>#}
-{#				</div>#}
-{#                {{ uf.as_p }}#}
-                </div>
-                <div class="clear"></div>
-				<div class="control-group">
-					<div class="controls">
-						 <button type="submit" class="btn">提交</button>
-					</div>
-				</div>
 
-			</form>
+<div id="content-block" class="col-sm-11 col-md-10">
+      <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint" data-class-xs="navbar content-navbar navbar-inverse navbar-xs"  data-class-sm="navbar content-navbar navbar-default navbar-xs">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle pull-left" onclick="javascript: history.back();"><i class="icon-arrow-left"></i></button><a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">增加 报障</a>
+        </div>
+      </div>
+        <form class="exform form-horizontal" action="opadd" method="post" id="post_form">
+            {% csrf_token %}
+            <div class="form-container row clearfix" >
+                <div id="column-0" class="formColumn column form-column full col col-sm-12 form-horizontal"  horizontal="True" span="12">
+                    <div class="panel panel-default fieldset unsort no_title" id="box-0" ><div class="panel-heading">
+                        <i class='icon icon-chevron-up chevron'></i><h3 class="panel-title"></h3></div><div class="panel-body " ><div id="div_id_fault_type" class="form-group">
+                        <label for="id_fault_type" class="control-label ">故障类型</label>
+                        <div class="controls ">
+                            <div class="control-wrap" id="id_fault_type_wrap_container">
+                                {{ uf.fault_type }}
+                            </div>
+                        </div>
+                    </div>
+                        <div id="div_id_Source" class="form-group"><label for="id_Source" class="control-label ">
+                            报障来原
+                        </label><div class="controls "><div class="control-wrap" id="id_Source_wrap_container">
+                            {{ uf.Source }}
+                        </div></div></div><div id="div_id_title" class="form-group"><label for="id_title" class="control-label ">
+                            故障描述
+                        </label><div class="controls "><input class="text-field admintextinputwidget form-control" id="id_title" maxlength="64" name="title" type="text" /> </div></div><div id="div_id_Occur_date" class="form-group"><label for="id_Occur_date_0" class="control-label  requiredField">
+                            发生时间<span class="asteriskField">*</span></label><div class="controls "><div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span><input class="date-field admindatewidget form-control" id="id_Occur_date_0" name="Occur_date_0" size="10" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">今天</button> </span></div><div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time"></i></span><input class="time-field admintimewidget form-control" id="id_Occur_date_1" name="Occur_date_1" size="8" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">现在</button> </span></div></div></div></div><div id="div_id_Discovery_date" class="form-group"><label for="id_Discovery_date_0" class="control-label  requiredField">
+                            发现时间<span class="asteriskField">*</span></label><div class="controls "><div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span><input class="date-field admindatewidget form-control" id="id_Discovery_date_0" name="Discovery_date_0" size="10" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">今天</button> </span></div><div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time"></i></span><input class="time-field admintimewidget form-control" id="id_Discovery_date_1" name="Discovery_date_1" size="8" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">现在</button> </span></div></div></div></div><div id="div_id_Solve_date" class="form-group"><label for="id_Solve_date_0" class="control-label ">
+                            解决时间
+                        </label><div class="controls "><div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span><input class="date-field admindatewidget form-control" id="id_Solve_date_0" name="Solve_date_0" size="10" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">今天</button> </span></div><div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time"></i></span><input class="time-field admintimewidget form-control" id="id_Solve_date_1" name="Solve_date_1" size="8" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">现在</button> </span></div></div></div></div><div id="div_id_content" class="form-group"><label for="id_content" class="control-label ">
+                            处理过程分析
+                        </label><div class="controls "><textarea id="editor" name="content" style="width:auto;height:auto;"></textarea></div></div></div></div></div></div>
+                    <div class="form-actions well well-sm clearfix">
+                          <div class="btn-group clearfix show-xs save-group col-xs-12">
+                              <button type="submit" class="default btn btn-primary col-xs-10" name="_save" data-loading-text="保存中.." /><i class="icon-save"></i> 保存</button>
+                              <button type="button" class="more btn btn-primary col-xs-2" data-toggle="collapse" data-target=".nav-collapse.more-btns"><i class="icon-ellipsis-vertical"></i></button>
+                          </div>
+                          <button type="submit" class="default btn btn-primary hide-xs" name="_save" data-loading-text="保存中.." /><i class="icon-save"></i> 保存</button>
+                    </div>
+        </form>
+    </div>
 
-{#<div class="details">#}
-{#    <div>#}
-{#        <form action="/ueditor" method="post">#}
-{#            {%csrf_token%}#}
-{#            <textarea id="editor" name="editor" style="width:600px;height:500px;">{{article.content}}</textarea>#}
-{#            <input type="button" value="javascript 测试" onclick="testueditor();"/>#}
-{#            <input type="button" value="插入内容" onclick="insertueditor();"/>#}
-{#        </form>#}
-{#    </div>#}
-{#</div>#}
-
-
-		</div>
-	</div>
-</div>
-
-
-{#感谢秋实同学提供js代码#}
-
-
-<script type="text/javascript">
-    function calBegin(cal)
-    {
-        var date = cal.date;
-        var field = document.getElementById("id_Occur_date");
-        field.value = date.print("%Y-%m-%d %H:%M:%S");
-    }
-    Calendar.setup
-    ({
-        inputField		: "id_Occur_date",
-        ifFormat		: "%Y-%m-%d %H:%M:%S",
-        showsTime	: true,
-        onUpdate		: calBegin
-    });
-
-    function calEnd(cal)
-    {
-        var date = cal.date;
-        var field = document.getElementById("id_Discovery_date");
-        field.value = date.print("%Y-%m-%d %H:%M:%S");
-    }
-    Calendar.setup
-    ({
-        inputField		: "id_Discovery_date",
-        ifFormat		: "%Y-%m-%d %H:%M:%S",
-        showsTime	: true,
-        onUpdate		: calEnd
-    });
-    function calclose(cal)
-    {
-        var date = cal.date;
-        var field = document.getElementById("id_Solve_date");
-        field.value = date.print("%Y-%m-%d %H:%M:%S");
-    }
-    Calendar.setup
-    ({
-        inputField		: "id_Solve_date",
-        ifFormat		: "%Y-%m-%d %H:%M:%S",
-        showsTime	: true,
-        onUpdate		: calclose
-    });
-</script>
-
-{#end#}
 
 {#编缉器JS#}
 <script type="text/javascript">
@@ -191,12 +92,12 @@
     }
 
     function testueditor(){
-    	mycontent=ue.getContentTxt();
-    	alert(mycontent);
+            mycontent=ue.getContentTxt();
+            alert(mycontent);
     }
 
     function insertueditor(){
-    	ue.execCommand('insertHtml',"自定义插件，我的名片	");
+            ue.execCommand('insertHtml',"自定义插件，我的名片        ");
     }
 
     function getContentTxt(){
@@ -221,36 +122,34 @@
         var div = document.getElementById('allbtn');
         var btns = baidu.editor.dom.domUtils.getElementsByTagName(div,"a");
         for(var i=0,btn;btn=btns[i++];){
-		    btn.style.cssText = "color:#ccc;text-decoration:none;cursor:default";
+                    btn.style.cssText = "color:#ccc;text-decoration:none;cursor:default";
             btn.onclick = function(){
                 return false;
             };
         }
         ue.destroy();
     }
-	function setEnabled(){
-	    var div = document.getElementById('allbtn');
+        function setEnabled(){
+            var div = document.getElementById('allbtn');
         var btns = baidu.editor.dom.domUtils.getElementsByTagName(div,"a");
         for(var i=0,btn;btn=btns[i++];){
-			btn.style.cssText = "color:#3E3E3E;text-decoration:none;cursor:pointer";
+                        btn.style.cssText = "color:#3E3E3E;text-decoration:none;cursor:pointer";
         }
-	    ue.setEnabled();
-	}
-	function setDisable(){
-	    var div = document.getElementById('allbtn');
+            ue.setEnabled();
+        }
+        function setDisable(){
+            var div = document.getElementById('allbtn');
         var btns = baidu.editor.dom.domUtils.getElementsByTagName(div,"a");
         for(var i=0,btn;btn=btns[i++];){
-		    if(btn.innerHTML != "可以编辑"){
-				btn.style.cssText = "color:#ccc;text-decoration:none;cursor:default";
-			}
+                    if(btn.innerHTML != "可以编辑"){
+                                btn.style.cssText = "color:#ccc;text-decoration:none;cursor:default";
+                        }
         }
-	    ue.setDisabled("fullscreen");
-	}
+            ue.setDisabled("fullscreen");
+        }
 
 </script>
 
 <!-- baidu ueditor end -->
 
-
-
-{% include 'op_bottom.html' %}
+ {% include "default/footer.html" %}

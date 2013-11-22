@@ -11,7 +11,7 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 from django.db import connection
 
-from salt_ui.api import salt_api,common
+from salt_ui.api import salt_api
 from salt_ui.models import *
 from django.contrib.auth.decorators import login_required
 import commands,json,yaml
