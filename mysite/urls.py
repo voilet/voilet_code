@@ -15,7 +15,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 import xadmin
-#import salt_ui.urls
+import salt_ui.urls
 import op.urls
 xadmin.autodiscover()
 
@@ -44,7 +44,7 @@ urlpatterns = patterns('',
     #报障
     url(r'op/', include(op.urls)),
     #salt_ui
-    #url(r'salt/', include(salt_ui.urls)),
+    url(r'salt/', include(salt_ui.urls)),
     #url(r'^$','salt_ui.views.index.auto'),
 )
 

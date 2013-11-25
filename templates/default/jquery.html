@@ -63,5 +63,52 @@ $(document).ready(function(){
     return false;
   });
 });
+
+//ssh jinja
+$(document).ready(function(){
+  $('#button_jinja').click(function(){
+    jQuery.ajax({
+      url: "/salt/jinja/",                  // 提交的页面
+      data: $('#reasonform_jinja').serialize(), // 从表单中获取数据
+      type: "POST",                       // 设置请求类型为"POST"，默认为"GET"
+      beforeSend: function(){             // 设置表单提交前方法
+        //alert('表单提交前');
+      },
+      error: function(request){           // 设置表单提交出错
+        alert("表单提交出错，请稍候再试");
+      },
+      dataType:'text',
+      success: function(msg){
+          $("#salt_jinja").html(msg)
+{#        alert(msg);                       // 设置表单提交完成使用方法#}
+      }
+    });
+    return false;
+  });
+});
+
+//add sale-ssh node
+//ssh jinja
+$(document).ready(function(){
+  $('#button_node').click(function(){
+    jQuery.ajax({
+      url: "/salt/add_node/",                  // 提交的页面
+      data: $('#reasonform_node').serialize(), // 从表单中获取数据
+      type: "POST",                       // 设置请求类型为"POST"，默认为"GET"
+      beforeSend: function(){             // 设置表单提交前方法
+        //alert('表单提交前');
+      },
+      error: function(request){           // 设置表单提交出错
+        alert("表单提交出错，请稍候再试");
+      },
+      dataType:'text',
+      success: function(msg){
+          $("#salt_node").html(msg)
+{#        alert(msg);                       // 设置表单提交完成使用方法#}
+      }
+    });
+    return false;
+  });
+});
 </script>
 

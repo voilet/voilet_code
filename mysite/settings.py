@@ -162,7 +162,7 @@ INSTALLED_APPS = (
     'server_idc',
     'accounts',
     'op',
-    #'salt_ui',
+    'salt_ui',
 )
 
 DATE_FORMAT = 'Y-m-d'

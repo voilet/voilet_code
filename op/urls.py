@@ -18,6 +18,9 @@ import xadmin
 import op.views
 xadmin.autodiscover()
 
+import op.views
+import op.urls
+
 # from xadmin.plugins import xversion
 # xversion.registe_models()
 

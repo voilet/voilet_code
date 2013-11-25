@@ -62,7 +62,6 @@ def salt_status(request,id):
         context.update(csrf(request))
         return render_to_response('saltstack/salt_cmd.html',context)
 
-
 @login_required
 @csrf_protect
 def salt_cmd(request):
@@ -73,18 +72,20 @@ def salt_cmd(request):
             client = salt_api.client
             salt_cmd_lr = salt_text['salt_cmd']
             salt_cmd_lr = str(salt_cmd_lr)
-            salt_cmd_lr = salt_cmd_lr.split()
-            print len(salt_cmd_lr)
-            if len(salt_cmd_lr) >1 :
-                cmd = client.cmd( salt_cmd_lr[0] , 'cmd.run', salt_cmd_lr[1])
-                print cmd
+            salt_cmd_context = salt_cmd_lr.partition("@")
+            salt_cmd_context = list(salt_cmd_context)
+            salt_cmd_len = salt_cmd_lr.split("@")
+            if len(salt_cmd_len) >1 :
+                cmd = client.cmd( salt_cmd_context[0], 'cmd.run', [salt_cmd_context[2:]] )
                 context["cmd_run"]=cmd
+                context["cmd_Advanced"]=False
                 context["salt_cmd"]=salt_text['salt_cmd']
                 context.update(csrf(request))
                 return render_to_response('saltstack/salt_cmd_run.html',context)
             else:
-                cmd = client.cmd("*", 'cmd.run', salt_text['salt_cmd'])
+                cmd = client.cmd("*", 'cmd.run', [salt_text['salt_cmd']])
                 context["cmd_run"]=cmd
+                context["cmd_Advanced"]=True
                 context["salt_cmd"]=salt_text['salt_cmd']
                 context.update(csrf(request))
                 return render_to_response('saltstack/salt_cmd_run.html',context)
@@ -99,14 +100,83 @@ def salt_garins(request):
         salt_text = request.POST
         if salt_text['salt_cmd']:
             client = salt_api.client
-            cmd = client.cmd(salt_text['salt_cmd'], 'grains.items')
-            context['cmd_run'] = cmd
-            context['salt_cmd'] = salt_text['salt_cmd']
-            context.update(csrf(request))
-            return render_to_response('saltstack/salt_cmd_grains_run.html',context)
+            salt_cmd_lr = salt_text['salt_cmd']
+            salt_cmd_context = salt_cmd_lr.partition("@")
+            salt_cmd_context = list(salt_cmd_context)
+            salt_cmd_len = salt_cmd_lr.split("@")
+            if len(salt_cmd_len) >1 :
+                cmd = client.cmd( salt_cmd_context[0], 'grains.item', [salt_cmd_context[2]] )
+                context["cmd_run"]=cmd
+                context["cmd_Advanced"]=False
+                context["salt_cmd"]=salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_grains_run.html',context)
+            else:
+                cmd = client.cmd(salt_text['salt_cmd'].strip(), 'grains.items')
+                context['cmd_run'] = cmd
+                context["cmd_Advanced"]=True
+                context['salt_cmd'] = salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_grains_run.html',context)
         else:
             return render_to_response('saltstack/salt_cmd_grains_run.html',context)
     else:
         context.update(csrf(request))
         return render_to_response('saltstack/salt_garins.html',context)
 
+#自动化部署
+@login_required
+@csrf_protect
+def salt_nginx(request):
+     context = {}
+     return render_to_response('saltstack/salt_cmd_run.html',context)
+
+#系统初始化
+@login_required
+@csrf_protect
+def salt_check_install(request):
+     context = {}
+     if request.method == 'POST':
+        salt_text = request.POST
+        return render_to_response('saltstack/salt_check_install.html',context)
+     else:
+         server_list = open("/srv/salt/check_install/hostname.jinja","r")
+         server = server_list.read()
+         server_list.close()
+         server_node = open("/etc/salt/roster","r")
+         node = server_node.read()
+         server_node.close()
+         context["server"] = server
+         context["node"] = node
+         context["cmd_Advanced"]=True
+         context.update(csrf(request))
+         return render_to_response('saltstack/salt_check_install.html',context)
+
+#jinja
+@login_required
+@csrf_protect
+def salt_check_jinja(request):
+     context = {}
+     if request.method == 'POST':
+        salt_text = request.POST
+        context.update(csrf(request))
+        server_list = open("/srv/salt/check_install/hostname.jinja","w")
+        server_list.write(salt_text['salt_content_jinja'])
+        server_list.close()
+        return render_to_response('saltstack/salt_check_install.html',context)
+
+
+
+#jinja
+@login_required
+@csrf_protect
+def salt_check_node(request):
+     context = {}
+     if request.method == 'POST':
+        salt_text = request.POST
+        context.update(csrf(request))
+        server_list = open("/etc/salt/roster","w")
+        server_list.write(salt_text['salt_content_node'])
+        server_list.close()
+        context["salt_node"] = True
+        return render_to_response('saltstack/salt_check_install.html',context)

@@ -1,14 +1,16 @@
 {% include "default/header.html" %}
 {% include "default/index_left.html" %}
 <div class="col-md-10 column" id="salt_cmd">
-    <div class="jumbotron" id="salt_cmd">
-        <li>当前存活主机{{ live }}台</li>
+{#    <div class="jumbotron" id="salt_cmd">#}
+        <pre>当前存活主机{{ live }}台
+{#        {{ master_status.up }}#}
         {% for i in master_status.up %}
-            <li>{{ i }}</li>
+            {{ i|safe }}
         {% endfor %}
-
+        </pre>
         {{ salt_key|safe }}
-    </div>
+
+{#    </div>#}
 </div>
 {% include "default/footer.html" %}
 {% include "default/jquery.html" %}

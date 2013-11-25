@@ -1,6 +1,8 @@
 
 {#onsubmit="return false"#}
+
 <div class="voilet" style="height:50px;">
+
     <form method="POST" id="reasonform"  class="navbar-form navbar-left" role="search" onsubmit="return false" >{% csrf_token %}
         <div class="form-group">
             <input type="text" class="form-control" name="salt_cmd" id="salt_cmd" maxlength="100" size="100"/>
