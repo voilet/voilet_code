@@ -24,8 +24,8 @@ class Post(models.Model):
     fault_type = models.ForeignKey('Poster_type',blank=True,null=True,verbose_name='故障类型')
     Source = models.ForeignKey('Poster_Source',blank=True,null=True,verbose_name='报障来原')
     title = models.CharField(max_length=64,blank=True,null=True,verbose_name='故障描述')
-    Occur_date = models.DateTimeField(verbose_name='发生时间')
-    Discovery_date = models.DateTimeField(verbose_name='发现时间')
+    Occur_date = models.DateTimeField(blank=True,null=True,verbose_name='发生时间')
+    Discovery_date = models.DateTimeField(blank=True,null=True,verbose_name='发现时间')
     Solve_date = models.DateTimeField(blank=True,null=True,verbose_name='解决时间')
     content = models.TextField(max_length=20480,blank=True,null=True,verbose_name='处理过程分析')
     def __unicode__(self):

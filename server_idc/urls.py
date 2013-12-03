@@ -15,19 +15,17 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 import xadmin
+#import op.views
 xadmin.autodiscover()
 
 urlpatterns = patterns('',
-    #报障
-    url(r'^op/$', 'op.views.index'),
-    url(r'^opadd/$', 'op.views.OP_POST'),
-    #报障终级页
-    url(r'^op/list/(?P<id>\d+)/$', 'op.views.OP_select'),
-    #用户列表
-    url(r'^op/user_list/(?P<id>\d+)/$', 'op.views.user_id'),
-    #修改
-    url(r'^op/user_edit/(?P<id>\d+)/$', 'op.views.OP_edit'),
-    url(r'','op.views.OP_POST'),
+    #资产管理
+    url(r'list/', 'server_idc.value_class.index.list'),
+    url(r'edit_id/(?P<id>\d+)/$', 'server_idc.value_class.index.server_edit'),
+    url(r'server_type/(?P<id>\d+)/$', 'server_idc.value_class.index.server_type_list'),
+    url(r'add/', 'server_idc.value_class.index.Index_add'),
+    url(r'', 'server_idc.value_class.index.list'),
+
 )
 
 

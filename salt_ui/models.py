@@ -15,32 +15,15 @@ from django import forms
 from django.db import models
 
 
-class Service(models.Model):
-    name = models.CharField(max_length=50)
-    target = models.TextField()
+class returns(models.Model):
+    fun = models.CharField(max_length=50,blank=True,null=True)
+    jid = models.CharField(max_length=255,blank=True,null=True)
+    fun_return = models.TextField(blank=True,null=True)
+    node_id = models.CharField(max_length=64,blank=True,null=True)
+    success = models.CharField(max_length=10,blank=True,null=True)
+    full_ret = models.TextField(blank=True,null=True)
     def __unicode__(self):
-        return self.name
+        return self.title
     class Meta:
-        db_table = 'service'
-
-class Script(models.Model):
-    user_id = models.CharField(max_length=50)
-    name = models.CharField(max_length=30)
-    args = models.CharField(max_length=100)
-    public = models.CharField(max_length=5)
-    status = models.CharField(max_length=10)
-
-    class Meta:
-        db_table = 'script'
-
-class AccessRecord(models.Model):
-    date = models.DateField()
-    user_count = models.IntegerField()
-    view_count = models.IntegerField()
-
-    class Meta:
-        verbose_name = u"自动化运维"
+        verbose_name = u"salt上报"
         verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return "%s Access Record" % self.date.strftime('%Y-%m-%d')

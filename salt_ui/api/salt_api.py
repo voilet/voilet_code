@@ -2,6 +2,11 @@
 import salt.client
 client = salt.client.LocalClient()
 
+import salt.utils.event
+#jobs_id = salt.client.APIClient()
+
+event = salt.utils.event.MasterEvent('/var/run/salt/master')
+#event = event.iter_events(wait=0.025,tag="salt", full=True)
 def overview(request):
   target = request.GET.get("target",'*')
   try:

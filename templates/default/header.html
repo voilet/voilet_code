@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bootstrap 101 Template</title>
+    <title>运维管理系统</title>
 	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -16,26 +16,13 @@
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <![endif]-->
 
-    <link href="/static/xadmin/vendor/font-awesome/css/font-awesome.css" type="text/css" media="screen" rel="stylesheet" />
-    <link href="/static/xadmin/css/xadmin.main.css" type="text/css" media="screen" rel="stylesheet" />
-    <link href="/static/xadmin/css/xadmin.plugins.css" type="text/css" media="screen" rel="stylesheet" />
-    <link href="/static/xadmin/css/xadmin.responsive.css" type="text/css" media="screen" rel="stylesheet" />
-    <link href="/static/xadmin/vendor/select2/select2.css" type="text/css" media="screen" rel="stylesheet" />
-    <link href="/static/xadmin/vendor/bootstrap-datepicker/css/datepicker.css" type="text/css" media="screen" rel="stylesheet" />
-    <link href="/static/xadmin/vendor/bootstrap-timepicker/css/bootstrap-timepicker.css" type="text/css" media="screen" rel="stylesheet" />
 
-
-    <link href="/static/xadmin/css/xadmin.form.css" type="text/css" media="screen" rel="stylesheet" />
 
 
 <script type="text/javascript" charset="utf-8">
     window.UEDITOR_HOME_URL = "/static/js/ueditor/";
-    window.__admin_media_prefix__ = "/static/xadmin/";
-    window.__admin_path_prefix__ = "/admin/";
 </script>
 
-<script type="text/javascript" src="/static/xadmin/vendor/jquery/jquery.js"></script>
-<script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" charset="utf-8" src="/static/js/ueditor/editor_config.js"></script>
 <script type="text/javascript" charset="utf-8" src="/static/js/ueditor/editor_all_min.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/js/ueditor/themes/default/ueditor.css"/>
@@ -54,68 +41,26 @@
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="#">资产管理</a>
-						</li>
+{#						<li class="active">#}
+{#							<a href="#">资产管理</a>#}
+{#						</li>#}
 						<li>
-							<a href="/op/">报障系统</a>
+							<a href="/op/" >报障系统</a>
 						</li>
                         <li>
 							<a href="/salt/">saltstack</a>
 						</li>
-						<li class="dropdown">
-							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">link<strong class="caret"></strong></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#">Action</a>
-								</li>
-								<li>
-									<a href="#">Another action</a>
-								</li>
-								<li>
-									<a href="#">Something else here</a>
-								</li>
-								<li class="divider">
-								</li>
-								<li>
-									<a href="#">Separated link</a>
-								</li>
-								<li class="divider">
-								</li>
-								<li>
-									<a href="#">One more separated link</a>
-								</li>
-							</ul>
+                        <li>
+							<a href="/assets/">资产管理</a>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-left" role="search">
-						<div class="form-group">
-							<input type="text" class="form-control" />
-						</div> <button type="submit" class="btn btn-default">Submit</button>
-					</form>
 					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="#">Link</a>
-						</li>
-						<li class="dropdown">
-							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#">Action</a>
-								</li>
-								<li>
-									<a href="#">Another action</a>
-								</li>
-								<li>
-									<a href="#">Something else here</a>
-								</li>
-								<li class="divider">
-								</li>
-								<li>
-									<a href="#">Separated link</a>
-								</li>
-							</ul>
-						</li>
+                        <li>
+                            <a><strong>欢迎， {{ user.username }}</strong></a>
+                        </li>
+                        <li>
+                            <a href="/accounts/loginout/"><strong>注销</strong></a>
+                        </li>
 					</ul>
 				</div>
 				

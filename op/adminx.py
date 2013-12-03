@@ -50,9 +50,9 @@ class Poster_OP(object):
     search_fields = ('name',)
 
 
-xadmin.site.register(Post, PostAdmin)
-xadmin.site.register(Poster_type, Poster_OP)
-xadmin.site.register(Poster_Source, Poster_OP)
+#xadmin.site.register(Post, PostAdmin)
+#xadmin.site.register(Poster_type, Poster_OP)
+#xadmin.site.register(Poster_Source, Poster_OP)
 
 
 #admin.site.register(Post, PostAdmin)

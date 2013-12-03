@@ -17,6 +17,7 @@ from django.conf.urls import patterns, include, url
 import xadmin
 import salt_ui.urls
 import op.urls
+import server_idc.urls
 xadmin.autodiscover()
 
 # from xadmin.plugins import xversion
@@ -30,7 +31,7 @@ urlpatterns = patterns('',
     (r'^accounts/login/$', 'accounts.account.user_login',),
     (r'^accounts/register/$', 'accounts.views.register'),
     (r'^accounts/loginout/$', 'accounts.views.logout_view'),
-    #url(r'^$', 'op.views.index'),
+    url(r'^$', 'salt_ui.views.index.salt_index'),
 
     #搜索
     # url(r'^search/$', 'assets.views.search'),
@@ -45,6 +46,8 @@ urlpatterns = patterns('',
     url(r'op/', include(op.urls)),
     #salt_ui
     url(r'salt/', include(salt_ui.urls)),
-    #url(r'^$','salt_ui.views.index.auto'),
+     #资产管理
+    url(r'assets/', include(server_idc.urls)),
+    #url(r'',include(salt_ui.urls)),
 )
 

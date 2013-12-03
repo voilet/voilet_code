@@ -1,48 +1,68 @@
 {% include "default/header.html" %}
 {% include "default/op_left.html" %}
-
-
-
+<style>
+    .col-sm-2{width:100px;margin-left:8px;}
+    .form-group select {width:300px;}
+    .form-control.form-control{width:300px;}
+</style>
 <div id="content-block" class="col-sm-11 col-md-10">
-      <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint" data-class-xs="navbar content-navbar navbar-inverse navbar-xs"  data-class-sm="navbar content-navbar navbar-default navbar-xs">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle pull-left" onclick="javascript: history.back();"><i class="icon-arrow-left"></i></button><a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">增加 报障</a>
-        </div>
-      </div>
-        <form class="exform form-horizontal" action="opadd" method="post" id="post_form">
+    <pre>增加报璋</pre>
+        <form class="exform form-horizontal" action="opadd" method="post" id="post_form" style="padding-top:8px;">
             {% csrf_token %}
-            <div class="form-container row clearfix" >
-                <div id="column-0" class="formColumn column form-column full col col-sm-12 form-horizontal"  horizontal="True" span="12">
-                    <div class="panel panel-default fieldset unsort no_title" id="box-0" ><div class="panel-heading">
-                        <i class='icon icon-chevron-up chevron'></i><h3 class="panel-title"></h3></div><div class="panel-body " ><div id="div_id_fault_type" class="form-group">
-                        <label for="id_fault_type" class="control-label ">故障类型</label>
-                        <div class="controls ">
-                            <div class="control-wrap" id="id_fault_type_wrap_container">
-                                {{ uf.fault_type }}
-                            </div>
-                        </div>
+            	<div class="form-group">
+                     <label for="inputEmail3" class="col-sm-2">故障类型</label>
+                    <div class="col-sm-10" id="id_fault_type" name="fault_type">
+                       {{ uf.fault_type }}
                     </div>
-                        <div id="div_id_Source" class="form-group"><label for="id_Source" class="control-label ">
-                            报障来原
-                        </label><div class="controls "><div class="control-wrap" id="id_Source_wrap_container">
-                            {{ uf.Source }}
-                        </div></div></div><div id="div_id_title" class="form-group"><label for="id_title" class="control-label ">
-                            故障描述
-                        </label><div class="controls "><input class="text-field admintextinputwidget form-control" id="id_title" maxlength="64" name="title" type="text" /> </div></div><div id="div_id_Occur_date" class="form-group"><label for="id_Occur_date_0" class="control-label  requiredField">
-                            发生时间<span class="asteriskField">*</span></label><div class="controls "><div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span><input class="date-field admindatewidget form-control" id="id_Occur_date_0" name="Occur_date_0" size="10" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">今天</button> </span></div><div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time"></i></span><input class="time-field admintimewidget form-control" id="id_Occur_date_1" name="Occur_date_1" size="8" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">现在</button> </span></div></div></div></div><div id="div_id_Discovery_date" class="form-group"><label for="id_Discovery_date_0" class="control-label  requiredField">
-                            发现时间<span class="asteriskField">*</span></label><div class="controls "><div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span><input class="date-field admindatewidget form-control" id="id_Discovery_date_0" name="Discovery_date_0" size="10" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">今天</button> </span></div><div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time"></i></span><input class="time-field admintimewidget form-control" id="id_Discovery_date_1" name="Discovery_date_1" size="8" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">现在</button> </span></div></div></div></div><div id="div_id_Solve_date" class="form-group"><label for="id_Solve_date_0" class="control-label ">
-                            解决时间
-                        </label><div class="controls "><div class="datetime clearfix"><div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="icon-calendar"></i></span><input class="date-field admindatewidget form-control" id="id_Solve_date_0" name="Solve_date_0" size="10" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">今天</button> </span></div><div class="input-group time bootstrap-timepicker"><span class="input-group-addon"><i class="icon-time"></i></span><input class="time-field admintimewidget form-control" id="id_Solve_date_1" name="Solve_date_1" size="8" type="text" /> <span class="input-group-btn"><button class="btn btn-default" type="button">现在</button> </span></div></div></div></div><div id="div_id_content" class="form-group"><label for="id_content" class="control-label ">
-                            处理过程分析
-                        </label><div class="controls "><textarea id="editor" name="content" style="width:auto;height:auto;"></textarea></div></div></div></div></div></div>
-                    <div class="form-actions well well-sm clearfix">
-                          <div class="btn-group clearfix show-xs save-group col-xs-12">
-                              <button type="submit" class="default btn btn-primary col-xs-10" name="_save" data-loading-text="保存中.." /><i class="icon-save"></i> 保存</button>
-                              <button type="button" class="more btn btn-primary col-xs-2" data-toggle="collapse" data-target=".nav-collapse.more-btns"><i class="icon-ellipsis-vertical"></i></button>
-                          </div>
-                          <button type="submit" class="default btn btn-primary hide-xs" name="_save" data-loading-text="保存中.." /><i class="icon-save"></i> 保存</button>
+                </div>
+                <div class="form-group">
+                     <label for="inputEmail3" class="col-sm-2">报障来原</label>
+                    <div class="col-sm-10" id="id_Source" name="Source">
+                       {{ uf.Source }}
                     </div>
+                </div>
+                <div class="form-group">
+                     <label for="inputPassword3" class="col-sm-2">故障描述</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="id_title" maxlength="64" name="title" type="text" />
+                    </div>
+                </div>
+                <div class="form-group">
+                     <label for="inputPassword3" class="col-sm-2">发现时间</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="id_Occur_date" name="Occur_date" type="text" />
+                    </div>
+                </div>
+                <div class="form-group">
+                     <label for="inputPassword3" class="col-sm-2">发生时间</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="id_Discovery_date" name="Discovery_date" type="text" />
+                    </div>
+                </div>
+                <div class="form-group">
+                     <label for="inputPassword3" class="col-sm-2">解决时间</label>
+                    <div class="col-sm-10" id="datetimepicker">
+                        <input class="form-control" id="id_Solve_date" name="Solve_date" type="text" /><span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>
+                    </div>
+                </div>
+{#                <div id="datetimepicker" class="input-append date">#}
+{#                  <input type="text"></input>#}
+{#                  <span class="add-on"><i data-time-icon="icon-time" data-date-icon="icon-calendar"></i></span>#}
+{#                </div>#}
+                <div class="form-group">
+                     <label for="inputPassword3" class="col-sm-2">处理过程</label>
+                    <div class="col-sm-10">
+                        <textarea id="editor" name="content" style="width:auto;height:auto;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-0 col-sm-0">
+                         <button type="submit" class="btn btn-default">提交</button>
+                    </div>
+                </div>
         </form>
+
+    </div>
     </div>
 
 
@@ -151,5 +171,6 @@
 </script>
 
 <!-- baidu ueditor end -->
+
 
  {% include "default/footer.html" %}

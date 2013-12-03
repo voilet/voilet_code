@@ -16,7 +16,6 @@ from django.db import models
 class IDC(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
-
     contact = models.CharField(max_length=32)
     telphone = models.CharField(max_length=32)
     address = models.CharField(max_length=128)
@@ -37,49 +36,55 @@ SERVER_STATUS = (
     (2, u"No Connect"),
     (3, u"Error"),
 )
-SERVICE_TYPES = (
-    ('moniter', u"Moniter"),
-    ('lvs', u"LVS"),
-    ('db', u"Database"),
-    ('analysis', u"Analysis"),
-    ('admin', u"Admin"),
-    ('storge', u"Storge"),
-    ('web', u"WEB"),
-    ('email', u"Email"),
-    ('mix', u"Mix"),
-)
+
+Server_System = [(i, i) for i in (u"DELL", u"HP", u"Other")]
+System_os = [(i, i) for i in (u"CentOS", u"Debian")]
+Cores = [(i * 2, "%s Cores" % (i * 2)) for i in range(1, 15)]
+system_arch = [(i, i) for i in (u"x86_64", u"i386")]
 
 
-class Host(models.Model):
-
-    idc = models.ForeignKey(IDC)
+class service_types(models.Model):
     name = models.CharField(max_length=64)
-    nagios_name = models.CharField(u"Nagios Host ID", max_length=64, blank=True, null=True)
-    ip = models.IPAddressField(blank=True, null=True)
-    internal_ip = models.IPAddressField(blank=True, null=True)
-    user = models.CharField(max_length=64)
-    password = models.CharField(max_length=128)
-    ssh_port = models.IntegerField(blank=True, null=True)
-    status = models.SmallIntegerField(choices=SERVER_STATUS)
-
-    brand = models.CharField(max_length=64, choices=[(i, i) for i in (u"DELL", u"HP", u"Other")])
-    model = models.CharField(max_length=64)
-    cpu = models.CharField(max_length=64)
-    core_num = models.SmallIntegerField(choices=[(i * 2, "%s Cores" % (i * 2)) for i in range(1, 15)])
-    hard_disk = models.IntegerField()
-    memory = models.IntegerField()
-
-    system = models.CharField(u"System OS", max_length=32, choices=[(i, i) for i in (u"CentOS", u"FreeBSD", u"Ubuntu")])
-    system_version = models.CharField(max_length=32)
-    system_arch = models.CharField(max_length=32, choices=[(i, i) for i in (u"x86_64", u"i386")])
-
-    create_time = models.DateField()
-    guarantee_date = models.DateField()
-    service_type = models.CharField(max_length=32, choices=SERVICE_TYPES)
     description = models.TextField()
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        verbose_name = u"业务类型"
+        verbose_name_plural = verbose_name
+
+class MyForm(models.Model):
+    check = models.CharField(max_length=30,blank=True, null=True,verbose_name=u'业务')
+    def __unicode__(self):
+        return self.check
+    class Meta:
+        verbose_name = u"业务管理"
+
+
+class Host(models.Model):
+    node_name = models.CharField(max_length=40,verbose_name=u"主机名")
+    idc = models.ForeignKey(IDC,verbose_name=u'机房')
+    ip = models.IPAddressField(blank=True, null=True)
+    internal_ip = models.IPAddressField(blank=True, null=True)
+    status = models.SmallIntegerField(blank=True, null=True,choices=SERVER_STATUS)
+    brand = models.CharField(max_length=64, choices=Server_System,verbose_name=u'服务器型号')
+    cpu = models.CharField(max_length=64,verbose_name=u'cpu型号')
+    core_num = models.SmallIntegerField(choices=Cores,verbose_name=u'CPU核数')
+    hard_disk = models.IntegerField(verbose_name=u'硬盘')
+    memory = models.IntegerField(verbose_name=u'内存')
+    system = models.CharField(u"System OS", max_length=32,choices=System_os)
+    system_arch = models.CharField(max_length=32, choices=system_arch)
+    create_time = models.DateField(blank=True, null=True,verbose_name=u'创建时间')
+    guarantee_date = models.DateField(blank=True, null=True,verbose_name=u'保修时间')
+    #service_type = models.ForeignKey(service_types,verbose_name=u'业务')
+    Cabinets = models.CharField(max_length=32,blank=True, null=True, verbose_name=u'机柜位置')
+    number = models.CharField(max_length=32, blank=True, null=True,verbose_name=u'资产编号')
+    editor = models.TextField(blank=True, null=True,verbose_name=u'备注')
+    business = models.ManyToManyField('MyForm',blank=True, null=True,verbose_name=u'所属业务')
+
+    def __unicode__(self):
+        return self.node_name
 
     class Meta:
         verbose_name = u"服务器"
@@ -103,30 +108,4 @@ class MaintainLog(models.Model):
         verbose_name_plural = verbose_name
 
 
-class HostGroup(models.Model):
 
-    name = models.CharField(max_length=32)
-    description = models.TextField()
-    hosts = models.ManyToManyField(
-        Host, verbose_name=u'Hosts', blank=True, related_name='groups')
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = u"服务器组"
-        verbose_name_plural = verbose_name
-
-
-
-
-class AccessRecord(models.Model):
-    date = models.DateField()
-    user_count = models.IntegerField()
-    view_count = models.IntegerField()
-
-    class Meta:
-        verbose_name = u"图表"
-        verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return "%s Access Record" % self.date.strftime('%Y-%m-%d')

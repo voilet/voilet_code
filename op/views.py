@@ -35,7 +35,7 @@ def index(req):
     #emps = Post.objects.order_by('-id')
     url_path = req.get_host()
     #业务列表
-    return render_to_response('op.html',content,context_instance=RequestContext(req))
+    return render_to_response('op/op_add.html',content,context_instance=RequestContext(req))
 
 
 
@@ -47,31 +47,43 @@ class OP_From(forms.ModelForm):
 @csrf_protect
 def OP_POST(request):
     if request.method == 'POST':    #验证post方法
+        #data = request.POST
+        #print data
+        #Occur_date = "%s %s" % (data['Occur_date_0'],data['Occur_date_1'])
+        #Discovery_date = "%s %s" % (data['Discovery_date_0'],data['Discovery_date_1'])
+        #Solve_date = "%s %s" % (data['Solve_date_0'],data['Solve_date_1'])
         uf = OP_From(request.POST)   #绑定POST动作
+        print uf
         if uf.is_valid(): #验证数据有效性
             zw = uf.save(commit=False)
-            zw.user_name = request.user.first_name
-            zw.user_id = request.user.id
+            print "*" * 100
+            print zw
+            zw.user_name = request.user.username
+            #zw.Occur_date = Occur_date
+            #zw.Discovery_date = Discovery_date
+            #zw.Solve_date = Solve_date
+        #zw.user_id = request.user.id
             zw.save()
-            print "保存数据"
-            def send_html_mail(subject, html_content, recipient_list):
-                 msg = EmailMessage(subject, html_content, EMAIL_HOST_USER, recipient_list)
-                 msg.content_subtype = "html" # Main content is now text/html
-                 msg.send()
-            url_path =request.get_host()
-            #html_content = loader.render_to_string(
-            #                'op_mail.html',            #需要渲染的html模板
-            #                {'paramters':zw,'url_path':url_path}   #需要传给模板的参数
-            #                )
-            #send_html_mail(u'报障:' + zw.title,
-            #                html_content,
-            #                # ['op@funshion.com']
-            #                ['songxs@funshion.com']
-            #                )
-            #print "发送邮件中"
+            print "save ok"
+        #def send_html_mail(subject, html_content, recipient_list):
+        #     msg = EmailMessage(subject, html_content, EMAIL_HOST_USER, recipient_list)
+        #     msg.content_subtype = "html" # Main content is now text/html
+        #     msg.send()
+        #url_path =request.get_host()
+        #html_content = loader.render_to_string(
+        #                'op_mail.html',            #需要渲染的html模板
+        #                {'paramters':zw,'url_path':url_path}   #需要传给模板的参数
+        #                )
+        #send_html_mail(u'报障:' + zw.title,
+        #                html_content,
+        #                # ['op@funshion.com']
+        #                ['songxs@funshion.com']
+        #                )
+        #print "发送邮件中"
             return HttpResponseRedirect('/op/')
         else:
             print "数据验证失败"
+            print "error"
             # print uf
             print uf.is_valid()
     else:

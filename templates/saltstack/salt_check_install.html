@@ -2,7 +2,6 @@
 {% include "default/index_left.html" %}
 <div class="col-md-10 column" id="salt_cmd">
 {% if cmd_Advanced %}
-    <pre ><h4>系统初始化</h4></pre>
 <div class="alert alert-dismissable alert-info">
      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <strong>请注意：</strong><br><br>
@@ -29,8 +28,9 @@
         <form method="POST" id="reasonform_node"   role="search" onsubmit="return false" >
                 {% csrf_token %}
                 <pre><textarea style='width:100%;' rows=15 onpropertychange='this.style.posHeight=this.scrollHeight' id=textarea onfocus='textarea.style.posHeight=this.scrollHeight' id="salt_content_node" name="salt_content_node" >{{ node }}</textarea></pre>
-            <button type="submit" id="button_node" class="btn btn-default">保存</button>
+            </p><button type="submit" id="button_node" class="btn btn-default">保存</button>
         </form>
+        <br><p id="button_node_lr">
 		</div>
 
 		<div class="tab-pane" id="panel-804441">
@@ -41,19 +41,20 @@
         <form method="POST" id="reasonform_jinja"   role="search" onsubmit="return false" >
                 {% csrf_token %}
                 <pre><textarea style='width:100%;' rows=15 onpropertychange='this.style.posHeight=this.scrollHeight' id=textarea onfocus='textarea.style.posHeight=this.scrollHeight' id="salt_content_jinja" name="salt_content_jinja" >{{ server }}</textarea></pre>
-            <button type="submit" id="button_jinja" class="btn btn-default">保存</button>
+            </p><button type="submit" id="button_jinja" class="btn btn-default">保存</button>
         </form>
-
+        <br><p id="jinja_add">
 		</div>
 		<div class="tab-pane" id="panel-742703">
 			<p>
-				<form class="form-inline" role="form">{% csrf_token %}
+				<form class="form-inline" id="salt_node_add" role="form">{% csrf_token %}
                     <div class="form-group">
-                        <input class="form-control" id="salt_node" name="salt_node"  maxlength="100" size="100" type="text"  />
+                        <input class="form-control" id="salt_shell_node" name="salt_shell_node"  maxlength="100" size="100" type="text"  />
                     </div>
-                    <button type="submit" class="btn btn-default" >执行</button>
+                    <button type="submit" id="salt_node_post" class="btn btn-default" >执行</button>
                 </form>
 			</p>
+            <br><pre id="salt_node_lr">输入主机id点执行</pre>
 		</div>
 	</div>
 </div>

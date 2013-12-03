@@ -12,10 +12,19 @@
 <div>
 {% for k, v in cmd_run.items %}
 <h3>{{ k }}</h3><pre>{{ v|linebreaks }}</pre>
+
 {% endfor %}
+{#{{ salt_jid }}#}
+{#<pre>{% for i, d in salt_jid.items %}#}
+{#<h3>{{ i }}</h3>{{ d|linebreaks }}#}
+{#{% endfor %}</pre>#}
 </div>
     {% else %}
     未提交数据
     {% endif %}
 </div>
+
+
+{#{{ cmd_run }}#}
+
 

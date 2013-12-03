@@ -1,13 +1,11 @@
 
 {#onsubmit="return false"#}
-
 <div class="voilet" style="height:50px;">
-
     <form method="POST" id="reasonform"  class="navbar-form navbar-left" role="search" onsubmit="return false" >{% csrf_token %}
         <div class="form-group">
             <input type="text" class="form-control" name="salt_cmd" id="salt_cmd" maxlength="100" size="100"/>
         </div>
-        <span class="cmd_voilet" style="width:30px;font-size:16px;font-weight:bold;color:red;margin-left:20px;margin-right:20px;">cmd.run</span>
+        <span class="cmd_voilet" style="width:30px;font-size:16px;font-weight:bold;color:#ff0000;margin-left:20px;margin-right:20px;">cmd.run</span>
         <button type="submit" id="button" class="btn btn-default">执行</button>
     </form>
 </div>
