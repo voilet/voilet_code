@@ -122,9 +122,9 @@
                     {% for list  in server_type %}
 {#                        {{ server_type }}#}
                         {% if list in edit_id.business.all %}
-                            <li><label for="id_business_4"><input  name="business" checked type="checkbox" value="{{ list.id }}" />{{ list.check }}</label></li>
+                            <li><label for="id_business_4"><input  name="business" checked type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
                             {% else %}
-                            <li><label for="id_business_4"><input  name="business" type="checkbox" value="{{ list.id }}" />{{ list.check }}</label></li>
+                            <li><label for="id_business_4"><input  name="business" type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
                         {% endif %}
                     {% endfor %}
                     </ul>

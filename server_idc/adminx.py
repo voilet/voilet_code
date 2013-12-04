@@ -12,15 +12,15 @@
 #=============================================================================
 
 
-#import xadmin
-#from xadmin import views
-#from models import IDC, Host, MaintainLog
-#from xadmin.layout import Main, TabHolder, Tab, Fieldset, Row, Col, AppendedText, Side
-#from xadmin.plugins.inline import Inline
-#from xadmin.plugins.batch import BatchChangeAction
-
+import xadmin
+# from xadmin import views
+from models import IDC, Host, MyForm
+# from xadmin.layout import Main, TabHolder, Tab, Fieldset, Row, Col, AppendedText, Side
+# from xadmin.plugins.inline import Inline
+# from xadmin.plugins.batch import BatchChangeAction
 #
-#class MainDashboard(object):
+#
+# class MainDashboard(object):
 #    widgets = [
 #        [
 #            {"type": "html", "title": "Test Widget", "content": "<h3> Welcome to Xadmin! </h3><p>Join Online Group: <br/>QQ Qun : 282936295</p>"},
@@ -33,16 +33,16 @@
 #            {"type": "addform", "model": MaintainLog},
 #        ]
 #    ]
-#xadmin.site.register(views.IndexView, MainDashboard)
+# xadmin.site.register(views.IndexView, MainDashboard)
 #
 #
-#class BaseSetting(object):
+# class BaseSetting(object):
 #    enable_themes = True
 #    use_bootswatch = True
-#xadmin.site.register(views.BaseAdminView, BaseSetting)
+# xadmin.site.register(views.BaseAdminView, BaseSetting)
 #
 #
-#class GolbeSetting(object):
+# class GolbeSetting(object):
 #    globe_search_models = [Host, IDC]
 #    menu_style = "accordion"    #折叠菜单属性
 #    globe_models_icon = {
@@ -50,16 +50,16 @@
 #    }
 #
 #
-#xadmin.site.register(views.CommAdminView, GolbeSetting)
+# xadmin.site.register(views.CommAdminView, GolbeSetting)
 #
 #
-#class MaintainInline(object):
+# class MaintainInline(object):
 #    model = MaintainLog
 #    extra = 1
 #    style = 'accordion'
 #
 #
-#class IDCAdmin(object):
+# class IDCAdmin(object):
 #    list_display = ('name', 'description', 'create_time')
 #    list_display_links = ('name',)
 #    wizard_form_list = [
@@ -76,66 +76,82 @@
 #    batch_fields = ('contact', 'create_time')
 #
 #
-#class HostAdmin(object):
-#    def open_web(self, instance):
-#        return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
-#    open_web.short_description = "Acts"
-#    open_web.allow_tags = True
-#    open_web.is_column = True
+class HostAdmin(object):
+   def open_web(self, instance):
+       return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
+   open_web.short_description = "Acts"
+   open_web.allow_tags = True
+   open_web.is_column = True
+
+
+
+class MyForm_typesAdmin(object):
+   def open_web(self, instance):
+       return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
+   open_web.short_description = "Acts"
+   open_web.allow_tags = True
+   open_web.is_column = True
+
+class IDCAdmin(object):
+   def open_web(self, instance):
+       return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
+   open_web.short_description = "Acts"
+   open_web.allow_tags = True
+   open_web.is_column = True
+
+   # list_display = ('name', 'idc', 'guarantee_date', 'service_type',
+   #                 'status', 'open_web', 'description')
+   # list_display_links = ('name',)
+   #
+   # raw_id_fields = ('idc',)
+   # style_fields = {'system': "radio-inline"}
+   #
+   # search_fields = ['name', 'ip', 'description']
+   # list_filter = ['idc', 'guarantee_date', 'status', 'brand', 'model',
+   #                'cpu', 'core_num', 'hard_disk', 'memory', 'service_type']
+   #
+   # list_bookmarks = [{'title': "Need Guarantee", 'query': {'status__exact': 2}, 'order': ('-guarantee_date',), 'cols': ('brand', 'guarantee_date', 'service_type')}]
+   #
+   # show_detail_fields = ('idc',)
+   # list_editable = (
+   #     'name', 'idc', 'guarantee_date', 'service_type', 'description')
+   # save_as = True
+   #
+   # aggregate_fields = {"guarantee_date": "min"}
+
+   # form_layout = (
+   #     Main(
+   #         TabHolder(
+   #             Tab('Comm Fiels',
+   #                 Fieldset('Company data',
+   #                          'name', 'idc',
+   #                          description="some comm fields, required"
+   #                          ),
+   #                 Inline(MaintainLog),
+   #                 ),
+   #             Tab('Extend Fiedls',
+   #                 Fieldset('Contact details',
+   #                          'service_type',
+   #                          Row('brand', 'model'),
+   #                          Row('cpu', 'core_num'),
+   #                          Row(AppendedText(
+   #                              'hard_disk', 'G'), AppendedText('memory', "G")),
+   #                          'guarantee_date'
+   #                          ),
+   #                 ),
+   #         ),
+   #     ),
+   #     Side(
+   #         Fieldset('Status data',
+   #                  'status', 'ssh_port', 'ip'
+   #                  ),
+   #     )
+   # )
+   # inlines = [MaintainInline]
+   # reversion_enable = True
 #
-#    list_display = ('name', 'idc', 'guarantee_date', 'service_type',
-#                    'status', 'open_web', 'description')
-#    list_display_links = ('name',)
 #
-#    raw_id_fields = ('idc',)
-#    style_fields = {'system': "radio-inline"}
-#
-#    search_fields = ['name', 'ip', 'description']
-#    list_filter = ['idc', 'guarantee_date', 'status', 'brand', 'model',
-#                   'cpu', 'core_num', 'hard_disk', 'memory', 'service_type']
-#
-#    list_bookmarks = [{'title': "Need Guarantee", 'query': {'status__exact': 2}, 'order': ('-guarantee_date',), 'cols': ('brand', 'guarantee_date', 'service_type')}]
-#
-#    show_detail_fields = ('idc',)
-#    list_editable = (
-#        'name', 'idc', 'guarantee_date', 'service_type', 'description')
-#    save_as = True
-#
-#    aggregate_fields = {"guarantee_date": "min"}
-#
-#    form_layout = (
-#        Main(
-#            TabHolder(
-#                Tab('Comm Fiels',
-#                    Fieldset('Company data',
-#                             'name', 'idc',
-#                             description="some comm fields, required"
-#                             ),
-#                    Inline(MaintainLog),
-#                    ),
-#                Tab('Extend Fiedls',
-#                    Fieldset('Contact details',
-#                             'service_type',
-#                             Row('brand', 'model'),
-#                             Row('cpu', 'core_num'),
-#                             Row(AppendedText(
-#                                 'hard_disk', 'G'), AppendedText('memory', "G")),
-#                             'guarantee_date'
-#                             ),
-#                    ),
-#            ),
-#        ),
-#        Side(
-#            Fieldset('Status data',
-#                     'status', 'ssh_port', 'ip'
-#                     ),
-#        )
-#    )
-#    inlines = [MaintainInline]
-#    reversion_enable = True
-#
-#
-#class HostGroupAdmin(object):
+# class HostGroupAdmin(object):
 #    list_display = ('name', 'description')
 #    list_display_links = ('name',)
 #
@@ -143,7 +159,7 @@
 #    style_fields = {'hosts': 'checkbox-inline'}
 #
 #
-#class MaintainLogAdmin(object):
+# class MaintainLogAdmin(object):
 #    list_display = (
 #        'host', 'maintain_type', 'hard_type', 'time', 'operator', 'note')
 #    list_display_links = ('host',)
@@ -172,7 +188,7 @@
 #    reversion_enable = True
 #
 #
-#class AccessRecordAdmin(object):
+# class AccessRecordAdmin(object):
 #    def avg_count(self, instance):
 #        return int(instance.view_count / instance.user_count)
 #    avg_count.short_description = "Avg Count"
@@ -192,8 +208,10 @@
 #        "avg_count": {'title': u"Avg Report", "x-field": "date", "y-field": ('avg_count',), "order": ('date',)}
 #    }
 
-#xadmin.site.register(Host, HostAdmin)
-#xadmin.site.register(HostGroup, HostGroupAdmin)
-#xadmin.site.register(MaintainLog, MaintainLogAdmin)
-#xadmin.site.register(IDC, IDCAdmin)
-#xadmin.site.register(AccessRecord, AccessRecordAdmin)
+xadmin.site.register(Host, HostAdmin)
+xadmin.site.register(MyForm, MyForm_typesAdmin)
+xadmin.site.register(IDC, IDCAdmin)
+# xadmin.site.register(HostGroup, HostGroupAdmin)
+# xadmin.site.register(MaintainLog, MaintainLogAdmin)
+# xadmin.site.register(IDC, IDCAdmin)
+# xadmin.site.register(AccessRecord, AccessRecordAdmin)

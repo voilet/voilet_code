@@ -25,7 +25,7 @@ xadmin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'admin/', include(xadmin.site.urls)),
-    url(r'^voilet/test/$', 'server_idc.value_class.index.Index'),
+    # url(r'^voilet/test/$', 'server_idc.value_class.index.Index'),
     #用户登录注册
     #(r'^accounts/login/$', 'django.contrib.auth.views.login',{'template_name': 'login.html'}),
     (r'^accounts/login/$', 'accounts.account.user_login',),

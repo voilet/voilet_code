@@ -14,9 +14,9 @@
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
-import xadmin
+# import xadmin
 #import op.views
-xadmin.autodiscover()
+# xadmin.autodiscover()
 
 urlpatterns = patterns('',
     #资产管理

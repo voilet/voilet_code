@@ -17,10 +17,18 @@ from django.contrib.auth.decorators import login_required
 import commands,json,yaml
 import subprocess
 from salt_ui.api import *
-
+from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 
+
+class Host_from(forms.ModelForm):
+    FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
+    # print FAVORITE_COLORS_CHOICES
+    business = forms.MultipleChoiceField(required=False,
+        widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
+    class Meta:
+        model = Host
 
 #@login_required
 #def auto(request):
@@ -39,6 +47,8 @@ def salt_index(request):
 def salt_status(request,id):
     context = {}
     id = int(id)
+    service_user = request.user.myform_set.all()
+    context['service_name'] = service_user
     if id == 1:
         master_status = commands.getoutput("salt-run manage.status")
         master_status = yaml.load(master_status)
@@ -68,6 +78,12 @@ def salt_cmd(request):
     context = {}
     if request.method == 'POST':
         salt_text = request.POST
+        service_type = salt_text.getlist("business")
+        for i in service_type:
+            print i
+            test = i.host_set.all()
+            print test
+        print service_type
         if salt_text['salt_cmd']:
             client = salt_api.client
             salt_cmd_lr = salt_text['salt_cmd']

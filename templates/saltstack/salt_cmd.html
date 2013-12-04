@@ -1,7 +1,17 @@
 
 {#onsubmit="return false"#}
-<div class="voilet" style="height:50px;">
+<style>
+clear{clear:both;}
+.voilet{height:90px;width:auto;}
+.navbar-form{height:90px;width:100%;}
+</style>
+<pre>请选择需要执行命令的主机</pre>
+<div class="voilet">
     <form method="POST" id="reasonform"  class="navbar-form navbar-left" role="search" onsubmit="return false" >{% csrf_token %}
+        <div><ul class="list-unstyled list-inline">{% for i in service_name %}
+            <li><input id="id_business_0" type="checkbox" value="{{ i }}" name="business">{{ i }}<li>
+        {% endfor %}
+        </ul></div><div class="clear"></div>
         <div class="form-group">
             <input type="text" class="form-control" name="salt_cmd" id="salt_cmd" maxlength="100" size="100"/>
         </div>

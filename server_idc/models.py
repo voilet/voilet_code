@@ -11,16 +11,13 @@
 #=============================================================================
 
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class IDC(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64,verbose_name=u'机房名称')
     description = models.TextField()
-    contact = models.CharField(max_length=32)
-    telphone = models.CharField(max_length=32)
-    address = models.CharField(max_length=128)
-    customer_id = models.CharField(max_length=128)
-
+    telphone = models.CharField(max_length=32,verbose_name=u'联系电话')
     create_time = models.DateField(auto_now=True)
 
     def __unicode__(self):
@@ -43,23 +40,18 @@ Cores = [(i * 2, "%s Cores" % (i * 2)) for i in range(1, 15)]
 system_arch = [(i, i) for i in (u"x86_64", u"i386")]
 
 
-class service_types(models.Model):
-    name = models.CharField(max_length=64)
-    description = models.TextField()
 
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = u"业务类型"
-        verbose_name_plural = verbose_name
 
 class MyForm(models.Model):
-    check = models.CharField(max_length=30,blank=True, null=True,verbose_name=u'业务')
+    service_name = models.CharField(max_length=30,blank=True, null=True,verbose_name=u'业务')
+    service_user = models.ManyToManyField(User,blank=True, null=True,verbose_name=u'所属用户')
+    description = models.TextField(blank=True, null=True,)
     def __unicode__(self):
-        return self.check
+        return self.service_name
     class Meta:
         verbose_name = u"业务管理"
+        verbose_name_plural = verbose_name
+
 
 
 class Host(models.Model):
@@ -75,9 +67,8 @@ class Host(models.Model):
     memory = models.IntegerField(verbose_name=u'内存')
     system = models.CharField(u"System OS", max_length=32,choices=System_os)
     system_arch = models.CharField(max_length=32, choices=system_arch)
-    create_time = models.DateField(blank=True, null=True,verbose_name=u'创建时间')
+    create_time = models.DateField(auto_now=True)
     guarantee_date = models.DateField(blank=True, null=True,verbose_name=u'保修时间')
-    #service_type = models.ForeignKey(service_types,verbose_name=u'业务')
     Cabinets = models.CharField(max_length=32,blank=True, null=True, verbose_name=u'机柜位置')
     number = models.CharField(max_length=32, blank=True, null=True,verbose_name=u'资产编号')
     editor = models.TextField(blank=True, null=True,verbose_name=u'备注')

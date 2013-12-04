@@ -17,14 +17,16 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.template import RequestContext
-from server_idc.models import  Host,IDC,service_types,Server_System,Cores,System_os,system_arch,MyForm
+from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 
+from django.contrib.auth.models import User
 
 
 class Host_from(forms.ModelForm):
-    FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","check")
+    FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
+    # print FAVORITE_COLORS_CHOICES
     business = forms.MultipleChoiceField(required=False,
         widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
     class Meta:
@@ -34,16 +36,19 @@ class Host_from(forms.ModelForm):
 @csrf_protect
 def Index_add(request):
     content = {}
-    server_type = service_types.objects.all()
     if request.method == 'POST':    #验证post方法
         uf = Host_from(request.POST)   #绑定POST动作
 
-        create_time = time.strftime('%Y-%m-%d',time.localtime(time.time())) # %H:%M:%S
+        # create_time = time.strftime('%Y-%m-%d',time.localtime(time.time())) # %H:%M:%S
         if uf.is_valid(): #验证数据有效性
-            zw = uf.save(commit=False)
-            zw.create_time = create_time
-            zw.save()
-            uf.save_m2m()
+            uf.save()
+            """
+            如果commit为False,则ManyToMany就需要使用以下方法
+            """
+            # zw = uf.save(commit=False)
+            # zw.create_time = create_time
+            # zw.save()
+            # uf.save_m2m()
             uf = Host_from()
             content['uf'] = uf
             content.update(csrf(request))
@@ -53,7 +58,6 @@ def Index_add(request):
             uf = Host_from()
             content["server_type"] = MyForm.objects.all()
             content['uf'] = uf
-            content["server_type"] = server_type
             content.update(csrf(request))
             return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
     else:
@@ -69,7 +73,7 @@ def Index_add(request):
 def list(request):
     content = {}
     server_list = Host.objects.order_by("-id")
-    server_type = service_types.objects.all()
+    server_type = MyForm.objects.all()
     content["server_type"] = server_type
     content["list"] = server_list
     content.update(csrf(request))
@@ -82,7 +86,7 @@ def server_edit(request,id):
     edit_id = Host.objects.get(id = id)
     #机房名称
     idc_name = IDC.objects.all()
-    server_type = service_types.objects.all()
+    server_type = MyForm.objects.all()
     if request.method == 'POST':    #验证post方法
         uf = Host_from(request.POST)   #绑定POST动作
         #print uf
@@ -105,7 +109,7 @@ def server_edit(request,id):
         content["edit_Cores"] = Cores
         content["edit_system"] = System_os
         content["edit_system_arch"] = system_arch
-        content["server_type"] = MyForm.objects.all()
+        content["server_type"] = server_type
         content["edit_id"] = edit_id
         content["server_name"] = idc_name
         content.update(csrf(request))
@@ -117,10 +121,15 @@ def server_edit(request,id):
 @csrf_protect
 def server_type_list(request,id):
     content = {}
-    server_list = Host.objects.filter(service_type_id=id)
-    server_type = service_types.objects.all()
-    content["server_type"] = server_type
+    business_name = MyForm.objects.get(id=id)
+    server_list = business_name.host_set.all()
+    server_user_all = business_name.service_user.all()
+    user = request.user.myform_set.all()
+    print user
+    content["server_type"] = MyForm.objects.all()
     content["list"] = server_list
+    content["server_user_all"] = server_user_all
+    content["business_name"] = business_name
     if len(content['list']) >0:
         content["test_error"] = True
     else:

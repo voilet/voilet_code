@@ -131,6 +131,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #分页
+    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'mysite.urls'
@@ -159,10 +161,11 @@ INSTALLED_APPS = (
 
     'xadmin',
     'crispy_forms',
-    'server_idc',
-    'accounts',
-    'op',
-    'salt_ui',
+    'server_idc',   #资产管理系统
+    'accounts',     #用户系统
+    'op',           #报障系统
+    'salt_ui',      #salt web
+    'pagination',   #分页
 )
 
 DATE_FORMAT = 'Y-m-d'

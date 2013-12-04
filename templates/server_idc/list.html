@@ -1,5 +1,7 @@
 {% include 'default/header.html' %}
 {% include 'default/server_idc_left.html' %}
+{% load pagination_tags %}
+{% autopaginate list 20 %}
 <div id="content-block" class="col-sm-11 col-md-10">
 <table class="table table-bordered">
     <pre>服务器列表</pre>
@@ -76,7 +78,7 @@
 			</td>
 			<td width="100">
                 {% for test in i.business.all %}
-                    {{ test.check }}
+                    <a href="/assets/server_type/{{ test.id }}/ ">{{ test.service_name }}</a>
                 {% endfor %}
 			</td>
 			<td>
@@ -89,7 +91,11 @@
 	</tbody>
     {% endfor %}
     </table>
+    <div  class="voilet_page">
+         {% paginate %}
+    </div>
 </div>
+
 {#{{ uf }}#}
 {% include 'default/footer.html' %}
 

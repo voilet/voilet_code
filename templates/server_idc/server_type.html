@@ -1,7 +1,9 @@
 {% include 'default/header.html' %}
 {% include 'default/server_idc_left.html' %}
+{% load pagination_tags %}
+{% autopaginate list 20 %}
 <div id="content-block" class="col-sm-11 col-md-10">
-<pre>服务器列表</pre>
+<pre>{{ business_name }}业务列表</pre>
 {% if test_error %}
 <table class="table table-bordered">
 	<thead>
@@ -76,7 +78,9 @@
                     {{ i.system }} - {{ i.system_arch }}
                 </td>
                 <td width="100">
-                    {{ i.service_type }}
+                    {% for test in i.business.all %}
+                        {{ test.service_name }}
+                    {% endfor %}
                 </td>
                 <td>
                     {{ i.number }}
@@ -88,8 +92,23 @@
         </tbody>
         {% endfor %}
     </table>
+    <pre>以下用户拥有此业务权限</pre>
+    <ul class="list-unstyled list-inline">
+        {% for i in server_user_all %}
+				<li><button type="button" class="btn btn-default">{{ i }}</button></li>
+        {% endfor %}
+	</ul>
+    <div  class="voilet_page">
+     {% paginate %}
+    </div>
     {% else %}
-        暂无数据!
+        <p>暂无数据!</p>
+    <pre>以下用户拥有此业务权限</pre>
+    <ul class="list-unstyled list-inline">
+        {% for i in server_user_all %}
+				<li><button type="button" class="btn btn-default">{{ i }}</button></li>
+        {% endfor %}
+	</ul>
     {% endif %}
 </div>
 {#{{ uf }}#}

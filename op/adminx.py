@@ -10,14 +10,14 @@
 #   LastChange: 
 #      History:
 #=============================================================================
-from django.contrib import admin
+# from django.contrib import admin
 import xadmin
 from xadmin import views
 from models import Post,Poster_type,Poster_Source
-from xadmin.layout import Main, TabHolder, Tab, Fieldset, Row, Col, AppendedText, Side
-from xadmin.plugins.inline import Inline
-from xadmin.plugins.batch import BatchChangeAction
 
+class GolbeSetting(object):
+   menu_style = "accordion"    #折叠菜单属性
+xadmin.site.register(views.CommAdminView, GolbeSetting)
 
 class MaintainInline(object):
     model = Poster_type
@@ -50,9 +50,9 @@ class Poster_OP(object):
     search_fields = ('name',)
 
 
-#xadmin.site.register(Post, PostAdmin)
-#xadmin.site.register(Poster_type, Poster_OP)
-#xadmin.site.register(Poster_Source, Poster_OP)
+xadmin.site.register(Post, PostAdmin)
+xadmin.site.register(Poster_type, Poster_OP)
+xadmin.site.register(Poster_Source, Poster_OP)
 
 
 #admin.site.register(Post, PostAdmin)
