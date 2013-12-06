@@ -2,15 +2,24 @@
 {% include "default/index_left.html" %}
 <div class="col-md-10 column" id="salt_cmd">
 {#    <div class="jumbotron" id="salt_cmd">#}
-        <pre>当前存活主机{{ live }}台
-{#        {{ master_status.up }}#}
-        {% for i in master_status.up %}
-            {{ i|safe }}
+        <pre>当前存活主机{{ live }}台</pre>
+        {% for i in up %}
+            <p>{{ i|safe }}</p>
         {% endfor %}
-        </pre>
-        {{ salt_key|safe }}
+        <pre>不在线主机{{ live_down }}台</pre>
+        {% for i in down %}
+            <p>{{ i|safe }}</p>
+        {% endfor %}
+{#        {{ master_status.up }}#}
+{#        {% for i in master_status.up %}#}
+{#            {% if i == node_idc.node_name %}#}
+{#                <p>{{ i|safe }} <button type="button"  class="btn disabled btn-success">已上报</button><p>#}
+{#            {% else %}#}
+{#                <p>{{ i|safe }} <button type="button" id="{{ i|safe }}" class="btn btn-info btn-default">上报</button><p>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+        {{ node_idc }}
 
-{#    </div>#}
 </div>
 {% include "default/footer.html" %}
 {% include "default/jquery.html" %}

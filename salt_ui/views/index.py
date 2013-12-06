@@ -20,15 +20,18 @@ from salt_ui.api import *
 from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
+from django.shortcuts import get_object_or_404
+from salt_ui.api.salt_token_id import salt_api_token
+from salt_ui.api.salt_token_id import *
 
 
-class Host_from(forms.ModelForm):
-    FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
-    # print FAVORITE_COLORS_CHOICES
-    business = forms.MultipleChoiceField(required=False,
-        widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
-    class Meta:
-        model = Host
+# class Host_from(forms.ModelForm):
+#     FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
+#     # print FAVORITE_COLORS_CHOICES
+#     business = forms.MultipleChoiceField(required=False,
+#         widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
+#     class Meta:
+#         model = Host
 
 #@login_required
 #def auto(request):
@@ -50,22 +53,37 @@ def salt_status(request,id):
     service_user = request.user.myform_set.all()
     context['service_name'] = service_user
     if id == 1:
-        master_status = commands.getoutput("salt-run manage.status")
-        master_status = yaml.load(master_status)
-        live = len(master_status['up'])
-        if master_status['down']:
-            dean = len(master_status['down'])
-        else:
-            dean = 0
-        context['master_status']=master_status
-        context['live']= live
-        context['dean']= dean
+        token_api_id = token_id()
+        list = salt_api_token(
+        {
+        "client":'runner',
+        "fun":"manage.status",
+                   },
+        "https://192.168.49.14/",
+        {"X-Auth-Token": token_api_id}
+        )
+        master_status =list.run()
+        master_status = master_status["return"]
+        for i in master_status:
+            context['down']= i["down"]
+            context['up']= i['up']
+            context["live"] = len(i['up'])
+            context["live_down"] = len(i['down'])
         context.update(csrf(request))
         return render_to_response('saltstack/salt_status.html',context,context_instance=RequestContext(request))
     if id == 2:
-        proc = subprocess.Popen('salt-key', stdout=subprocess.PIPE)
-        salt_key = proc.stdout.read().replace('\n','<br>')
-        context["salt_key"]=salt_key
+        token_api_id = token_id()
+        list = salt_api_token(
+        {
+        "client":'local',
+        "fun":"test.ping",
+        "tgt":"*"
+                   },
+        "https://192.168.49.14/",
+        {"X-Auth-Token": token_api_id}
+        )
+        list = list.run()
+        context["salt_key"]=list["return"]
         context.update(csrf(request))
         return render_to_response('saltstack/salt_key.html',context,context_instance=RequestContext(request))
     if id == 3:
@@ -76,42 +94,42 @@ def salt_status(request,id):
 @csrf_protect
 def salt_cmd(request):
     context = {}
+    type_node = ""
     if request.method == 'POST':
         salt_text = request.POST
         service_type = salt_text.getlist("business")
         for i in service_type:
-            print i
-            test = i.host_set.all()
-            print test
-        print service_type
+            service_name_type = get_object_or_404(MyForm,service_name = i)
+            test = service_name_type.host_set.all()
+            for s in test:
+                type_node += "%s," % (s.node_name)
+        context["type_node"] = type_node
+        print salt_text["salt_node_name"]
+        print salt_text['salt_cmd']
         if salt_text['salt_cmd']:
-            client = salt_api.client
             salt_cmd_lr = salt_text['salt_cmd']
-            salt_cmd_lr = str(salt_cmd_lr)
-            salt_cmd_context = salt_cmd_lr.partition("@")
-            salt_cmd_context = list(salt_cmd_context)
-            salt_cmd_len = salt_cmd_lr.split("@")
-            if len(salt_cmd_len) >1 :
-                cmd = client.cmd( salt_cmd_context[0], 'cmd.run', [salt_cmd_context[2:]] )
-                #print salt_cmd_context[2:][0]
-                #shell = "salt '%s' '%s' '%s' --return mysql_return" % (salt_cmd_context[0], 'cmd.run', salt_cmd_context[2:][0])
-                #test = commands.getoutput( shell )
-                #print test
-                #print test.replace('\n','<br>')
-                context["cmd_run"]=cmd
-                context["cmd_Advanced"]=False
-                context["salt_cmd"]=salt_text['salt_cmd']
-                context.update(csrf(request))
-                return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
-                #return HttpResponse(cmd)
-            else:
-                cmd = client.cmd("*", 'cmd.run', [salt_text['salt_cmd']])
-                context["cmd_run"]=cmd
-                context["cmd_Advanced"]=True
-                context["salt_cmd"]=salt_text['salt_cmd']
-                context.update(csrf(request))
-                return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
-                #return HttpResponse(json.dumps(cmd))
+            salt_node_name = salt_text["salt_node_name"]
+            # if salt_node_name:
+            token_api_id = token_id()
+            list_all = salt_api_token(
+            {
+            'client': 'local',
+            'fun': 'cmd.run',
+            'tgt':salt_node_name,
+            'arg':salt_cmd_lr ,
+                           },
+            "https://192.168.49.14/",
+            {"X-Auth-Token": token_api_id}
+            )
+            list_all = list_all.run()
+            for i in list_all["return"]:
+                context["cmd_run"] = i
+            print context["cmd_run"]
+            context["cmd_Advanced"]=False
+            context["salt_cmd"]=salt_text['salt_cmd']
+            context.update(csrf(request))
+            return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
+            #     #return HttpResponse(json.dumps(cmd))
         else:
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
 
