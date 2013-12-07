@@ -11,7 +11,7 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 from django.db import connection
 from django.http import HttpResponse
-#from salt_ui.api import salt_api
+from salt_ui.api import salt_api
 from salt_ui.models import *
 from django.contrib.auth.decorators import login_required
 import commands,json,yaml
@@ -21,10 +21,23 @@ from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arc
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 from django.shortcuts import get_object_or_404
-from salt_ui.api.salt_token_id import salt_api_token
-from salt_ui.api.salt_token_id import *
 
 
+# class Host_from(forms.ModelForm):
+#     FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
+#     # print FAVORITE_COLORS_CHOICES
+#     business = forms.MultipleChoiceField(required=False,
+#         widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
+#     class Meta:
+#         model = Host
+
+#@login_required
+#def auto(request):
+#    context = {}
+#    context.update(csrf(request))
+#    services = Service.objects.all()
+#    context['services'] = services
+#    return render_to_response('index.html',context,context_instance=RequestContext(request))
 
 #songxs add
 @login_required
@@ -38,37 +51,30 @@ def salt_status(request,id):
     service_user = request.user.myform_set.all()
     context['service_name'] = service_user
     if id == 1:
-        token_api_id = token_id()
-        list = salt_api_token(
-        {
-        "client":'runner',
-        "fun":"manage.status",
-                   },
-        "https://192.168.49.14/",
-        {"X-Auth-Token": token_api_id}
-        )
-        master_status =list.run()
-        master_status = master_status["return"]
-        for i in master_status:
-            context['down']= i["down"]
-            context['up']= i['up']
-            context["live"] = len(i['up'])
-            context["live_down"] = len(i['down'])
+        master_status = commands.getoutput("salt-run manage.status")
+        master_status = yaml.load(master_status)
+        live = len(master_status['up'])
+        if master_status['down']:
+            dean = len(master_status['down'])
+        else:
+            dean = 0
+        context['master_status']=master_status
+        node_name = master_status["up"]
+        for i in node_name:
+            try:
+                node_idc = Host.objects.get(node_name = i)
+                context["node_idc"] = node_idc
+            except Host.DoesNotExist:
+                print "%s not in node_name" % (i)
+        print context["node_idc"]
+        context['live']= live
+        context['dean']= dean
         context.update(csrf(request))
         return render_to_response('saltstack/salt_status.html',context,context_instance=RequestContext(request))
     if id == 2:
-        token_api_id = token_id()
-        list = salt_api_token(
-        {
-        "client":'local',
-        "fun":"test.ping",
-        "tgt":"*"
-                   },
-        "https://192.168.49.14/",
-        {"X-Auth-Token": token_api_id}
-        )
-        list = list.run()
-        context["salt_key"]=list["return"]
+        proc = subprocess.Popen('salt-key', stdout=subprocess.PIPE)
+        salt_key = proc.stdout.read().replace('\n','<br>')
+        context["salt_key"]=salt_key
         context.update(csrf(request))
         return render_to_response('saltstack/salt_key.html',context,context_instance=RequestContext(request))
     if id == 3:
@@ -89,29 +95,37 @@ def salt_cmd(request):
             for s in test:
                 type_node += "%s," % (s.node_name)
         context["type_node"] = type_node
+        print context["type_node"]
+        # print context["type_node"]
+        # print service_type
         if salt_text['salt_cmd']:
+            client = salt_api.client
             salt_cmd_lr = salt_text['salt_cmd']
-            salt_node_name = salt_text["salt_node_name"]
-            # if salt_node_name:
-            token_api_id = token_id()
-            list_all = salt_api_token(
-            {
-            'client': 'local',
-            'fun': 'cmd.run',
-            'tgt':salt_node_name,
-            'arg':salt_cmd_lr ,
-                           },
-            "https://192.168.49.14/",
-            {"X-Auth-Token": token_api_id}
-            )
-            list_all = list_all.run()
-            for i in list_all["return"]:
-                context["cmd_run"] = i
-            context["cmd_Advanced"]=False
-            context["salt_cmd"]=salt_text['salt_cmd']
-            context.update(csrf(request))
-            return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
-            #     #return HttpResponse(json.dumps(cmd))
+            salt_cmd_lr = str(salt_cmd_lr)
+            salt_cmd_context = salt_cmd_lr.partition("@")
+            salt_cmd_context = list(salt_cmd_context)
+            salt_cmd_len = salt_cmd_lr.split("@")
+            if len(salt_cmd_len) >1 :
+                cmd = client.cmd( salt_cmd_context[0], 'cmd.run', [salt_cmd_context[2:]] )
+                #print salt_cmd_context[2:][0]
+                #shell = "salt '%s' '%s' '%s' --return mysql_return" % (salt_cmd_context[0], 'cmd.run', salt_cmd_context[2:][0])
+                #test = commands.getoutput( shell )
+                #print test
+                #print test.replace('\n','<br>')
+                context["cmd_run"]=cmd
+                context["cmd_Advanced"]=False
+                context["salt_cmd"]=salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
+                #return HttpResponse(cmd)
+            else:
+                cmd = client.cmd("*", 'cmd.run', [salt_text['salt_cmd']])
+                context["cmd_run"]=cmd
+                context["cmd_Advanced"]=True
+                context["salt_cmd"]=salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
+                #return HttpResponse(json.dumps(cmd))
         else:
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
 
@@ -122,51 +136,28 @@ def salt_garins(request):
     if request.method == 'POST':
         salt_text = request.POST
         if salt_text['salt_cmd']:
+            client = salt_api.client
             salt_cmd_lr = salt_text['salt_cmd']
-            salt_node_name = salt_text["salt_node_name"]
-            # if salt_node_name:
-            token_api_id = token_id()
-            list_all = salt_api_token(
-            {
-            'client': 'local',
-            'fun': 'cmd.run',
-            'tgt':salt_node_name,
-            'arg':salt_cmd_lr ,
-                           },
-            "https://192.168.49.14/",
-            {"X-Auth-Token": token_api_id}
-            )
-            list_all = list_all.run()
-            for i in list_all["return"]:
-                context["cmd_run"] = i
-            context["cmd_Advanced"]=False
-            context["salt_cmd"]=salt_text['salt_cmd']
-            context.update(csrf(request))
+            salt_cmd_context = salt_cmd_lr.partition("@")
+            salt_cmd_context = list(salt_cmd_context)
+            salt_cmd_len = salt_cmd_lr.split("@")
+            if len(salt_cmd_len) >1 :
+                cmd = client.cmd( salt_cmd_context[0], 'grains.item', [salt_cmd_context[2]] )
+                context["cmd_run"]=cmd
+                context["cmd_Advanced"]=False
+                context["salt_cmd"]=salt_text['salt_cmd']
+                context.update(csrf(request))
+                # salt_jid
+                return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
+            else:
+                cmd = client.cmd(salt_text['salt_cmd'].strip(), 'grains.items')
+                context['cmd_run'] = cmd
+                context["cmd_Advanced"]=True
+                context['salt_cmd'] = salt_text['salt_cmd']
+                context.update(csrf(request))
+                return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
+        else:
             return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-            #     #return HttpResponse(json.dumps(cmd))
-        #if salt_text['salt_cmd']:
-        #    client = salt_api.client
-        #    salt_cmd_lr = salt_text['salt_cmd']
-        #    salt_cmd_context = salt_cmd_lr.partition("@")
-        #    salt_cmd_context = list(salt_cmd_context)
-        #    salt_cmd_len = salt_cmd_lr.split("@")
-        #    if len(salt_cmd_len) >1 :
-        #        cmd = client.cmd( salt_cmd_context[0], 'grains.item', [salt_cmd_context[2]] )
-        #        context["cmd_run"]=cmd
-        #        context["cmd_Advanced"]=False
-        #        context["salt_cmd"]=salt_text['salt_cmd']
-        #        context.update(csrf(request))
-        #        # salt_jid
-        #        return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-        #    else:
-        #        cmd = client.cmd(salt_text['salt_cmd'].strip(), 'grains.items')
-        #        context['cmd_run'] = cmd
-        #        context["cmd_Advanced"]=True
-        #        context['salt_cmd'] = salt_text['salt_cmd']
-        #        context.update(csrf(request))
-        #        return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-        #else:
-        #    return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
     else:
         context.update(csrf(request))
         return render_to_response('saltstack/salt_garins.html',context,context_instance=RequestContext(request))
