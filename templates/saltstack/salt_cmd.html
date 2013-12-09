@@ -3,6 +3,7 @@
 clear{clear:both;}
 .voilet{height:90px;width:auto;}
 .navbar-form{height:90px;width:100%;}
+    .voilet_node_active{width:200px;}
 </style>
 <pre>请选择需要执行命令的主机</pre>
 <div class="alert alert-dismissable alert-info">
@@ -24,15 +25,26 @@ clear{clear:both;}
               <span class="input-group-btn">
                 <button class="btn btn-default disabled" type="button">主机名</button>
               </span>
-              <input type="text" class="form-control" name="salt_node_name" id = "salt_node_name" value="*" maxlength="100" size="100"/>
+              <input type="text" class="form-control" name="salt_node_name" id = "salt_node_name" value="*"  maxlength="100" size="100" />
+              <span class="input-group-addon ">命令类型
+                  <select id="id_brand" name="comm_shell">
+                    <option value="cmd" selected="selected">cmd.run</option>
+                    <option value="grains">grains.item</option>
+                    <option value="ping">test.ping</option>
+                   </select>
+              </span>
             </div><!-- /input-group -->
           </div><!-- /.col-lg-6 -->
           <div class="col-lg-6">
             <div class="input-group">
+             <span class="input-group-btn">
+                <button class="btn btn-default disabled" type="button">命令</button>
+              </span>
              <input type="text" class="form-control" name="salt_cmd" id="salt_cmd" maxlength="100" size="100"/>
               <span class="input-group-btn">
                 <button class="btn btn-success" id="button" type="button">执行</button>
               </span>
+{#                <button type="submit" id="button" class="btn btn-default" id="but_salt_state_sls">安装</button>#}
             </div><!-- /input-group -->
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
