@@ -22,9 +22,21 @@ clear{clear:both;}
         <div class="row">
           <div class="col-lg-6">
             <div class="input-group">
-              <span class="input-group-btn">
-                <button class="btn btn-default disabled" type="button">主机名</button>
-              </span>
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#">state.running</a></li>
+                  <li><a href="#">state.show_highstate</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">garins</a></li>
+                  <li><a href="#">ping</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">test.ping</a></li>
+                  <li><a href="#">version</a></li>
+                  <li><a href="#">echo</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+
               <input type="text" class="form-control" name="salt_node_name" id = "salt_node_name" value="*"  maxlength="100" size="100" />
               <span class="input-group-addon ">命令类型
                   <select id="id_brand" name="comm_shell">

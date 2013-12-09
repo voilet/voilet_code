@@ -11,6 +11,7 @@
 #      History:
 #=============================================================================
 from salt_https_api import salt_api_token
+from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url
 #from salt_data import salt_conf
 ##import salt_data
 #
@@ -19,11 +20,11 @@ from salt_https_api import salt_api_token
 def token_id():
     s = salt_api_token(
         {
-        "username":"sa",
-        "password":"centos",
+        "username":salt_api_user,
+        "password":salt_api_pass,
         "eauth":"pam"
                        },
-        "https://192.168.49.14/login",
+        salt_api_url + "login",
         {}
     )
     test = s.run()

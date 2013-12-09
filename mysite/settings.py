@@ -220,6 +220,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
+#salt api config
+salt_api_url = "https://192.168.49.14/"
+salt_api_user = "sa"
+salt_api_pass = "centos"
 
 #smtp
 
@@ -229,6 +233,7 @@ EMAIL_HOST_USER = 'voilet@qq.com'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 #EMAIL_USE_TLS = False
+
 
 
 

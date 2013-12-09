@@ -1,0 +1,18 @@
+{% include "default/header.html" %}
+{% include "default/index_left.html" %}
+<div class="col-md-10 column" id="salt_cmd">
+<pre>操作日志</pre>
+    {% for i in log %}
+        <p>操作人：{{ i.user_name }}</p>
+        <p>操作主机:{{ i.minions }}</p>
+        <p>job:{{ i.jobs_id }}</p>
+        <p>返回数据:<pre>{{ i.api_return|safe }}
+        </pre></p>
+        <p></p>
+    {% endfor %}
+{# {{ log }}#}
+
+
+</div>
+{% include "default/footer.html" %}
+{% include "default/jquery.html" %}

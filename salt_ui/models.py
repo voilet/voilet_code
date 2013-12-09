@@ -27,3 +27,15 @@ class returns(models.Model):
     class Meta:
         verbose_name = u"salt上报"
         verbose_name_plural = verbose_name
+
+class salt_api_log(models.Model):
+    user_name = models.CharField(max_length="20",verbose_name="用户名")
+    minions = models.CharField(max_length="2048",verbose_name="主机名")
+    jobs_id = models.CharField(max_length="40",verbose_name="job")
+    api_return = models.TextField(verbose_name="执行记录")
+    log_time = models.DateTimeField(auto_now=True,verbose_name="操作时间")
+    def __unicode__(self):
+        return self.user_name
+    class Meta:
+        verbose_name = u"salt操作日志"
+        verbose_name_plural = verbose_name

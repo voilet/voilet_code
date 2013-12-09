@@ -16,7 +16,7 @@ from django.conf.urls import patterns, include, url
 # Uncomment the next two lines to enable the admin:
 import xadmin
 import salt_ui.views.index
-import salt_ui.urls
+import salt_ui.log_class.api_log_class
 xadmin.autodiscover()
 
 # from xadmin.plugins import xversion
@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'add_node/$',salt_ui.views.index.salt_check_node),
     url(r'node_shell/$',salt_ui.views.index.salt_check_setup),
     url(r'node_server/$',salt_ui.views.index.salt_state_sls),
+    url(r'logs/$',salt_ui.log_class.api_log_class.salt_data_log),
     url(r'',salt_ui.views.index.salt_index),
     #url(r'^$','salt_ui.views.index.auto'),
     #url(r'^overview$','salt_ui.views.index.overview'),

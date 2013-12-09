@@ -23,7 +23,11 @@ from django.core.context_processors import csrf
 from django.shortcuts import get_object_or_404
 from salt_ui.api.salt_token_id import salt_api_token
 from salt_ui.api.salt_token_id import *
+from salt_ui.api.salt_https_api import salt_api_jobs
+from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url
 
+#日志记录
+from salt_ui.log_class.api_log_class import salt_log
 from django.utils import simplejson
 
 #songxs add
@@ -44,7 +48,7 @@ def salt_status(request,id):
         "client":'runner',
         "fun":"manage.status",
                    },
-        "https://192.168.49.14/",
+        salt_api_url,
         {"X-Auth-Token": token_api_id}
         )
         master_status =list.run()
@@ -55,6 +59,7 @@ def salt_status(request,id):
             context["live"] = len(i['up'])
             context["live_down"] = len(i['down'])
         context.update(csrf(request))
+
         return render_to_response('saltstack/salt_status.html',context,context_instance=RequestContext(request))
     if id == 2:
         token_api_id = token_id()
@@ -64,7 +69,7 @@ def salt_status(request,id):
         "fun":"test.ping",
         "tgt":"*"
                    },
-        "https://192.168.49.14/",
+        salt_api_url,
         {"X-Auth-Token": token_api_id}
         )
         list = list.run()
@@ -92,24 +97,36 @@ def salt_cmd(request):
         if salt_text['comm_shell'] == "cmd" :
             salt_cmd_lr = salt_text['salt_cmd']
             salt_node_name = salt_text["salt_node_name"]
-            # if salt_node_name:
             token_api_id = token_id()
             list_all = salt_api_token(
             {
-            'client': 'local',
+            # 'client': 'local',
             'fun': 'cmd.run',
             'tgt':salt_node_name,
             'arg':salt_cmd_lr ,
                            },
-            "https://192.168.49.14/",
+            salt_api_url,
             {"X-Auth-Token": token_api_id}
             )
             list_all = list_all.run()
+            print  list_all
             for i in list_all["return"]:
+                context["jid"] =  i["jid"]
+                context["minions"] = i["minions"]
+            jobs_id = context["jid"]
+            jobs_url = salt_api_url + "/jobs/" + jobs_id
+            minions_list_all = salt_api_jobs(
+            jobs_url,
+            {"X-Auth-Token": token_api_id}
+            )
+            voilet_test = minions_list_all.run()
+            for i in voilet_test["return"]:
                 context["cmd_run"] = i
             context["cmd_Advanced"]=False
             context["salt_cmd"]=salt_text['salt_cmd']
             context.update(csrf(request))
+            #日志入库
+            salt_log(request.user.username,context["minions"],int(jobs_id),context["cmd_run"])
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
         elif salt_text['comm_shell'] == "grains" :
@@ -118,20 +135,33 @@ def salt_cmd(request):
             token_api_id = token_id()
             list_all = salt_api_token(
             {
-            'client': 'local',
+            # 'client': 'local',
             'fun': 'grains.item',
             'tgt':salt_node_name,
             'arg':salt_cmd_lr ,
                            },
-            "https://192.168.49.14/",
+            salt_api_url,
             {"X-Auth-Token": token_api_id}
             )
             list_all = list_all.run()
+            print  list_all
             for i in list_all["return"]:
+                context["jid"] =  i["jid"]
+                context["minions"] = i["minions"]
+            jobs_id = context["jid"]
+            jobs_url = salt_api_url + "/jobs/" + jobs_id
+            minions_list_all = salt_api_jobs(
+            jobs_url,
+            {"X-Auth-Token": token_api_id}
+            )
+            voilet_test = minions_list_all.run()
+            for i in voilet_test["return"]:
                 context["cmd_run"] = i
             context["cmd_Advanced"]=False
             context["salt_cmd"]=salt_text['salt_cmd']
             context.update(csrf(request))
+             #日志入库
+            salt_log(request.user.username,context["minions"],int(jobs_id),context["cmd_run"])
             return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
         elif salt_text['comm_shell'] == "ping" :
             #salt_cmd_lr = salt_text['salt_cmd']
@@ -256,7 +286,6 @@ def salt_check_setup(request):
      context = {}
      if request.method == 'POST':
         salt_text = request.POST
-        #client = salt_api.client
         salt_cmd_lr = salt_text['salt_shell_node']
         cmd = commands.getoutput("salt-ssh " + salt_cmd_lr + " state.sls check_install" )
         context['salt_cmd'] = cmd
@@ -296,3 +325,6 @@ def salt_state_sls(request):
          context["cmd_Advanced"] = False
          context.update(csrf(request))
          return render_to_response('saltstack/salt_state_sls.html',context,context_instance=RequestContext(request))
+
+
+

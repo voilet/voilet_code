@@ -12,6 +12,7 @@
 #=============================================================================
 
 import urllib2,cookielib,urllib,yaml,json
+import salt_data
 
 class salt_api_token(object):
     def __init__(self,data,url,token=None):
@@ -34,5 +35,24 @@ class salt_api_token(object):
         resp = urllib2.urlopen(req)
         context = resp.read()
         return yaml.load(context)
+
+
+class salt_api_jobs(object):
+    def __init__(self,url,token=None):
+        self.url = url
+        self.headers = {
+            'User-agent':'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+            "Accept":"application/x-yaml",
+
+        }
+        self.headers.update(token)
+
+    def run(self):
+        context = urllib2.Request(self.url,headers = self.headers)
+        resp = urllib2.urlopen(context)
+        context = resp.read()
+        return yaml.load(context)
+
+
 
 
