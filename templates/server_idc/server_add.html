@@ -1,0 +1,259 @@
+{% include 'default/header.html' %}
+{% include 'default/server_idc_left.html' %}
+<style>
+    .col-sm-10 ul{list-style-type:none;line-height:33px;}
+    .col-sm-10 li{float:left;margin-right:12px;text-align: left;}
+    .col-sm-10 select  {
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 100%;
+}
+</style>
+<form class="form-horizontal"  method="post" role="form">
+{#    <form class="exform form-horizontal" action="opadd" method="post" id="post_form" style="padding-top:8px;">#}
+    {% csrf_token %}
+    <div id="content-block" class="col-sm-11 col-md-5">
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">主机名</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_node_name" name="node_name" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">网卡1</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_ip" name="ip" name type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">网卡2</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_internal_ip" name="internal_ip" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">机房</label>
+                <div class="col-sm-10">
+                    {{ uf.idc }}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">服务器型号</label>
+                <div class="col-sm-10">
+                    {{ uf.brand }}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">cpu型号</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_cpu" maxlength="64" name="cpu" />
+{#                    {{ uf.cpu }}#}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">cpu核数</label>
+                <div class="col-sm-10">
+{#                    <input class="form-control" id="id_core_num" name="core_num" type="text" />#}
+                    {{ uf.core_num }}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">硬盘</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_hard_disk" name="hard_disk" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">内存</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_memory" name="memory" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">系统</label>
+                <div class="col-sm-10">
+{#                    <input class="form-control" id="id_system" name="system" type="text" />#}
+                    {{ uf.system }}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">版本</label>
+                <div class="col-sm-10">
+{#                    <input class="form-control" id="id_system_arch" name="system_arch" type="text" />#}
+                    {{ uf.system_arch }}
+                </div>
+            </div>
+{#            <div class="form-group">#}
+{#                 <label for="inputEmail3" class="col-sm-2 control-label">业务</label>#}
+{#                <div class="col-sm-10">#}
+{#                    <input class="form-control" id="id_service_type" name="service_type" type="text" />#}
+{#                    {{ uf.service_type }}#}
+{#                </div>#}
+{#            </div>#}
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">业务</label>
+                <div class="col-sm-10">
+                    {{ uf.business }}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">机柜位置</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_Cabinets" maxlength="32" name="Cabinets" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">资产编号</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_number" maxlength="32" name="number" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">保修期</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_guarantee_date" maxlength="32" name="guarantee_date" type="text" />
+                </div>
+            </div>
+{#        <div class="row clearfix">#}
+{#            <div class="col-md-12 column">#}
+{#                 <button type="button" class="btn btn-success btn-block">提交</button>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                 <button type="submit" class="btn btn-success btn-block">保存</button>
+            </div>
+        </div>
+    </div>
+    <div id="content-block" class="col-sm-11 col-md-5">
+        <pre>其它说明</pre>
+        <div >
+            <textarea id="editor" name="editor" style="width:auto;height:auto;"></textarea>
+        </div>
+    </div>
+
+</form>
+{#{{ uf }}#}
+{% include 'default/footer.html' %}
+
+
+
+{#编缉器JS#}
+<script type="text/javascript">
+    var ue=new UE.ui.Editor();
+    ue.render('editor');
+    ue.addListener("selectionchange",function(){
+        var state = ue.queryCommandState("source");
+        var btndiv = document.getElementById("btns");
+        if(btndiv){
+            if(state){
+                btndiv.style.display = "none";
+            }else{
+                btndiv.style.display = "";
+            }
+        }
+
+    });
+    function getContent(){
+        var arr = [];
+        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+        arr.push("内容为：");
+        arr.push(ue.getContent());
+        alert(arr.join("\n"));
+    }
+    function getPlainTxt(){
+        var arr = [];
+        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
+        arr.push("内容为：");
+        arr.push(ue.getPlainTxt());
+        alert(arr.join('\n'))
+    }
+    function setContent(){
+        var arr = [];
+        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+        ue.setContent('欢迎使用ueditor');
+        alert(arr.join("\n"));
+    }
+
+    function getText(){
+        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
+        var range = ue.selection.getRange();
+        range.select();
+        var txt = ue.selection.getText();
+        alert(txt)
+    }
+
+    function testueditor(){
+            mycontent=ue.getContentTxt();
+            alert(mycontent);
+    }
+
+    function insertueditor(){
+            ue.execCommand('insertHtml',"自定义插件，我的名片        ");
+    }
+
+    function getContentTxt(){
+        var arr = [];
+        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+        arr.push("编辑器的纯文本内容为：");
+        arr.push(ue.getContentTxt());
+        alert(arr.join("\n"));
+    }
+    function hasContent(){
+        var arr = [];
+        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+        arr.push("判断结果为：");
+        arr.push(ue.hasContents());
+        alert(arr.join("\n"));
+    }
+    function setFocus(){
+        ue.focus();
+
+    }
+    function deleteEditor(){
+        var div = document.getElementById('allbtn');
+        var btns = baidu.editor.dom.domUtils.getElementsByTagName(div,"a");
+        for(var i=0,btn;btn=btns[i++];){
+                    btn.style.cssText = "color:#ccc;text-decoration:none;cursor:default";
+            btn.onclick = function(){
+                return false;
+            };
+        }
+        ue.destroy();
+    }
+        function setEnabled(){
+            var div = document.getElementById('allbtn');
+        var btns = baidu.editor.dom.domUtils.getElementsByTagName(div,"a");
+        for(var i=0,btn;btn=btns[i++];){
+                        btn.style.cssText = "color:#3E3E3E;text-decoration:none;cursor:pointer";
+        }
+            ue.setEnabled();
+        }
+        function setDisable(){
+            var div = document.getElementById('allbtn');
+        var btns = baidu.editor.dom.domUtils.getElementsByTagName(div,"a");
+        for(var i=0,btn;btn=btns[i++];){
+                    if(btn.innerHTML != "可以编辑"){
+                                btn.style.cssText = "color:#ccc;text-decoration:none;cursor:default";
+                        }
+        }
+            ue.setDisabled("fullscreen");
+        }
+
+</script>
+
+<!-- baidu ueditor end -->
+
+
+

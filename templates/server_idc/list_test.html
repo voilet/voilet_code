@@ -1,0 +1,65 @@
+{% include 'default/header.html' %}
+{% include 'default/server_idc_left.html' %}
+{% load pagination_tags %}
+{% autopaginate list 5 %}
+<div id="content-block" class="col-sm-11 col-md-10">
+<table class="table table-bordered">
+    <pre>服务器列表</pre>
+	<thead>
+		<tr>
+			<th>
+				主机名
+			</th>
+			<th>
+				机房
+			</th>
+			<th>
+				eth1
+			</th>
+			<th>
+				内存
+			</th>
+            <th>
+				CPU型号
+			</th>
+            <th>
+				核数
+			</th>
+            <th>
+				硬盘
+			</th>
+            <th>
+				服务器型号
+			</th>
+			<th>
+				系统
+			</th>
+			<th>
+				业务
+			</th>
+			<th>
+				资产编号
+			</th>
+            <th>
+				修改
+			</th>
+
+		</tr>
+	</thead>
+    {% for i in list %}
+    <p>{{ i.hostname|safe }}</p>
+
+    {% endfor %}
+    </table>
+    <div  class="voilet_page">
+         {% paginate %}
+    </div>
+</div>
+
+{#{{ uf }}#}
+{% include 'default/footer.html' %}
+
+
+
+
+

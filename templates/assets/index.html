@@ -1,0 +1,42 @@
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+{#    <title>{{ title }}</title>#}
+{##}
+{#</head>#}
+{#<body>#}
+{#<div></div>#}
+{#{%  for name in test %}#}
+{#    <li>用户名: {{ name }}</li>#}
+{#{% endfor %}#}
+{##}
+{#用户登录#}
+{##}
+{#{%  if username_session %}#}
+{#    <li>welcom {{ username_session }}</li>#}
+{#    <li><a href ='/logout/' >退出</a></li>#}
+{#{% else %}#}
+{#    <li>您还未登录系统</li>#}
+{#{%  endif %}#}
+{#{{ uf.as_p }}#}
+{##}
+{#{%  if username %}#}
+{#    <li>welcom {{ username }}</li>#}
+{#    <li><a href ='/logout/' >退出</a></li>#}
+{#{% else %}#}
+{#    <li>您还未登录系统</li>#}
+{#{%  endif %}#}
+{#{{ uf.as_p }}#}
+{##}
+{##}
+{##}
+{#</body>#}
+{#</html>#}
+
+{% if name != '' %}
+ 欢迎  {{ name }} 来到本网站
+<a href="/accounts/loginout/">注销</a>
+{% else %}
+<a href ="/accounts/login/?next=/"> 登录 </a>
+<a href ="/accounts/register/?next=/"> 注册 </a>
+{% endif %}

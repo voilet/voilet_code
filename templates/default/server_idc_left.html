@@ -1,0 +1,50 @@
+<div class="col-md-2 column">
+    <div class="panel-group" id="panel-349889"><!--  panel panel-primary -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h3 class="panel-title"><a class="panel-title" data-toggle="collapse" data-parent="#panel-349889" href="#panel-element-290449">资产管理</a></h3>
+            </div>
+            {% if "/assets/add/" in  request.path  %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/list/" in  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/server/" in  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/edit_id/" in  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/list_id/" in  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/" ==  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% else %}
+                <div id="panel-element-290449" class="panel-collapse collapse">
+            {% endif %}
+                <div class="panel-body">
+                    <p><a href="/assets/add/" >添加服务器</a></p>
+                    <p><a href="/assets/list/" >服务器列表</a></p>
+                    <p><a href="/assets/server/" >机房列表</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h3 class="panel-title"><a class="panel-title" data-toggle="collapse" data-parent="#panel-349889" href="#panel-element-52457896">业务分类</a></h3>
+            </div>
+                {% if "/assets/server_type/" in  request.path  %}
+                    <div id="panel-element-52457896" class="panel-collapse collapse in">
+                    {% else %}
+                    <div id="panel-element-52457896" class="panel-collapse collapse">
+                {% endif %}
+                <div class="panel-body">
+                    {% for i in server_type %}
+                        <p><a href="/assets/server_type/{{ i.id }}/" >{{ i }}</a></p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
