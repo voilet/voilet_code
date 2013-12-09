@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1242988538">
+  <component name="DataSourceManagerImpl" format="xml" hash="1066933421">
     <data-source source="LOCAL" name="Django default" uuid="900178dc-13e0-4f79-9f33-5f020de2301a">
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://127.0.0.1:3306/salt</jdbc-url>
