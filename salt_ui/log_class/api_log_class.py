@@ -48,6 +48,6 @@ def salt_data_log(request):
      log_list = salt_api_log.objects.order_by("-id")
      context["log"] = log_list
      for i in context["log"]:
-         s = json.dumps(i.api_return)
-         print yaml.load(s)
+         s = i.api_return
+         context["log_return"] =  yaml.dump(s)
      return render_to_response('saltstack/salt_log.html',context,context_instance=RequestContext(request))

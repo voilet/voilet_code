@@ -125,8 +125,9 @@ def salt_cmd(request):
             context["cmd_Advanced"]=False
             context["salt_cmd"]=salt_text['salt_cmd']
             context.update(csrf(request))
+            print yaml.dump(context["cmd_run"])
             #日志入库
-            salt_log(request.user.username,context["minions"],int(jobs_id),context["cmd_run"])
+            salt_log(request.user.username,context["minions"],int(jobs_id),yaml.dump(context["cmd_run"]))
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
         elif salt_text['comm_shell'] == "grains" :
