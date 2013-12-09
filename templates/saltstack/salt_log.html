@@ -3,14 +3,13 @@
 <div class="col-md-10 column" id="salt_cmd">
 <pre>操作日志</pre>
     {% for i in log %}
-
         <p>操作人：{{ i.user_name }}</p>
         <p>操作时间：{{ i.log_time }}</p>
         <p>操作主机:{% for s in i.minions %}{{ s }}{% endfor %}</p>
         <p>job:{{ i.jobs_id }}</p>
         <p>返回数据:</p>
-        <pre>{{ i.api_return }}
-        </pre>
+        <pre>{{ i.api_return }}</pre>
+
         <p></p>
     {% endfor %}
 {# {{ log }}#}
