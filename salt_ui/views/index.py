@@ -24,7 +24,7 @@ from django.shortcuts import get_object_or_404
 from salt_ui.api.salt_token_id import salt_api_token
 from salt_ui.api.salt_token_id import *
 
-
+from django.utils import simplejson
 
 #songxs add
 @login_required
@@ -89,7 +89,7 @@ def salt_cmd(request):
             for s in test:
                 type_node += "%s," % (s.node_name)
         context["type_node"] = type_node
-        if salt_text['salt_cmd']:
+        if salt_text['comm_shell'] == "cmd" :
             salt_cmd_lr = salt_text['salt_cmd']
             salt_node_name = salt_text["salt_node_name"]
             # if salt_node_name:
@@ -112,6 +112,48 @@ def salt_cmd(request):
             context.update(csrf(request))
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
+        elif salt_text['comm_shell'] == "grains" :
+            salt_cmd_lr = salt_text['salt_cmd']
+            salt_node_name = salt_text["salt_node_name"]
+            token_api_id = token_id()
+            list_all = salt_api_token(
+            {
+            'client': 'local',
+            'fun': 'grains.item',
+            'tgt':salt_node_name,
+            'arg':salt_cmd_lr ,
+                           },
+            "https://192.168.49.14/",
+            {"X-Auth-Token": token_api_id}
+            )
+            list_all = list_all.run()
+            for i in list_all["return"]:
+                context["cmd_run"] = i
+            context["cmd_Advanced"]=False
+            context["salt_cmd"]=salt_text['salt_cmd']
+            context.update(csrf(request))
+            return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
+        elif salt_text['comm_shell'] == "ping" :
+            #salt_cmd_lr = salt_text['salt_cmd']
+            salt_node_name = salt_text["salt_node_name"]
+            # if salt_node_name:
+            token_api_id = token_id()
+            list_all = salt_api_token(
+            {
+            'client': 'local',
+            'fun': 'test.ping',
+            'tgt':salt_node_name,
+                           },
+            "https://192.168.49.14/",
+            {"X-Auth-Token": token_api_id}
+            )
+            list_all = list_all.run()
+            for i in list_all["return"]:
+                context["cmd_run"] = i
+            context["cmd_Advanced"]=True
+            context["salt_cmd"]=salt_text['salt_cmd']
+            context.update(csrf(request))
+            return render_to_response('saltstack/test_ping.html',context,context_instance=RequestContext(request))
         else:
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
 
@@ -124,12 +166,11 @@ def salt_garins(request):
         if salt_text['salt_cmd']:
             salt_cmd_lr = salt_text['salt_cmd']
             salt_node_name = salt_text["salt_node_name"]
-            # if salt_node_name:
             token_api_id = token_id()
             list_all = salt_api_token(
             {
             'client': 'local',
-            'fun': 'cmd.run',
+            'fun': 'grains.item',
             'tgt':salt_node_name,
             'arg':salt_cmd_lr ,
                            },
@@ -144,29 +185,7 @@ def salt_garins(request):
             context.update(csrf(request))
             return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
-        #if salt_text['salt_cmd']:
-        #    client = salt_api.client
-        #    salt_cmd_lr = salt_text['salt_cmd']
-        #    salt_cmd_context = salt_cmd_lr.partition("@")
-        #    salt_cmd_context = list(salt_cmd_context)
-        #    salt_cmd_len = salt_cmd_lr.split("@")
-        #    if len(salt_cmd_len) >1 :
-        #        cmd = client.cmd( salt_cmd_context[0], 'grains.item', [salt_cmd_context[2]] )
-        #        context["cmd_run"]=cmd
-        #        context["cmd_Advanced"]=False
-        #        context["salt_cmd"]=salt_text['salt_cmd']
-        #        context.update(csrf(request))
-        #        # salt_jid
-        #        return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-        #    else:
-        #        cmd = client.cmd(salt_text['salt_cmd'].strip(), 'grains.items')
-        #        context['cmd_run'] = cmd
-        #        context["cmd_Advanced"]=True
-        #        context['salt_cmd'] = salt_text['salt_cmd']
-        #        context.update(csrf(request))
-        #        return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-        #else:
-        #    return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
+
     else:
         context.update(csrf(request))
         return render_to_response('saltstack/salt_garins.html',context,context_instance=RequestContext(request))
@@ -255,11 +274,23 @@ def salt_state_sls(request):
         salt_text = request.POST
         salt_cmd_lr = salt_text['salt_sls']
         node = salt_text["salt_node"]
-        shell = "salt \"{node}\" state.sls \"{salt_cmd_lr}\"".format(node=node,salt_cmd_lr=salt_cmd_lr)
-        cmd = commands.getoutput(shell)
-        context['salt_cmd'] = cmd
+        token_api_id = token_id()
+        list_all = salt_api_token(
+        {
+        'client': 'local',
+        'fun': 'state.sls',
+        'tgt':node,
+        'arg':salt_cmd_lr ,
+                       },
+        "https://192.168.49.14/",
+        {"X-Auth-Token": token_api_id}
+        )
+        list_all = list_all.run()
+        test = yaml.dump(list_all["return"])
+        context["salt_cmd"] = test
         context["cmd_Advanced"] = True
         context.update(csrf(request))
+        #return HttpResponse(json.dumps(context["salt_cmd"]),context_instance=RequestContext(request))
         return render_to_response('saltstack/salt_check_setup.html',context,context_instance=RequestContext(request))
      else:
          context["cmd_Advanced"] = False

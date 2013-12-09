@@ -107,11 +107,6 @@ def salt_cmd(request):
             salt_cmd_len = salt_cmd_lr.split("@")
             if len(salt_cmd_len) >1 :
                 cmd = client.cmd( salt_cmd_context[0], 'cmd.run', [salt_cmd_context[2:]] )
-                #print salt_cmd_context[2:][0]
-                #shell = "salt '%s' '%s' '%s' --return mysql_return" % (salt_cmd_context[0], 'cmd.run', salt_cmd_context[2:][0])
-                #test = commands.getoutput( shell )
-                #print test
-                #print test.replace('\n','<br>')
                 context["cmd_run"]=cmd
                 context["cmd_Advanced"]=False
                 context["salt_cmd"]=salt_text['salt_cmd']
