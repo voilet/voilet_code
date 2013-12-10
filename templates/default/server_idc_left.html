@@ -42,6 +42,30 @@
                 </div>
             </div>
         </div>
+        {% if user.is_superuser == 1 %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                 <h3 class="panel-title"><a class="panel-title" data-toggle="collapse" data-parent="#panel-349889" href="#panel-element-564813221">业务管理</a></h3>
+            </div>
+                {% if "/assets/type/add/" in  request.path  %}
+                    <div id="panel-element-564813221" class="panel-collapse collapse in">
+                    {% elif "/assets/type/list/" in request.path %}
+                    <div id="panel-element-564813221" class="panel-collapse collapse in">
+                     {% elif "/assets/type/del/" in request.path %}
+                    <div id="panel-element-564813221" class="panel-collapse collapse in">
+                    {% else %}
+                    <div id="panel-element-564813221" class="panel-collapse collapse">
+                {% endif %}
+                <div class="panel-body">
+{#                    {% for i in server_type %}#}
+                        <p><a href="/assets/type/list/" >业务列表</a></p>
+                        <p><a href="/assets/type/add/" >添加业务</a></p>
+                        <p><a href="/assets/type/del/" > 删除业务</a></p>
+{#                    {% endfor %}#}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 

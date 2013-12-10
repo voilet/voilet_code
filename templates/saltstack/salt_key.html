@@ -1,7 +1,9 @@
 {% include "default/header.html" %}
 {% include "default/index_left.html" %}
 <div class="col-md-10 column" id="salt_cmd">
-<pre>{{ salt_key|safe }}</pre>
+<pre>{% for i in salt_key %}{% for k,v in i.items %}{{ k }}:{% if v %}<button type="button" class="btn btn-success btn-xs">正常</button>{% else %}异常{% endif %}
+{% endfor %}
+{% endfor %}</pre>
 </div>
 {% include "default/footer.html" %}
 {% include "default/jquery.html" %}

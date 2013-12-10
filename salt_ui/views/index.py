@@ -90,13 +90,18 @@ def salt_cmd(request):
         service_type = salt_text.getlist("business")
         for i in service_type:
             service_name_type = get_object_or_404(MyForm,service_name = i)
-            test = service_name_type.host_set.all()
-            for s in test:
+            server_list = service_name_type.host_set.all()
+            for s in server_list:
                 type_node += "%s," % (s.node_name)
         context["type_node"] = type_node
-        if salt_text['comm_shell'] == "cmd" :
+        print type_node
+        salt_api_type = salt_text['comm_shell']
+        if salt_api_type == "cmd" :
             salt_cmd_lr = salt_text['salt_cmd']
-            salt_node_name = salt_text["salt_node_name"]
+            if len(salt_text["salt_node_name"]) >0:
+                salt_node_name = salt_text["salt_node_name"]
+            else:
+                salt_node_name = "*"
             token_api_id = token_id()
             list_all = salt_api_token(
             {
@@ -109,7 +114,6 @@ def salt_cmd(request):
             {"X-Auth-Token": token_api_id}
             )
             list_all = list_all.run()
-            print  list_all
             for i in list_all["return"]:
                 context["jid"] =  i["jid"]
                 context["minions"] = i["minions"]
@@ -122,17 +126,21 @@ def salt_cmd(request):
             voilet_test = minions_list_all.run()
             for i in voilet_test["return"]:
                 context["cmd_run"] = i
-            context["cmd_Advanced"]=False
-            context["salt_cmd"]=salt_text['salt_cmd']
+            context["cmd_Advanced"] = False
+            context["salt_cmd"] = salt_text['salt_cmd']
+            context["len_node"] = len(context["minions"])
             context.update(csrf(request))
-            print yaml.dump(context["cmd_run"])
+            # print yaml.dump(context["cmd_run"])
             #日志入库
-            salt_log(request.user.username,context["minions"],int(jobs_id),context["cmd_run"])
+            salt_log(request.user.username, context["minions"], int(jobs_id), salt_api_type, context["len_node"], salt_cmd_lr, context["cmd_run"])
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
-        elif salt_text['comm_shell'] == "grains" :
+        elif salt_api_type == "grains" :
             salt_cmd_lr = salt_text['salt_cmd']
-            salt_node_name = salt_text["salt_node_name"]
+            if len(salt_text["salt_node_name"]) >0:
+                salt_node_name = salt_text["salt_node_name"]
+            else:
+                salt_node_name = "*"
             token_api_id = token_id()
             list_all = salt_api_token(
             {
@@ -145,7 +153,6 @@ def salt_cmd(request):
             {"X-Auth-Token": token_api_id}
             )
             list_all = list_all.run()
-            print  list_all
             for i in list_all["return"]:
                 context["jid"] =  i["jid"]
                 context["minions"] = i["minions"]
@@ -157,33 +164,51 @@ def salt_cmd(request):
             )
             voilet_test = minions_list_all.run()
             for i in voilet_test["return"]:
+                print type(i)
                 context["cmd_run"] = i
             context["cmd_Advanced"]=False
             context["salt_cmd"]=salt_text['salt_cmd']
+            context["len_node"] = len(context["minions"])
             context.update(csrf(request))
-             #日志入库
-            salt_log(request.user.username,context["minions"],int(jobs_id),context["cmd_run"])
+            #日志入库
+            salt_log(request.user.username, context["minions"], int(jobs_id), salt_api_type, context["len_node"], salt_cmd_lr, context["cmd_run"])
             return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-        elif salt_text['comm_shell'] == "ping" :
-            #salt_cmd_lr = salt_text['salt_cmd']
-            salt_node_name = salt_text["salt_node_name"]
-            # if salt_node_name:
+        elif salt_api_type == "ping" :
+            salt_cmd_lr = salt_text['salt_cmd']
+            if len(salt_text["salt_node_name"]) >0:
+                salt_node_name = salt_text["salt_node_name"]
+            else:
+                salt_node_name = "*"
             token_api_id = token_id()
             list_all = salt_api_token(
             {
-            'client': 'local',
+            # 'client': 'local',
             'fun': 'test.ping',
             'tgt':salt_node_name,
                            },
-            "https://192.168.49.14/",
+            salt_api_url,
             {"X-Auth-Token": token_api_id}
             )
             list_all = list_all.run()
             for i in list_all["return"]:
+                context["jid"] =  i["jid"]
+                context["minions"] = i["minions"]
+            jobs_id = context["jid"]
+            jobs_url = salt_api_url + "/jobs/" + jobs_id
+            minions_list_all = salt_api_jobs(
+            jobs_url,
+            {"X-Auth-Token": token_api_id}
+            )
+            voilet_test = minions_list_all.run()
+            for i in voilet_test["return"]:
+                print type(i)
                 context["cmd_run"] = i
             context["cmd_Advanced"]=True
             context["salt_cmd"]=salt_text['salt_cmd']
+            context["len_node"] = len(context["minions"])
             context.update(csrf(request))
+            #日志入库
+            salt_log(request.user.username, context["minions"], int(jobs_id), salt_api_type, context["len_node"], salt_cmd_lr, context["cmd_run"])
             return render_to_response('saltstack/test_ping.html',context,context_instance=RequestContext(request))
         else:
             return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))

@@ -20,9 +20,6 @@
 				内存
 			</th>
             <th>
-				CPU型号
-			</th>
-            <th>
 				核数
 			</th>
             <th>
@@ -43,6 +40,9 @@
             <th>
 				修改
 			</th>
+            <th>
+				更新
+			</th>
 
 		</tr>
 	</thead>
@@ -59,16 +59,17 @@
 				{{ i.ip }}
 			</td>
 			<td width="80">
-				{{ i.memory }} G
-			</td>
-            <td width="100">
-				{{ i.cpu }}
+				{{ i.memory }} M
 			</td>
             <td width="100">
 				{{ i.core_num }} Cores
 			</td>
             <td width="100">
+                {% if i.hard_disk %}
 				{{ i.hard_disk }} G
+                    {% else %}
+                    无数据
+                {% endif %}
 			</td>
             <td width="100">
 				{{ i.brand }}
@@ -85,7 +86,11 @@
 				{{ i.number }}
 			</td>
             <td width="50">
-				<a href="/assets/edit_id/{{ i.id }}/">修改</a>
+				<a href="/assets/edit_id/{{ i.id }}/" class="btn btn-xs btn-primary" data-toggle="modal">修改</a>
+			</td>
+            <td width="50">
+				<a href="/assets/update_id/{{ i.id }}/" class="btn btn-success btn-xs" data-toggle="modal">更新</a>
+{#				<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ i.id }}">更新</button>#}
 			</td>
 		</tr>
 	</tbody>

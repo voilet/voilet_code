@@ -1,20 +1,105 @@
 {% include "default/header.html" %}
 {% include "default/index_left.html" %}
 <div class="col-md-10 column" id="salt_cmd">
+{% load pagination_tags %}
+{% autopaginate log 10 %}
 <pre>操作日志</pre>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				用户名
+			</th>
+			<th>
+				主机
+			</th>
+            <th>
+				类型
+			</th>
+            <th>
+				命令
+			</th>
+			<th>
+				jobs
+			</th>
+			<th>
+				时间
+			</th>
+			<th>
+				返回数据
+			</th>
+
+		</tr>
+	</thead>
     {% for i in log %}
-        <p>操作人：{{ i.user_name }}</p>
-        <p>操作时间：{{ i.log_time }}</p>
-        <p>操作主机:{% for s in i.minions %}{{ s }}{% endfor %}</p>
-        <p>job:{{ i.jobs_id }}</p>
-        <p>返回数据:</p>
-        <pre>{{ i.api_return }}</pre>
+        <tbody>
+		<tr>
+			<td>
+				{{ i.username }}
+			</td>
+			<td>
+				{% for s in i.minions %}{{ s }},{% endfor %}
+			</td>
+            <td>
+				{{ i.stalt_type }}
+			</td>
+            <td>
+				{{ i.stalt_input }}
+			</td>
+			<td>
+				{{ i.jobs_id }}
+			</td>
+			<td>
+				{{ i.log_time }}
+			</td>
+			<td>
+				<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ i.id }}">详细信息</button>
+			</td>
+		</tr>
+	</tbody>
 
-        <p></p>
+<style>
+
+.modal-content {width:800px;margin:0 auto;}
+.modal-body pre {width:700px;margin:0 auto;}
+</style>
+<!-- Modal -->
+<div class="modal fade" id="myModal{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">共有{{ i.salt_len_node }}台主机执行<br>详细信息</h4>
+      </div>
+      <div class="modal-body">
+       <pre>{% for k,v in i.api_return.items %}<h3>主机:{{ k }}</h3>{{ v }}{% endfor %}
+        </pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
     {% endfor %}
+</table>
 {# {{ log }}#}
-
+   <div  class="voilet_page">
+         {% paginate %}
+    </div>
 
 </div>
 {% include "default/footer.html" %}
 {% include "default/jquery.html" %}
+{#        <p>操作人：{{ i.username }}</p>#}
+{#        <p>操作时间：{{ i.log_time }}</p>#}
+{#        <p>操作主机:{% for s in i.minions %}{{ s }},{% endfor %}</p>#}
+{#        <p>job:{{ i.jobs_id }}</p>#}
+{#        <p>返回数据:</p>#}
+{#        <pre>{% for t in i.api_return %}{{ t }}{% endfor %}</pre>#}
+{#        <pre>{% for k,v in i.api_return.items %}<h3>{{ k }}</h3>{{ v }}{% endfor %}#}
+{#        </pre>#}
+{##}
+{#<button class="btn btn-success" data-toggle="modal" data-target="#myModal{{ i.id }}">#}
+{#  详细#}
+{#</button>#}

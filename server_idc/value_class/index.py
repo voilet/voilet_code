@@ -67,7 +67,7 @@ def Index_add(request):
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
         return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
-import urllib,json
+
 @login_required
 @csrf_protect
 def list(request):
@@ -120,6 +120,7 @@ def server_edit(request,id):
         content.update(csrf(request))
         return render_to_response('server_idc/edit.html',content,context_instance=RequestContext(request))
 
+#更新
 
 #按服务排序
 @login_required
@@ -130,7 +131,6 @@ def server_type_list(request,id):
     server_list = business_name.host_set.all()
     server_user_all = business_name.service_user.all()
     user = request.user.myform_set.all()
-    print user
     content["server_type"] = MyForm.objects.all()
     content["list"] = server_list
     content["server_user_all"] = server_user_all
@@ -143,3 +143,123 @@ def server_type_list(request,id):
 
     return render_to_response('server_idc/server_type.html',content,context_instance=RequestContext(request))
 
+
+class Service_type_from(forms.ModelForm):
+    FAVORITE_COLORS_CHOICES = User.objects.values_list("id","username")
+    service_user = forms.MultipleChoiceField(required=False,
+        widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
+    class Meta:
+        model = MyForm
+
+#业务管理
+@login_required
+@csrf_protect
+def server_type_add(request):
+    content = {}
+    if request.method == 'POST':    #验证post方法
+        uf = Service_type_from(request.POST)   #绑定POST动作
+        if uf.is_valid(): #验证数据有效性
+            uf.save()
+            uf = Service_type_from()
+            content['uf'] = uf
+            content["server_type"] = MyForm.objects.all()
+            content.update(csrf(request))
+            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+        else:
+            print "save error"
+            uf = Service_type_from()
+            content["server_type"] = MyForm.objects.all()
+            content['uf'] = uf
+            content.update(csrf(request))
+            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+    else:
+        uf = Service_type_from()
+        #content['business'] = MyForm.objects.all()
+        content['uf'] = uf
+        content["server_type"] = MyForm.objects.all()
+        content.update(csrf(request))
+        return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+
+#业务管理
+@login_required
+@csrf_protect
+def auth_server_type_list(request):
+    content = {}
+    if request.method == 'POST':    #验证post方法
+        uf = Service_type_from(request.POST)   #绑定POST动作
+        if uf.is_valid(): #验证数据有效性
+            uf.save()
+            uf = Service_type_from()
+            content['uf'] = uf
+            content["server_type"] = MyForm.objects.all()
+            content.update(csrf(request))
+            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+        else:
+            print "save error"
+            uf = Service_type_from()
+            content["server_type"] = MyForm.objects.all()
+            content['uf'] = uf
+            content.update(csrf(request))
+            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+    else:
+        business_name = MyForm.objects.all().order_by("-id")
+        list_api_return = []
+        for i in business_name:
+            server_list = i.host_set.all()
+            server_user_all = i.service_user.all()
+            user = request.user.myform_set.all()
+            content["server_type"] = MyForm.objects.all()
+            content["list"] = server_list
+            content["server_user_all"] = server_user_all
+            content["business_name"] = business_name
+            list_api_return.append({"server_user_all":server_user_all,"server_type":i,"type_id":i.id})
+        if len(content['list']) >0:
+            content["test_error"] = True
+        else:
+            content["test_error"] = False
+        content["list_server_type"] = list_api_return
+        content["server_type"] = MyForm.objects.all()
+        content.update(csrf(request))
+        return render_to_response('server_idc/server_type_list.html',content,context_instance=RequestContext(request))
+
+#业务删除
+@login_required
+@csrf_protect
+def auth_server_type_delete(request):
+    content = {}
+    if request.method == 'POST':    #验证post方法
+        uf = Service_type_from(request.POST)   #绑定POST动作
+        if uf.is_valid(): #验证数据有效性
+            uf.save()
+            uf = Service_type_from()
+            content['uf'] = uf
+            content["server_type"] = MyForm.objects.all()
+            content.update(csrf(request))
+            return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
+        else:
+            print "save error"
+            uf = Service_type_from()
+            content["server_type"] = MyForm.objects.all()
+            content['uf'] = uf
+            content.update(csrf(request))
+            return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
+    else:
+        business_name = MyForm.objects.all().order_by("-id")
+        list_api_return = []
+        for i in business_name:
+            server_list = i.host_set.all()
+            server_user_all = i.service_user.all()
+            user = request.user.myform_set.all()
+            content["server_type"] = MyForm.objects.all()
+            content["list"] = server_list
+            content["server_user_all"] = server_user_all
+            content["business_name"] = business_name
+            list_api_return.append({"server_user_all":server_user_all,"server_type":i,"type_id":i.id})
+        if len(content['list']) >0:
+            content["test_error"] = True
+        else:
+            content["test_error"] = False
+        content["list_server_type"] = list_api_return
+        content["server_type"] = MyForm.objects.all()
+        content.update(csrf(request))
+        return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))

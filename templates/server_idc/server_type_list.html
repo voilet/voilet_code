@@ -1,0 +1,21 @@
+{% include 'default/header.html' %}
+{% include 'default/server_idc_left.html' %}
+{% load pagination_tags %}
+{% autopaginate list_server_type 20 %}
+<div id="content-block" class="col-sm-11 col-md-10">
+    <pre>业务列表</pre>
+    <div id="salt_type_list">
+    {% for i in list_server_type %}
+        <pre><h4> 业务：{{ i.server_type }}</h4>{#<button type="button" class="btn btn-xs btn-danger" id="btn_type_delete">删除</button>#}{% for v in i.server_user_all %} <button type="button" class="btn btn-success btn-xs">{{ v }}</button>{% endfor %}</pre>
+    {% endfor %}
+        <div  class="voilet_page">
+             {% paginate %}
+        </div>
+    </div>
+</div>
+{% include 'default/footer.html' %}
+{% include 'default/jquery.html' %}
+
+
+
+

@@ -20,6 +20,7 @@
     width: 100%;
 }
 </style>
+
 <form class="form-horizontal"  method="post" role="form">
 {#    <form class="exform form-horizontal" action="opadd" method="post" id="post_form" style="padding-top:8px;">#}
     {% csrf_token %}
@@ -27,112 +28,157 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">主机名</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_node_name" name="node_name" type="text" />
+                    <input class="form-control" id="id_node_name" name="node_name" value="{{ edit_id.node_name }}" type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">网卡1</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_ip" name="ip" name type="text" />
+                    <input class="form-control" id="id_ip" name="ip" value="{{ eth0 }}" name type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">网卡2</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_internal_ip" name="internal_ip" type="text" />
+                    {% if eth1 %}
+                        <input class="form-control" id="id_internal_ip" name="internal_ip" value="{{ eth1 }}" type="text" />
+                    {% elif edit_id.internal_ip %}
+                    <input class="form-control" id="id_internal_ip" name="internal_ip" value="{{ edit_id.internal_ip }}" type="text" />
+                    {% else %}
+                    <input class="form-control" id="id_internal_ip" name="internal_ip" placeholder="暂无ip" type="text" />
+                    {% endif %}
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">机房</label>
                 <div class="col-sm-10">
-                    {{ uf.idc }}
+{#                    {{ uf.idc }}#}
+                    <select id="id_idc" name="idc" >
+                        {% for i in server_name %}
+                            <option {% ifequal i.id edit_id.idc_id %} selected="selected"{% endifequal%} value="{{ i.id }}">{{i.name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">服务器型号</label>
                 <div class="col-sm-10">
-                    {{ uf.brand }}
+                    <select id="id_brand" name="brand" >
+                        {% for i,i in edit_brand %}
+                            <option {% ifequal i edit_id.brand %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">cpu型号</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_cpu" maxlength="64" name="cpu" />
+                    <input class="form-control" id="id_cpu" maxlength="64" value="{{ cpu_model }}" name="cpu" />
 {#                    {{ uf.cpu }}#}
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">cpu核数</label>
                 <div class="col-sm-10">
-{#                    <input class="form-control" id="id_core_num" name="core_num" type="text" />#}
-                    {{ uf.core_num }}
+{#                    {{ uf.core_num }}#}
+                    <select id="id_core_num" name="core_num" >
+                        {% for i,l in edit_Cores %}
+                            <option {% ifequal l num_cpus %} selected="selected"{% endifequal%} value="{{ i }}">{{ l }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">硬盘</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_hard_disk" name="hard_disk" type="text" />
+                    {% if edit_id.hard_disk %}
+                    <input class="form-control" id="id_hard_disk" name="hard_disk" value="{{ edit_id.hard_disk }}" type="text" />
+                    {% else %}
+                    <input class="form-control" id="id_hard_disk" name="hard_disk" placeholder="未获取到硬盘信息" type="text" />
+                    {% endif %}
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">内存</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_memory" name="memory" type="text" />
+                    <input class="form-control" id="id_memory" name="memory" value="{{ mem_total }}" type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">系统</label>
                 <div class="col-sm-10">
-{#                    <input class="form-control" id="id_system" name="system" type="text" />#}
-                    {{ uf.system }}
+                    <select id="id_system" name="system" >
+                        {% for i,i in edit_system %}
+                            <option {% ifequal i osarch %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">版本</label>
                 <div class="col-sm-10">
-{#                    <input class="form-control" id="id_system_arch" name="system_arch" type="text" />#}
-                    {{ uf.system_arch }}
+                    <select id="id_system_arch" name="system_arch" >
+                        {% for i,i in edit_system_arch %}
+                            <option {% ifequal i edit_id.system %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">业务</label>
                 <div class="col-sm-10">
-                    {{ uf.business }}
+{#                {{ uf.business }}#}
+                    <ul>
+                    {% for list  in server_type %}
+{#                        {{ server_type }}#}
+                        {% if list in edit_id.business.all %}
+                            <li><label for="id_business_4"><input  name="business" checked type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
+                            {% else %}
+                            <li><label for="id_business_4"><input  name="business" type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+{#                    <select  id="id_service_type" name="service_type" >#}
+{#                        {% for i in server_type %}#}
+{#                            <option {% ifequal i.id edit_id.service_type_id %} selected="selected"{% endifequal%} value="{{ i.id }}">{{i.name}}</option>#}
+{#                        {% endfor %}#}
+{#                    </select>#}
                 </div>
             </div>
+{#            <div class="form-group">#}
+{#                 <label for="inputEmail3" class="col-sm-2 control-label">测试</label>#}
+{#                <div class="col-sm-10">#}
+{#                    {{ uf.business }}#}
+{#                </div>#}
+{#            </div>#}
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">机柜位置</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_Cabinets" maxlength="32" name="Cabinets" type="text" />
+                    <input class="form-control" id="id_Cabinets" maxlength="32" value="{{ edit_id.Cabinets }}" name="Cabinets" type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">资产编号</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_number" maxlength="32" name="number" type="text" />
+                    <input class="form-control" id="id_number" maxlength="32" value="{{ edit_id.number }}" name="number" type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">保修期</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_guarantee_date" maxlength="32" name="guarantee_date" type="text" />
+                    <input class="form-control" id="id_guarantee_date" maxlength="32" value="{{ edit_id.guarantee_date }}" name="guarantee_date" type="text" />
                 </div>
             </div>
-{#        <div class="row clearfix">#}
-{#            <div class="col-md-12 column">#}
-{#                 <button type="button" class="btn btn-success btn-block">提交</button>#}
-{#            </div>#}
-{#        </div>#}
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                 <button type="submit" class="btn btn-success btn-block">保存</button>
+                 <button type="submit" class="btn btn-success btn-block">更新</button>
             </div>
         </div>
     </div>
     <div id="content-block" class="col-sm-11 col-md-5">
         <pre>其它说明</pre>
         <div >
-            <textarea id="editor" name="editor" style="width:auto;height:auto;"></textarea>
+            <textarea id="editor" name="editor" style="width:auto;height:auto;">{{ edit_id.editor }}</textarea>
         </div>
     </div>
 

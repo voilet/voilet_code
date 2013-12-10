@@ -32,6 +32,9 @@ class salt_api_log(models.Model):
     user_name = models.CharField(max_length="20",verbose_name="用户名")
     minions = models.CharField(max_length="2048",verbose_name="主机名")
     jobs_id = models.CharField(max_length="40",verbose_name="job")
+    stalt_type = models.CharField(max_length="20",verbose_name="操作类型")
+    salt_len_node = models.IntegerField(max_length="20",verbose_name="多少台主机执行")
+    stalt_input = models.CharField(max_length="100",blank=True,null=True,verbose_name="命令")
     api_return = models.TextField(verbose_name="执行记录")
     log_time = models.DateTimeField(auto_now=True,verbose_name="操作时间")
     def __unicode__(self):

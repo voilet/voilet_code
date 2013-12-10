@@ -9,9 +9,9 @@ clear{clear:both;}
 <div class="alert alert-dismissable alert-info">
      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4>
-        高级使用方法:
-    </h4> <strong>例：</strong>search-nginx23@uptime,注意，中间有一个空格，第一个表示主机名，第二个表示需要执行的命令<br>
-        如需同时执行多个命令，可使用searcn-nginx-23 pwd;ls;ifconfig即可，命令和命令中间用";"号区分
+        使用方法:
+    </h4> <strong>例：</strong>输入主机名和需要执行的命令，如果主机名为空，默认为所有主机执行命令<br>
+        如需同时执行多个命令，可使用pwd;ls;ifconfig即可，命令和命令中间用";"号区分
 </div>
 <div class="voilet">
     <form method="POST" id="reasonform"  class="navbar-form navbar-left" role="search" onsubmit="return false" >{% csrf_token %}
@@ -37,9 +37,9 @@ clear{clear:both;}
                 </ul>
               </div><!-- /btn-group -->
 
-              <input type="text" class="form-control" name="salt_node_name" id = "salt_node_name" value="*"  maxlength="100" size="100" />
+              <input type="text" class="form-control" name="salt_node_name" id = "salt_node_name" placeholder="输入主机名"  maxlength="100" size="100" />
               <span class="input-group-addon ">命令类型
-                  <select id="id_brand" name="comm_shell">
+                  <select id="id_brand"  name="comm_shell">
                     <option value="cmd" selected="selected">cmd.run</option>
                     <option value="grains">grains.item</option>
                     <option value="ping">test.ping</option>
@@ -61,6 +61,7 @@ clear{clear:both;}
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
     </form>
+
 </div>
 
 <div id="salt_cmd_run"></div>

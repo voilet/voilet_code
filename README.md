@@ -9,3 +9,6 @@ rclient.cmd('jobs.list_jobs', '')
 https://django-pagination.googlecode.com/files/django-pagination-1.0.5.tar.gz
 
 两地代码重新合并提交
+
+#转成json
+mimetype="application/json"
