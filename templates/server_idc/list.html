@@ -56,10 +56,10 @@
 				{{ i.idc }}
 			</td>
 			<td width="150">
-				{{ i.ip }}
+				{{ i.eth1 }}
 			</td>
 			<td width="80">
-				{{ i.memory }} M
+				{% widthratio i.memory 1024 1 %}G
 			</td>
             <td width="100">
 				{{ i.core_num }} Cores

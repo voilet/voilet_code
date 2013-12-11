@@ -12,7 +12,74 @@
 #=============================================================================
 
 
-import json
+import datetime
 
-s = {'java-15': 'eth0      Link encap:Ethernet  HWaddr FA:16:3E:41:0B:BA  \n          inet addr:192.168.49.15  Bcast:192.168.49.255  Mask:255.255.255.0\n          inet6 addr: fe80::f816:3eff:fe41:bba/64 Scope:Link\n          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1\n          RX packets:193156 errors:0 dropped:191 overruns:0 frame:0\n          TX packets:56495 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:1000 \n          RX bytes:47426122 (45.2 MiB)  TX bytes:6330407 (6.0 MiB)\n          Interrupt:11 Base address:0x8000 \n\nlo        Link encap:Local Loopback  \n          inet addr:127.0.0.1  Mask:255.0.0.0\n          inet6 addr: ::1/128 Scope:Host\n          UP LOOPBACK RUNNING  MTU:16436  Metric:1\n          RX packets:0 errors:0 dropped:0 overruns:0 frame:0\n          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:0 \n          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)', 'recommend-tomcat-52': 'eth0      Link encap:Ethernet  HWaddr fa:16:3e:5d:15:1c  \n          inet addr:192.168.49.52  Bcast:192.168.49.255  Mask:255.255.255.0\n          inet6 addr: fe80::f816:3eff:fe5d:151c/64 Scope:Link\n          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1\n          RX packets:4169879 errors:0 dropped:91 overruns:0 frame:0\n          TX packets:3250020 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:1000 \n          RX bytes:916378415 (873.9 MiB)  TX bytes:277512947 (264.6 MiB)\n          Interrupt:11 Base address:0x2000 \n\nlo        Link encap:Local Loopback  \n          inet addr:127.0.0.1  Mask:255.0.0.0\n          inet6 addr: ::1/128 Scope:Host\n          UP LOOPBACK RUNNING  MTU:16436  Metric:1\n          RX packets:1008 errors:0 dropped:0 overruns:0 frame:0\n          TX packets:1008 errors:0 dropped:0 overruns:0 carrier:0\n          collisions:0 txqueuelen:0 \n          RX bytes:169196 (165.2 KiB)  TX bytes:169196 (165.2 KiB)'}
-print s["java-15"]
+date1 = datetime.datetime.now()
+this_week_start_dt = str(date1-datetime.timedelta(days=date1.weekday())).split()[0]
+this_week_end_dt = str(date1+datetime.timedelta(days=6-date1.weekday())).split()[0]
+print this_week_start_dt,this_week_end_dt
+
+
+
+
+
+
+
+#上个星期一和星期天的日期
+last_week_start_dt = date1-datetime.timedelta(days=date1.weekday()+7)
+last_week_end_dt = date1-datetime.timedelta(days=date1.weekday()+1)
+
+
+
+
+#本月一号和最后一天的日期
+
+y=date1.year
+m = date1.month
+month_start_dt = datetime.date(y,m,1)
+
+
+if m == 12:
+    month_end_dt = datetime.date(y+1,1,1) - datetime.timedelta(days=1)
+    print month_end_dt
+
+else:
+    month_end_dt = datetime.date(y,m+1,1) - datetime.timedelta(days=1)
+    print month_end_dt
+
+
+
+
+
+#上个月的第一天和最后一天
+
+if m==1:                    #如果是1月
+    start_date=datetime.date(y-1,12,1)
+else:
+    start_date=datetime.date(y,m-1,1)
+end_date=datetime.date(y,m,1) - datetime.timedelta(days=1)
+
+
+
+
+#这个季度的第一天和最后一天的日期
+y=date1.year
+month = date1.month
+if month in (1,2,3):
+    quarter_start_dt = datetime.date(y,1,1)
+    quarter_end_dt = datetime.date(y,4,1) - datetime.timedelta(days=1)
+elif month in (4,5,6):
+    quarter_start_dt = datetime.date(y,4,1)
+    quarter_end_dt = datetime.date(y,7,1) - datetime.timedelta(days=1)
+elif month in (7,8,9):
+    quarter_start_dt = datetime.date(y,7,1)
+    quarter_end_dt = datetime.date(y,10,1) - datetime.timedelta(days=1)
+else:
+    quarter_start_dt = datetime.date(y,10,1)
+    quarter_end_dt = datetime.date(y+1,1,1) - datetime.timedelta(days=1)
+
+
+#本季度天数 及 本季度剩余的天数
+# quarter_days = (quarter_end_dt - quarter_start_dt).days + 1
+# quarter_rem = (quarter_end_dt - date1).days
+

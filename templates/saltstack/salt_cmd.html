@@ -15,9 +15,14 @@ clear{clear:both;}
 </div>
 <div class="voilet">
     <form method="POST" id="reasonform"  class="navbar-form navbar-left" role="search" onsubmit="return false" >{% csrf_token %}
-        <div><ul class="list-unstyled list-inline">{% for i in service_name %}
-            <li><input id="id_business_0" type="checkbox" value="{{ i }}" name="business">{{ i }}<li>
-        {% endfor %}
+        <div><ul class="list-unstyled list-inline">
+            {% if service_name  %}
+                {% for i in service_name %}
+                    <li><input id="id_business_0" type="checkbox" value="{{ i }}" name="business">{{ i }}<li>
+                {% endfor %}
+             {% else %}
+                <li>您还没有可选业务组，请找管理员添加相应业务服务器</li>
+        {% endif %}
         </ul></div><div class="clear"></div>
         <div class="row">
           <div class="col-lg-6">
@@ -52,7 +57,7 @@ clear{clear:both;}
              <span class="input-group-btn">
                 <button class="btn btn-default disabled" type="button">命令</button>
               </span>
-             <input type="text" class="form-control" name="salt_cmd" id="salt_cmd" maxlength="100" size="100"/>
+             <input type="text" class="form-control" name="salt_cmd" id="salt_cmd" placeholder="如:ifconfig" maxlength="100" size="100"/>
               <span class="input-group-btn">
                 <button class="btn btn-success" id="button" type="button">执行</button>
               </span>

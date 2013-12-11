@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     url(r'op/', include(op.urls)),
     #salt_ui
     url(r'salt/', include(salt_ui.urls)),
-     #资产管理
+    #资产管理
     url(r'assets/', include(server_idc.urls)),
     #url(r'',include(salt_ui.urls)),
 )

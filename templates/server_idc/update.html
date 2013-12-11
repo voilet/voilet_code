@@ -34,18 +34,44 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">网卡1</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_ip" name="ip" value="{{ eth0 }}" name type="text" />
+                    <input class="form-control" id="id_eth1" name="eth1" value="{{ eth0 }}" name type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">网卡2</label>
                 <div class="col-sm-10">
                     {% if eth1 %}
-                        <input class="form-control" id="id_internal_ip" name="internal_ip" value="{{ eth1 }}" type="text" />
+                        <input class="form-control" id="id_eth2" name="eth2" value="{{ eth1 }}" type="text" />
                     {% elif edit_id.internal_ip %}
+                    <input class="form-control" id="id_eth2" name="eth2" value="{{ edit_id.internal_ip }}" type="text" />
+                    {% else %}
+                    <input class="form-control" id="id_eth2" name="eth2" placeholder="暂无ip" type="text" />
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">MAC地址</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_mac" maxlength="20" name="mac"  placeholder="格式:FA-16-3E-41-0B-BA" value="{{ edit_id.mac }}" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">用途</label>
+                <div class="col-sm-10">
+                    <select id="id_usage" name="usage" >
+                        {% for i,i in edit_usage %}
+                            <option {% ifequal i edit_id.usage %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">远控卡</label>
+                <div class="col-sm-10">
+                    {% if edit_id.internal_ip %}
                     <input class="form-control" id="id_internal_ip" name="internal_ip" value="{{ edit_id.internal_ip }}" type="text" />
                     {% else %}
-                    <input class="form-control" id="id_internal_ip" name="internal_ip" placeholder="暂无ip" type="text" />
+                    <input class="form-control" id="id_internal_ip" name="internal_ip"  placeholder="暂无ip" type="text" />
                     {% endif %}
                 </div>
             </div>
@@ -127,10 +153,8 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">业务</label>
                 <div class="col-sm-10">
-{#                {{ uf.business }}#}
                     <ul>
                     {% for list  in server_type %}
-{#                        {{ server_type }}#}
                         {% if list in edit_id.business.all %}
                             <li><label for="id_business_4"><input  name="business" checked type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
                             {% else %}
@@ -138,19 +162,8 @@
                         {% endif %}
                     {% endfor %}
                     </ul>
-{#                    <select  id="id_service_type" name="service_type" >#}
-{#                        {% for i in server_type %}#}
-{#                            <option {% ifequal i.id edit_id.service_type_id %} selected="selected"{% endifequal%} value="{{ i.id }}">{{i.name}}</option>#}
-{#                        {% endfor %}#}
-{#                    </select>#}
                 </div>
             </div>
-{#            <div class="form-group">#}
-{#                 <label for="inputEmail3" class="col-sm-2 control-label">测试</label>#}
-{#                <div class="col-sm-10">#}
-{#                    {{ uf.business }}#}
-{#                </div>#}
-{#            </div>#}
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">机柜位置</label>
                 <div class="col-sm-10">
@@ -179,6 +192,14 @@
         <pre>其它说明</pre>
         <div >
             <textarea id="editor" name="editor" style="width:auto;height:auto;">{{ edit_id.editor }}</textarea>
+        </div>
+        <div class="clearfix"></div>
+        <div class="alert alert-dismissable alert-success" style="margin-top:10px;">
+             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4>
+               注意
+            </h4> <strong>更新操作!</strong>
+            更新操作不全完相等于修改操作，更新操作会向当前主机请求，上机上报最新硬件信息自动填入表单，如网络因素可能时间稍长，特此声明
         </div>
     </div>
 

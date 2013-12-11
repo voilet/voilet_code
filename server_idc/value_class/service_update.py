@@ -17,7 +17,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.template import RequestContext
-from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm
+from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm,System_usage
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 
@@ -72,7 +72,7 @@ def server_update(request,id):
         context["server_type"] = server_type
         context["edit_id"] = edit_id
         context["server_name"] = idc_name
-        # print edit_id.node_name
+        context["edit_usage"] = System_usage
         token_api_id = token_id()
         list_all = salt_api_token(
         {

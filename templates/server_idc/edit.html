@@ -34,11 +34,33 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">网卡1</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_ip" name="ip" value="{{ edit_id.ip }}" name type="text" />
+                    <input class="form-control" id="id_eth1" name="eth1" value="{{ edit_id.eth1 }}" name type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">网卡2</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_eth2" name="eth2" value="{{ edit_id.eth2 }}" name type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">MAC地址</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="id_mac" maxlength="20" name="mac"  placeholder="格式:FA-16-3E-41-0B-BA" value="{{ edit_id.mac }}" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">用途</label>
+                <div class="col-sm-10">
+                    <select id="id_usage" name="usage" >
+                        {% for i,i in edit_usage %}
+                            <option {% ifequal i edit_id.usage %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">远控卡</label>
                 <div class="col-sm-10">
                     {% if edit_id.internal_ip %}
                     <input class="form-control" id="id_internal_ip" name="internal_ip" value="{{ edit_id.internal_ip }}" type="text" />
@@ -92,14 +114,18 @@
                     {% if edit_id.hard_disk %}
                     <input class="form-control" id="id_hard_disk" name="hard_disk" value="{{ edit_id.hard_disk }}" type="text" />
                     {% else %}
-                    <input class="form-control" id="id_hard_disk" name="hard_disk" placeholder="未获取到硬盘信息" type="text" />
+                    <input class="form-control" id="id_hard_disk" name="hard_disk" placeholder="未填写硬盘信息" type="text" />
                     {% endif %}
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">内存</label>
                 <div class="col-sm-10">
+                    {% if edit_id.memory  %}
                     <input class="form-control" id="id_memory" name="memory" value="{{ edit_id.memory }}" type="text" />
+                    {% else %}
+                    <input class="form-control" id="id_memory" name="memory" placeholder="未填写" type="text" />
+                    {% endif %}
                 </div>
             </div>
             <div class="form-group">

@@ -17,7 +17,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.template import RequestContext
-from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm
+from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm,System_usage
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 
@@ -38,7 +38,8 @@ def Index_add(request):
     content = {}
     if request.method == 'POST':    #验证post方法
         uf = Host_from(request.POST)   #绑定POST动作
-
+        print request.POST
+        print uf
         # create_time = time.strftime('%Y-%m-%d',time.localtime(time.time())) # %H:%M:%S
         if uf.is_valid(): #验证数据有效性
             uf.save()
@@ -94,7 +95,6 @@ def server_edit(request,id):
     server_type = MyForm.objects.all()
     if request.method == 'POST':    #验证post方法
         uf = Host_from(request.POST)   #绑定POST动作
-        #print uf
         if uf.is_valid(): #验证数据有效性
             uf.auto_id = edit_id.id
             zw = uf.save(commit=False)
@@ -117,6 +117,7 @@ def server_edit(request,id):
         content["server_type"] = server_type
         content["edit_id"] = edit_id
         content["server_name"] = idc_name
+        content["edit_usage"] = System_usage
         content.update(csrf(request))
         return render_to_response('server_idc/edit.html',content,context_instance=RequestContext(request))
 
