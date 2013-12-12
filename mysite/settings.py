@@ -224,6 +224,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 salt_api_url = "https://192.168.49.14/"
 salt_api_user = "sa"
 salt_api_pass = "centos"
+pxe_url_api = "http://192.168.9.80:6666/clone/create-physical-instances"
 
 #smtp
 

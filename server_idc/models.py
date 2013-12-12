@@ -76,6 +76,10 @@ class Host(models.Model):
     editor = models.TextField(blank=True, null=True,verbose_name=u'备注')
     business = models.ManyToManyField('MyForm',blank=True, null=True,verbose_name=u'所属业务')
     usage = models.CharField(u"用途", max_length=32,choices=System_usage,)
+    edit_username = models.CharField(u"修改人", max_length=32,blank=True)
+    edit_datetime = models.DateTimeField(u"修改时间",blank=True,auto_now=True)
+    old_editname = models.CharField(u"上次修改人", max_length=32,blank=True)
+    old_editdatetime = models.DateTimeField(u"上次修改时间",blank=True,auto_now=True)
 
     def __unicode__(self):
         return self.node_name

@@ -1,7 +1,5 @@
 {% include 'default/header.html' %}
 {% include 'default/server_idc_left.html' %}
-{% load pagination_tags %}
-{% autopaginate list 10 %}
 <div id="content-block" class="col-sm-11 col-md-10">
 <table class="table table-bordered">
     <pre>服务器列表</pre>
@@ -34,71 +32,57 @@
 			<th>
 				业务
 			</th>
-			<th>
-				资产编号
-			</th>
-            <th>
-				修改
-			</th>
-            <th>
-				更新
-			</th>
 
 		</tr>
 	</thead>
-    {% for i in list %}
 	<tbody>
 		<tr >
 			<td width="200">
-				<a href="/assets/serverid/list/{{ i.id }}" >{{ i.node_name }}</a>
+				{{ list.node_name }}
 			</td>
 			<td width="125">
-				{{ i.idc }}
+				{{ list.idc }}
 			</td>
 			<td width="150">
-				{{ i.eth1 }}
+				{{ list.eth1 }}
 			</td>
 			<td width="80">
-				{% widthratio i.memory 1024 1 %}G
+				{% widthratio list.memory 1024 1 %}G
 			</td>
             <td width="100">
-				{{ i.core_num }} Cores
+				{{ list.core_num }} Cores
 			</td>
             <td width="100">
-                {% if i.hard_disk %}
-				{{ i.hard_disk }} G
+                {% if list.hard_disk %}
+				{{ list.hard_disk }} G
                     {% else %}
                     无数据
                 {% endif %}
 			</td>
             <td width="100">
-				{{ i.brand }}
+				{{ list.brand }}
 			</td>
 			<td width="160">
-				{{ i.system }} - {{ i.system_arch }}
+				{{ list.system }} - {{ list.system_arch }}
 			</td>
 			<td width="100">
-                {% for test in i.business.all %}
+                {% for test in list.business.all %}
                     <a href="/assets/server_type/{{ test.id }}/ ">{{ test.service_name }}</a>
                 {% endfor %}
 			</td>
-			<td>
-				{{ i.number }}
-			</td>
-            <td width="50">
-				<a href="/assets/edit_id/{{ i.id }}/" class="btn btn-xs btn-primary" data-toggle="modal">修改</a>
-			</td>
-            <td width="50">
-				<a href="/assets/update_id/{{ i.id }}/" class="btn btn-success btn-xs" data-toggle="modal">更新</a>
-{#				<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ i.id }}">更新</button>#}
-			</td>
 		</tr>
 	</tbody>
-    {% endfor %}
     </table>
-    <div  class="voilet_page">
-         {% paginate %}
-    </div>
+<pre>{{ list.number }}
+上次修改人:<button  class="btn btn-xs btn-primary" data-toggle="modal">{{ list.old_editname }}</button>
+
+上次修时间:<button  class="btn btn-xs btn-primary" data-toggle="modal">{{ list.old_editdatetime }}</button>
+
+本次修改人:<button  class="btn btn-xs btn-success" data-toggle="modal">{{ list.edit_username }}</button>
+
+本次修时间:<button  class="btn btn-xs btn-success" data-toggle="modal">{{ list.edit_datetime }}</button>
+<h3>创建日期:{{ list.create_time}}</h3>
+</pre>
 </div>
 
 {#{{ uf }}#}

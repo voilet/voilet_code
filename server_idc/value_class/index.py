@@ -10,7 +10,7 @@
 #      History:
 #=============================================================================
 
-import json,time
+import json,time,urllib
 from django.shortcuts import render_to_response
 from django import forms
 from django.http import HttpResponse,HttpResponseRedirect
@@ -22,7 +22,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 
 from django.contrib.auth.models import User
-
+from salt_ui.api.salt_https_api import salt_api_jobs,pxe_api
+from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
 
 class Host_from(forms.ModelForm):
     FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
@@ -38,22 +39,38 @@ def Index_add(request):
     content = {}
     if request.method == 'POST':    #验证post方法
         uf = Host_from(request.POST)   #绑定POST动作
-        print request.POST
-        print uf
+        node_name = request.POST.getlist("node_name")
+        operating = request.POST.getlist("system")
+        mac = request.POST.getlist("mac")
+        model = request.POST.getlist("brand")
+        usage = request.POST.getlist("usage")
         # create_time = time.strftime('%Y-%m-%d',time.localtime(time.time())) # %H:%M:%S
         if uf.is_valid(): #验证数据有效性
-            uf.save()
-            """
-            如果commit为False,则ManyToMany就需要使用以下方法
-            """
-            # zw = uf.save(commit=False)
-            # zw.create_time = create_time
-            # zw.save()
-            # uf.save_m2m()
-            uf = Host_from()
-            content['uf'] = uf
-            content.update(csrf(request))
-            return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
+            '''向pxe提交数据'''
+            pxe_data = pxe_api({
+                "hostname":node_name[0].encode("utf8"),
+                "operating":operating[0].encode("utf8").lower() + "_6u4_64",
+                "mac":mac[0].encode("utf8"),
+                "usage":usage[0].encode("utf8"),
+                "model":model[0].encode("utf8").lower(),
+            },pxe_url_api)
+            pxe_post_data = json.load(pxe_data.run())
+            if pxe_post_data["status"] !=200:
+                print "is over"
+                return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
+            else:
+                uf.save()
+                """
+                如果commit为False,则ManyToMany就需要使用以下方法
+                """
+                zw = uf.save(commit=False)
+                zw.edit_username = request.user.username
+                zw.save()
+                uf.save_m2m()
+                uf = Host_from()
+                content['uf'] = uf
+                content.update(csrf(request))
+                return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
         else:
             print "save error"
             uf = Host_from()
@@ -71,19 +88,28 @@ def Index_add(request):
 
 @login_required
 @csrf_protect
-def list(request):
+def services_list_all(request):
     content = {}
     server_list = Host.objects.order_by("-id")
     server_type = MyForm.objects.all()
     content["server_type"] = server_type
-    # server_list = urllib.urlopen("http://192.168.9.80:6666/opsplat/asset_management/get_all_details")
-    # server_read = server_list.read()
-    # server_list.close()
-    # server_list = json.loads(server_read)["result"]
     content["list"] = server_list
     content.update(csrf(request))
     # return render_to_response('server_idc/list_test.html',content,context_instance=RequestContext(request))
     return render_to_response('server_idc/list.html',content,context_instance=RequestContext(request))
+
+@login_required
+@csrf_protect
+def services_list_id(request,id):
+    content = {}
+    server_list = Host.objects.get(id = id)
+    print server_list
+    server_type = MyForm.objects.all()
+    content["server_type"] = server_type
+    content["list"] = server_list
+    content.update(csrf(request))
+    # return render_to_response('server_idc/list_test.html',content,context_instance=RequestContext(request))
+    return render_to_response('server_idc/list_id.html',content,context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect
@@ -98,8 +124,11 @@ def server_edit(request,id):
         if uf.is_valid(): #验证数据有效性
             uf.auto_id = edit_id.id
             zw = uf.save(commit=False)
-            zw.create_time = edit_id.create_time
+            zw.edit_username = request.user.username
+            zw.old_editname = edit_id.edit_username
+            zw.old_editdatetime = edit_id.edit_datetime
             zw.id=edit_id.id
+            zw.create_time = edit_id.create_time
             zw.save()
             uf.save_m2m()
             print "保存数据"

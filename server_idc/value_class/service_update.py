@@ -47,12 +47,12 @@ def server_update(request,id):
     server_type = MyForm.objects.all()
     if request.method == 'POST':    #验证post方法
         uf = Host_from(request.POST)   #绑定POST动作
-        # update_data = uf.getlist("Cabinets")
-        # print update_data
-        # print uf
         if uf.is_valid(): #验证数据有效性
             uf.auto_id = edit_id.id
             zw = uf.save(commit=False)
+            zw.edit_username = request.user.username
+            zw.old_editname = edit_id.edit_username
+            zw.old_editdatetime = edit_id.edit_datetime
             zw.create_time = edit_id.create_time
             zw.id=edit_id.id
             zw.save()
@@ -86,8 +86,11 @@ def server_update(request,id):
         )
         list_all = list_all.run()
         for i in list_all["return"]:
-            context["jid"] =  i["jid"]
-            context["minions"] = i["minions"]
+            try:
+                context["jid"] =  i["jid"]
+                context["minions"] = i["minions"]
+            except KeyError:
+                return render_to_response('server_idc/update_error.html',context,context_instance=RequestContext(request))
         jobs_id = context["jid"]
         jobs_url = salt_api_url + "/jobs/" + jobs_id
         minions_list_all = salt_api_jobs(

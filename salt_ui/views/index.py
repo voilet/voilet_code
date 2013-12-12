@@ -24,11 +24,10 @@ from django.shortcuts import get_object_or_404
 from salt_ui.api.salt_token_id import salt_api_token
 from salt_ui.api.salt_token_id import *
 from salt_ui.api.salt_https_api import salt_api_jobs
-from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url
+from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
 
 #日志记录
 from salt_ui.log_class.api_log_class import salt_log
-from django.utils import simplejson
 
 #songxs add
 @login_required
@@ -65,15 +64,15 @@ def salt_status(request,id):
         token_api_id = token_id()
         list = salt_api_token(
         {
-        "client":'local',
-        "fun":"test.ping",
-        "tgt":"*"
+        "client":'runner',
+        "fun":"manage.status",
                    },
         salt_api_url,
         {"X-Auth-Token": token_api_id}
         )
         list = list.run()
         context["salt_key"]=list["return"]
+        print context["salt_key"]
         context.update(csrf(request))
         return render_to_response('saltstack/salt_key.html',context,context_instance=RequestContext(request))
     if id == 3:

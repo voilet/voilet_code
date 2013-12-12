@@ -37,9 +37,9 @@ last_week_end_dt = date1-datetime.timedelta(days=date1.weekday()+1)
 y=date1.year
 m = date1.month
 month_start_dt = datetime.date(y,m,1)
+print month_start_dt
 
-
-if m == 12:
+if m == m:
     month_end_dt = datetime.date(y+1,1,1) - datetime.timedelta(days=1)
     print month_end_dt
 

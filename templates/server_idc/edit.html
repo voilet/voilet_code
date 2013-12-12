@@ -103,7 +103,7 @@
 {#                    {{ uf.core_num }}#}
                     <select id="id_core_num" name="core_num" >
                         {% for i,l in edit_Cores %}
-                            <option {% ifequal l edit_id.core_num %} selected="selected"{% endifequal%} value="{{ i }}">{{ l }}</option>
+                            <option {% ifequal i edit_id.core_num %} selected="selected"{% endifequal%} value="{{ i }}">{{ l }}</option>
                         {% endfor %}
                     </select>
                 </div>

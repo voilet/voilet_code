@@ -16,12 +16,14 @@
                 <div id="panel-element-290449" class="panel-collapse collapse in">
             {% elif "/assets/" ==  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
+             {% elif "assets/update_id/" in  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
             {% else %}
                 <div id="panel-element-290449" class="panel-collapse collapse">
             {% endif %}
                 <div class="panel-body">
-                    <p><a href="/assets/add/" >添加服务器</a></p>
-                    <p><a href="/assets/list/" >服务器列表</a></p>
+                    <p><a href="/assets/server/add/" >添加服务器</a></p>
+                    <p><a href="/assets/server/list/" >服务器列表</a></p>
                     <p><a href="/assets/server/" >机房列表</a></p>
                 </div>
             </div>
