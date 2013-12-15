@@ -55,3 +55,18 @@ def salt_data_log(request):
      context["log"] = list_api_return
      context.update(csrf(request))
      return render_to_response('saltstack/salt_log.html',context,context_instance=RequestContext(request))
+
+#判断选择了多少台主机
+@login_required
+@csrf_protect
+def salt_data_log(request):
+     context = {}
+     list_api_return = []
+     log_list = salt_api_log.objects.all().order_by("-id")
+     for i in log_list:
+         api_return = ast.literal_eval(i.api_return)
+         minions = ast.literal_eval(i.minions)
+         list_api_return.append({"api_return":api_return, "minions":minions, "log_time":i.log_time, "username":i.user_name, "jobs_id":i.jobs_id, "id":i.id, "stalt_type":i.stalt_type, "stalt_input":i.stalt_input, "salt_len_node":i.salt_len_node})
+     context["log"] = list_api_return
+     context.update(csrf(request))
+     return render_to_response('saltstack/salt_log.html',context,context_instance=RequestContext(request))

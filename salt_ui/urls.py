@@ -17,6 +17,7 @@ from django.conf.urls import patterns, include, url
 import xadmin
 import salt_ui.views.index
 import salt_ui.log_class.api_log_class
+from salt_ui.views.cmd_node import salt_cmd_node
 xadmin.autodiscover()
 
 # from xadmin.plugins import xversion
@@ -33,6 +34,7 @@ urlpatterns = patterns('',
     url(r'node_shell/$',salt_ui.views.index.salt_check_setup),
     url(r'node_server/$',salt_ui.views.index.salt_state_sls),
     url(r'logs/$',salt_ui.log_class.api_log_class.salt_data_log),
+    url(r'cmd_node/$',salt_ui.views.cmd_node.salt_cmd_node),
     url(r'',salt_ui.views.index.salt_index),
     #url(r'^$','salt_ui.views.index.auto'),
     #url(r'^overview$','salt_ui.views.index.overview'),
