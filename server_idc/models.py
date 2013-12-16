@@ -78,8 +78,8 @@ class Host(models.Model):
     usage = models.CharField(u"用途", max_length=32,choices=System_usage,)
     edit_username = models.CharField(u"修改人", max_length=32,blank=True)
     edit_datetime = models.DateTimeField(u"修改时间",blank=True,auto_now=True)
-    old_editname = models.CharField(u"上次修改人", max_length=32,blank=True)
-    old_editdatetime = models.DateTimeField(u"上次修改时间",blank=True,auto_now=True)
+    old_editname = models.CharField(u"上次修改人", max_length=32)
+    old_editdatetime = models.DateTimeField(u"上次修改时间")
 
     def __unicode__(self):
         return self.node_name
@@ -89,20 +89,17 @@ class Host(models.Model):
         verbose_name_plural = verbose_name
 
 
-class MaintainLog(models.Model):
-    host = models.ForeignKey(Host)
-    maintain_type = models.CharField(max_length=32)
-    hard_type = models.CharField(max_length=16)
-    time = models.DateTimeField()
-    operator = models.CharField(max_length=16)
-    note = models.TextField()
-
+class service_log(models.Model):
+    edit_user_name = models.CharField(max_length=16,blank=True,verbose_name=u'操作人')
+    edit_server_nodename = models.CharField(max_length=32,blank=True,verbose_name=u'主机名')
+    edit_server_type = models.CharField(max_length=32,blank=True,verbose_name=u'日志类型')
+    old_editname = models.CharField(u"上次修改人", max_length=32,blank=True)
+    old_editdatetime = models.DateTimeField(u"上次修改时间",blank=True,)
+    edit_time = models.DateTimeField(auto_now=True)
     def __unicode__(self):
-        return '%s maintain-log [%s] %s %s' % (self.host.name, self.time.strftime('%Y-%m-%d %H:%M:%S'),
-                                               self.maintain_type, self.hard_type)
-
+        return self.edit_user_name
     class Meta:
-        verbose_name = u"维护日志"
+        verbose_name = u"日志记录"
         verbose_name_plural = verbose_name
 
 
