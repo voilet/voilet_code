@@ -4,19 +4,17 @@
             <div class="panel-heading">
                  <h3 class="panel-title"><a class="panel-title" data-toggle="collapse" data-parent="#panel-349889" href="#panel-element-290449">资产管理</a></h3>
             </div>
-            {% if "/assets/add/" in  request.path  %}
+            {% if "/assets/server/add/" in  request.path  %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
-            {% elif "/assets/list/" in  request.path %}
+            {% elif "/assets/server/list/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
-            {% elif "/assets/server/" in  request.path %}
+            {% elif "/assets/server/edit_id/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
-            {% elif "/assets/edit_id/" in  request.path %}
-                <div id="panel-element-290449" class="panel-collapse collapse in">
-            {% elif "/assets/list_id/" in  request.path %}
+            {% elif "/assets/server/list_id/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
             {% elif "/assets/" ==  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
-             {% elif "assets/update_id/" in  request.path %}
+             {% elif "assets/server/update_id/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
             {% else %}
                 <div id="panel-element-290449" class="panel-collapse collapse">
@@ -32,14 +30,14 @@
             <div class="panel-heading">
                  <h3 class="panel-title"><a class="panel-title" data-toggle="collapse" data-parent="#panel-349889" href="#panel-element-52457896">业务分类</a></h3>
             </div>
-                {% if "/assets/server_type/" in  request.path  %}
+                {% if "/assets/server/server_type/" in  request.path  %}
                     <div id="panel-element-52457896" class="panel-collapse collapse in">
                     {% else %}
                     <div id="panel-element-52457896" class="panel-collapse collapse">
                 {% endif %}
                 <div class="panel-body">
                     {% for i in server_type %}
-                        <p><a href="/assets/server_type/{{ i.id }}/" >{{ i }}</a></p>
+                        <p><a href="/assets/server/server_type/{{ i.id }}/" >{{ i }}</a></p>
                     {% endfor %}
                 </div>
             </div>
@@ -49,22 +47,22 @@
             <div class="panel-heading">
                  <h3 class="panel-title"><a class="panel-title" data-toggle="collapse" data-parent="#panel-349889" href="#panel-element-564813221">业务管理</a></h3>
             </div>
-                {% if "/assets/type/add/" in  request.path  %}
+                {% if "/assets/server/type/add/" in  request.path  %}
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
-                    {% elif "/assets/type/list/" in request.path %}
+                    {% elif "/assets/server/type/list/" in request.path %}
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
-                     {% elif "/assets/type/del/" in request.path %}
+                    {% elif "/assets/server/type/edit/" in request.path %}
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
-                    {% elif "/assets/type/edit/" in request.path %}
+                    {% elif "/assets/server/type/notid/" in request.path %}
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
                     {% else %}
                     <div id="panel-element-564813221" class="panel-collapse collapse">
                 {% endif %}
                 <div class="panel-body">
 {#                    {% for i in server_type %}#}
-                        <p><a href="/assets/type/list/" >业务列表</a></p>
-                        <p><a href="/assets/type/add/" >添加业务</a></p>
-                        <p><a href="/assets/type/del/" > 删除业务</a></p>
+                        <p><a href="/assets/server/type/list/" >业务列表</a></p>
+                        <p><a href="/assets/server/type/add/" >添加业务</a></p>
+                        <p><a href="/assets/server/type/notid/" > 未分配业务</a></p>
 {#                    {% endfor %}#}
                 </div>
             </div>

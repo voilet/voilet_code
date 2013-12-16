@@ -1,13 +1,11 @@
-<script>
-$(document).ready(function(){
   $("#btn_cmd").click(function(){
         $.ajax({
        type: "GET",
-       url: "/salt/3/"})  .done(function( data ) {
+       url: "/salt/3/" })  .done(function( data ) {
         $("#salt_cmd").html(data);
       });
   });
-});
+
 $(document).ready(function(){
   $("#btn_grains").click(function(){
         $.ajax({
@@ -17,9 +15,28 @@ $(document).ready(function(){
       });
   });
 });
-</script>
 
-<script type="text/javascript">
+
+$(document).ready(function(){
+  $('#button').click(function(){
+    jQuery.ajax({
+      url: "/salt/cmd/",                  // 提交的页面
+      data: $('#reasonform').serialize(), // 从表单中获取数据
+      type: "POST",                       // 设置请求类型为"POST"，默认为"GET"
+      beforeSend: function(){             // 设置表单提交前方法
+        //alert('表单提交前');
+      },
+      error: function(request){           // 设置表单提交出错
+        alert("表单提交出错，请稍候再试");
+      },
+      dataType:'text',
+      success: function(msg){
+          $("#salt_cmd_run").html(msg)
+      }
+    });
+    return false;
+  });
+});
 //garins
 $(document).ready(function(){
   $('#button_garins').click(function(){
@@ -36,7 +53,6 @@ $(document).ready(function(){
       dataType:'text',
       success: function(msg){
           $("#salt_cmd_run").html(msg)
-        //alert(msg);                       // 设置表单提交完成使用方法
       }
     });
     return false;
@@ -59,7 +75,6 @@ $(document).ready(function(){
       dataType:'text',
       success: function(msg){
           $("#jinja_add").html(msg)
-//        alert(msg);                       // 设置表单提交完成使用方法
       }
     });
     return false;
@@ -82,7 +97,6 @@ $(document).ready(function(){
       dataType:'text',
       success: function(msg){
           $("#button_node_lr").html(msg)
-//        alert(msg);                       // 设置表单提交完成使用方法
       }
     });
     return false;
@@ -105,7 +119,6 @@ $(document).ready(function(){
       dataType:'text',
       success: function(msg){
           $("#salt_node_lr").html(msg)
-//        alert(msg);                       // 设置表单提交完成使用方法
       }
     });
     return false;
@@ -128,34 +141,9 @@ $(document).ready(function(){
       dataType:'text',
       success: function(msg){
           $("#voilet_sls").html(msg)
-//        alert(msg);                       // 设置表单提交完成使用方法
       }
     });
     return false;
   });
 });
-//选择多少台主机
-$(document).ready(function(){
-  $('#id_business_0').click(function(){
-    var cmd_node_text = $("input").val();
-    jQuery.ajax({
-      url: "/salt/cmd_node/",                  // 提交的页面
-      data: $('cmd_node_text').serialize(), // 从表单中获取数据
-      type: "POST",                       // 设置请求类型为"POST"，默认为"GET"
-      beforeSend: function(){             // 设置表单提交前方法
-        //alert('表单提交前');
-      },
-      error: function(request){           // 设置表单提交出错
-        alert("表单提交出错，请稍候再试");
-      },
-      dataType:'text',
-      success: function(msg){
-          $("#salt_cmd_run").html(msg)
-//        alert(msg);                       // 设置表单提交完成使用方法
-      }
-    });
-    return false;
-  });
-});
-</script>
 

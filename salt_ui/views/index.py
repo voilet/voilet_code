@@ -72,7 +72,6 @@ def salt_status(request,id):
         )
         list = list.run()
         context["salt_key"]=list["return"]
-        print context["salt_key"]
         context.update(csrf(request))
         return render_to_response('saltstack/salt_key.html',context,context_instance=RequestContext(request))
     if id == 3:

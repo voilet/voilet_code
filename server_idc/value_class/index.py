@@ -103,7 +103,6 @@ def services_list_all(request):
 def services_list_id(request,id):
     content = {}
     server_list = Host.objects.get(id = id)
-    print server_list
     server_type = MyForm.objects.all()
     content["server_type"] = server_type
     content["list"] = server_list
@@ -204,7 +203,6 @@ def server_type_add(request):
             return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
     else:
         uf = Service_type_from()
-        #content['business'] = MyForm.objects.all()
         content['uf'] = uf
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
@@ -252,44 +250,68 @@ def auth_server_type_list(request):
         content.update(csrf(request))
         return render_to_response('server_idc/server_type_list.html',content,context_instance=RequestContext(request))
 
-#业务删除
+#业务修改
 @login_required
 @csrf_protect
-def auth_server_type_delete(request):
+def auth_server_type_edit(request,id):
+    business_name = MyForm.objects.get(id=id)
     content = {}
     if request.method == 'POST':    #验证post方法
         uf = Service_type_from(request.POST)   #绑定POST动作
         if uf.is_valid(): #验证数据有效性
-            uf.save()
+            zw = uf.save(commit=False)
+            zw.id = business_name.id
+            zw.save()
+            uf.save_m2m()
             uf = Service_type_from()
             content['uf'] = uf
             content["server_type"] = MyForm.objects.all()
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
+            # return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+            return HttpResponseRedirect("/assets/server/server_type/" + id + "/")
         else:
             print "save error"
             uf = Service_type_from()
             content["server_type"] = MyForm.objects.all()
             content['uf'] = uf
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
+            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
     else:
-        business_name = MyForm.objects.all().order_by("-id")
-        list_api_return = []
-        for i in business_name:
-            server_list = i.host_set.all()
-            server_user_all = i.service_user.all()
-            user = request.user.myform_set.all()
-            content["server_type"] = MyForm.objects.all()
-            content["list"] = server_list
-            content["server_user_all"] = server_user_all
-            content["business_name"] = business_name
-            list_api_return.append({"server_user_all":server_user_all,"server_type":i,"type_id":i.id})
-        if len(content['list']) >0:
-            content["test_error"] = True
-        else:
-            content["test_error"] = False
-        content["list_server_type"] = list_api_return
+        user_all = User.objects.all()
+        server_list = business_name.host_set.all()
+        server_user_all = business_name.service_user.all()
+        content["server_type"] = MyForm.objects.all()
+        content["list"] = server_list
+        content["user_all"] = user_all
+        content["server_user_all"] = server_user_all
+        content["business_name"] = business_name
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
-        return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
+        return render_to_response('server_idc/server_type_edit.html',content,context_instance=RequestContext(request))
+
+@login_required
+@csrf_protect
+def server_id_delete(request,id):
+    content = {}
+    edit_id = Host.objects.get(id = id)
+    #机房名称
+    idc_name = IDC.objects.all()
+    server_type = MyForm.objects.all()
+    if request.method == 'POST':    #验证post方法
+        uf = Host_from(request.POST)   #绑定POST动作
+        delete_id = request.POST.getlist("delete_id")
+        delete_id = int(delete_id[0])
+        Host.objects.get(id=delete_id).delete()
+        # return render_to_response('server_idc/delete.html',content,context_instance=RequestContext(request))
+        return HttpResponseRedirect("/assets/server/type/notid/")
+    else:
+        content["edit_brand"] = Server_System
+        content["edit_Cores"] = Cores
+        content["edit_system"] = System_os
+        content["edit_system_arch"] = system_arch
+        content["server_type"] = server_type
+        content["edit_id"] = edit_id
+        content["server_name"] = idc_name
+        content["edit_usage"] = System_usage
+        content.update(csrf(request))
+        return render_to_response('server_idc/delete.html',content,context_instance=RequestContext(request))

@@ -100,7 +100,10 @@ def server_update(request,id):
         voilet_test = minions_list_all.run()
         for i in voilet_test["return"]:
             update_keys = i.keys()
-            update_key = update_keys[0]
+            try:
+                update_key = update_keys[0]
+            except IndexError:
+                return render_to_response('server_idc/update_error.html',context,context_instance=RequestContext(request))
             context["cmd_run"] = i[update_key]
         context["eth0"] = context["cmd_run"]["ip_interfaces"]["eth0"][0]
         try:

@@ -23,14 +23,16 @@ urlpatterns = patterns('',
     url(r'edit_id/(?P<id>\d+)/$', 'server_idc.value_class.index.server_edit'),
     url(r'update_id/(?P<id>\d+)/$', 'server_idc.value_class.service_update.server_update'),
     url(r'server_type/(?P<id>\d+)/$', 'server_idc.value_class.index.server_type_list'),
-    url(r'serverid/list/(?P<id>\d+)/$', 'server_idc.value_class.index.services_list_id'),
+    url(r'server/node_id/(?P<id>\d+)/$', 'server_idc.value_class.index.services_list_id'),
     url(r'server/type/add/', 'server_idc.value_class.index.server_type_add'),
     url(r'server/type/list/', 'server_idc.value_class.index.auth_server_type_list'),
-    url(r'server/type/del/', 'server_idc.value_class.index.auth_server_type_delete'),
+    url(r'server/type/edit/(?P<id>\d+)/$', 'server_idc.value_class.index.auth_server_type_edit'),
+    url(r'server/type/del/', 'server_idc.value_class.service_type.auth_server_type_delete'),
+    url(r'server/type/notid/', 'server_idc.value_class.service_type.server_type_notnode'),
     url(r'server/list/', 'server_idc.value_class.index.services_list_all'),
-    url(r'server/add/', 'server_idc.value_class.index.Index_add'),
+    url(r'server/node_del/(?P<id>\d+)/$', 'server_idc.value_class.index.server_id_delete'),
 
-    # url(r'/', 'server_idc.value_class.index.services_list_all'),
+    url(r'/', 'server_idc.value_class.index.services_list_all'),
 
 )
 
