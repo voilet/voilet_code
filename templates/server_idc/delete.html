@@ -1,5 +1,6 @@
 {% include 'default/header.html' %}
 {% include 'default/server_idc_left.html' %}
+
 <style>
     .col-sm-10 ul{list-style-type:none;line-height:33px;}
     .col-sm-10 li{float:left;margin-right:12px;text-align: left;}
@@ -62,22 +63,24 @@
             </div>
             <div class="form-group" type="hidden" >
                 <input type="hidden" value="{{ edit_id.id }}" name="delete_id">
+                <input type="hidden" value="{{ edit_id.node_name }}" name="delete_name">
                 <input type="hidden" value="delete_selected" name="action">
                 <input type="hidden" value="yes" name="post">
             </div>
             <div class="form-group">
             <div class="col-sm-offset-2 col-sm-3">
                  <button type="submit" class="btn btn-danger  btn-block">确认删除</button>
+{#                   <a type="submit" class="button button-circle button-caution">确认删除</a>#}
             </div>
             <div class="col-sm-offset-2 col-sm-3">
                  <a href="/assets/server/type/notid/" class="btn btn-success  btn-block">取消删除</a>
+{#                 <a href="/assets/server/type/notid/" class="button button-circle button-action">取消删除</a>#}
             </div>
         </div>
     </div>
     <div id="content-block" class="col-sm-11 col-md-5">
 
     </div>
-
 </form>
 {#{{ uf }}#}
 {% include 'default/footer.html' %}

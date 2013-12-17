@@ -3,13 +3,21 @@
 <div class="col-md-10 column" id="salt_cmd">
 {#    <div class="jumbotron" id="salt_cmd">#}
         <pre>当前存活主机{{ live }}台</pre>
+        <div class="thumbnail">
         {% for i in up %}
-            <p>{{ i|safe }}</p>
+            {% if i in node_name_update %}
+            <p>{{ i|safe }} <a href="/salt/update_node/?node_name={{ i|safe }}" class="btn btn-success btn-xs" data-toggle="modal">上报资产</a></p>
+                {% else %}
+            <p>{{ i|safe }} <button  class="btn btn-warning btn-xs" data-toggle="modal">已入库</button></p>
+            {% endif %}
         {% endfor %}
+        </div>
         <pre>不在线主机{{ live_down }}台</pre>
+        <div class="thumbnail">
         {% for i in down %}
             <p>{{ i|safe }}</p>
         {% endfor %}
+        </div>
 {#        {{ master_status.up }}#}
 {#        {% for i in master_status.up %}#}
 {#            {% if i == node_idc.node_name %}#}

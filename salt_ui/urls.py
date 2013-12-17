@@ -18,6 +18,7 @@ import xadmin
 import salt_ui.views.index
 import salt_ui.log_class.api_log_class
 from salt_ui.views.cmd_node import salt_cmd_node
+from salt_ui.views.update_node import salt_update_node
 xadmin.autodiscover()
 
 # from xadmin.plugins import xversion
@@ -33,6 +34,7 @@ urlpatterns = patterns('',
     url(r'add_node/$',salt_ui.views.index.salt_check_node),
     url(r'node_shell/$',salt_ui.views.index.salt_check_setup),
     url(r'node_server/$',salt_ui.views.index.salt_state_sls),
+    url(r'update_node/.*$', salt_ui.views.update_node.salt_update_node),
     url(r'logs/$',salt_ui.log_class.api_log_class.salt_data_log),
     url(r'cmd_node/$',salt_ui.views.cmd_node.salt_cmd_node),
     url(r'',salt_ui.views.index.salt_index),

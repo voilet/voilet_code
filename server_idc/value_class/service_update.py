@@ -20,7 +20,7 @@ from django.template import RequestContext
 from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm,System_usage
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
-
+from server_idc.idc_edit_log.idc_log import idc_log
 from django.contrib.auth.models import User
 
 from salt_ui.api.salt_token_id import *
@@ -58,7 +58,9 @@ def server_update(request,id):
             zw.save()
             uf.save_m2m()
             print "保存数据"
-            return HttpResponseRedirect('/assets/list_id/'+id)
+            # print request.user.username, edit_id.node_name,"saltstack更新", edit_id.edit_username, edit_id.edit_datetime, edit_id.id, request.user.id
+            idc_log(request.user.username, edit_id.node_name,"saltstack更新", edit_id.edit_username, edit_id.edit_datetime, edit_id.id, request.user.id)
+            return HttpResponseRedirect('/assets/server/node_id/'+id)
         else:
             print "is over"
             print uf.is_valid()
@@ -105,11 +107,15 @@ def server_update(request,id):
             except IndexError:
                 return render_to_response('server_idc/update_error.html',context,context_instance=RequestContext(request))
             context["cmd_run"] = i[update_key]
-        context["eth0"] = context["cmd_run"]["ip_interfaces"]["eth0"][0]
+        try:
+            context["eth0"] = context["cmd_run"]["ip_interfaces"]["eth0"][0]
+        except KeyError:
+            context["eth0"] = context["cmd_run"]["ip_interfaces"]["em1"][0]
         try:
             if context["cmd_run"]["ip_interfaces"]["eth1"]:
                 context["eth1"] = context["cmd_run"]["ip_interfaces"]["eth1"][0]
         except KeyError:
+            print "eth1 网卡不存在 error"
             context["eth1"] = False
         context["mem_total"] = context["cmd_run"]["mem_total"]
         context["num_cpus"] = int(context["cmd_run"]["num_cpus"])

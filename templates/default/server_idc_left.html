@@ -12,9 +12,13 @@
                 <div id="panel-element-290449" class="panel-collapse collapse in">
             {% elif "/assets/server/list_id/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
-            {% elif "/assets/" ==  request.path %}
+            {% elif "/assets/edit_id/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
-             {% elif "assets/server/update_id/" in  request.path %}
+            {% elif "/assets/server/" ==  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/server/update_id/" in  request.path %}
+                <div id="panel-element-290449" class="panel-collapse collapse in">
+            {% elif "/assets/server/node_id/" in  request.path %}
                 <div id="panel-element-290449" class="panel-collapse collapse in">
             {% else %}
                 <div id="panel-element-290449" class="panel-collapse collapse">
@@ -53,6 +57,8 @@
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
                     {% elif "/assets/server/type/edit/" in request.path %}
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
+                    {% elif "/assets/server/edit/log/" in request.path %}
+                    <div id="panel-element-564813221" class="panel-collapse collapse in">
                     {% elif "/assets/server/type/notid/" in request.path %}
                     <div id="panel-element-564813221" class="panel-collapse collapse in">
                     {% else %}
@@ -63,6 +69,7 @@
                         <p><a href="/assets/server/type/list/" >业务列表</a></p>
                         <p><a href="/assets/server/type/add/" >添加业务</a></p>
                         <p><a href="/assets/server/type/notid/" > 未分配业务</a></p>
+                        <p><a href="/assets/server/edit/log/" > 操作日志</a></p>
 {#                    {% endfor %}#}
                 </div>
             </div>

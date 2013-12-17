@@ -1,0 +1,20 @@
+{% include 'default/header.html' %}
+{% include 'default/server_idc_left.html' %}
+{% load pagination_tags %}
+{% autopaginate log 10 %}
+<div id="content-block" class="col-sm-11 col-md-10">
+<pre>日志记录</pre>
+    <pre><ul>{% for i in log %}<li>{{ i.edit_time }} {{ i.edit_user_name }} 对 {{ i.edit_server_nodename }} 做了 <span style="color: #ff0000;font-weight:bold;">{{ i.edit_server_type }}</span> 操作，上次修改人是{{ i.old_editname }},上次修改时间是 {{ i.old_editdatetime }}</li>{% endfor %}
+    </ul></pre>
+    <div  class="voilet_page">
+         {% paginate %}
+    </div>
+</div>
+
+{#{{ uf }}#}
+{% include 'default/footer.html' %}
+
+
+
+
+

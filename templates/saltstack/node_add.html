@@ -22,19 +22,22 @@
 </style>
 <div id="content-block" class="col-sm-11 col-md-10"><pre>红色为必填项</pre></div>
 <form class="form-horizontal"  method="post" role="form">
-{#    <form class="exform form-horizontal" action="opadd" method="post" id="post_form" style="padding-top:8px;">#}
     {% csrf_token %}
     <div id="content-block" class="col-sm-11 col-md-5">
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: #ff0000">主机名</span></label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_node_name" name="node_name" type="text" />
+                    <input class="form-control" id="id_node_name" name="node_name" value="{{ update_name }}" type="text" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: #ff0000">MAC地址</span></label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_mac" maxlength="20" name="mac"  placeholder="格式:FA-16-3E-41-0B-BA" type="text" />
+                    {% if mac == "" %}
+                        <input class="form-control" id="id_mac" maxlength="20" name="mac"  placeholder="未采集到MAC,需手动输入 格式:FA-16-3E-41-0B-BA" type="text" />
+                    {% else %}
+                        <input class="form-control" id="id_mac" maxlength="20" name="mac" value="{{ mac }}"  placeholder="格式:FA-16-3E-41-0B-BA" type="text" />
+                    {% endif %}
                 </div>
             </div>
             <div class="form-group">
@@ -61,18 +64,24 @@
                     {{ uf.brand }}
                 </div>
             </div>
-
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: #ff0000">系统</span></label>
                 <div class="col-sm-10">
-                    {{ uf.system }}
+                    <select id="id_system" name="system" >
+                        {% for i,i in edit_system %}
+                            <option {% ifequal i edit_id.system %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: #ff0000">版本</span></label>
                 <div class="col-sm-10">
-{#                    <input class="form-control" id="id_system_arch" name="system_arch" type="text" />#}
-                    {{ uf.system_arch }}
+                    <select id="id_system_arch" name="system_arch" >
+                        {% for i,i in edit_system_arch %}
+                            <option {% ifequal i edit_id.system %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="form-group">
@@ -99,11 +108,6 @@
                     <input class="form-control" id="id_guarantee_date" maxlength="32" name="guarantee_date" type="text" />
                 </div>
             </div>
-{#        <div class="row clearfix">#}
-{#            <div class="col-md-12 column">#}
-{#                 <button type="button" class="btn btn-success btn-block">提交</button>#}
-{#            </div>#}
-{#        </div>#}
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                  <button type="submit" class="btn btn-success btn-block">保存</button>
@@ -118,7 +122,6 @@
     </div>
 
 </form>
-{#{{ uf }}#}
 {% include 'default/footer.html' %}
 
 

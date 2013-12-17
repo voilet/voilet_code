@@ -70,7 +70,7 @@ class Host(models.Model):
     system = models.CharField(u"System OS", max_length=32,choices=System_os,blank=True,null=True,)
     system_arch = models.CharField(blank=True, null=True,max_length=32, choices=system_arch)
     create_time = models.DateField(auto_now=True)
-    guarantee_date = models.DateField(blank=True,null=True,verbose_name=u'保修时间')
+    guarantee_date = models.DateField(blank=True,verbose_name=u'保修时间')
     Cabinets = models.CharField(max_length=32,blank=True, null=True, verbose_name=u'机柜位置')
     number = models.CharField(max_length=32, blank=True, null=True,verbose_name=u'资产编号')
     editor = models.TextField(blank=True, null=True,verbose_name=u'备注')
@@ -78,8 +78,8 @@ class Host(models.Model):
     usage = models.CharField(u"用途", max_length=32,choices=System_usage,)
     edit_username = models.CharField(u"修改人", max_length=32,blank=True)
     edit_datetime = models.DateTimeField(u"修改时间",blank=True,auto_now=True)
-    old_editname = models.CharField(u"上次修改人", max_length=32)
-    old_editdatetime = models.DateTimeField(u"上次修改时间")
+    old_editname = models.CharField( max_length=32,blank=True,verbose_name =u"上次修改人")
+    old_editdatetime = models.DateTimeField(u"上次修改时间",blank=True,)
 
     def __unicode__(self):
         return self.node_name
@@ -95,6 +95,8 @@ class service_log(models.Model):
     edit_server_type = models.CharField(max_length=32,blank=True,verbose_name=u'日志类型')
     old_editname = models.CharField(u"上次修改人", max_length=32,blank=True)
     old_editdatetime = models.DateTimeField(u"上次修改时间",blank=True,)
+    edit_server_id = models.CharField(max_length=32,blank=True,verbose_name=u'主机id')
+    edit_user_id = models.CharField(max_length=32,blank=True,verbose_name=u'修改人id')
     edit_time = models.DateTimeField(auto_now=True)
     def __unicode__(self):
         return self.edit_user_name

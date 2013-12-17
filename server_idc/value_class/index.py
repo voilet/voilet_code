@@ -15,7 +15,6 @@ from django.shortcuts import render_to_response
 from django import forms
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.template import RequestContext
 from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm,System_usage
 from django.views.decorators.csrf import csrf_protect
@@ -24,10 +23,10 @@ from django.core.context_processors import csrf
 from django.contrib.auth.models import User
 from salt_ui.api.salt_https_api import salt_api_jobs,pxe_api
 from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
+from server_idc.idc_edit_log.idc_log import idc_log
 
 class Host_from(forms.ModelForm):
     FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
-    # print FAVORITE_COLORS_CHOICES
     business = forms.MultipleChoiceField(required=False,
         widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
     class Meta:
@@ -131,7 +130,9 @@ def server_edit(request,id):
             zw.save()
             uf.save_m2m()
             print "保存数据"
-            return HttpResponseRedirect('/assets/list_id/'+id)
+            idc_log(request.user.username, edit_id.node_name,"修改", edit_id.edit_username, edit_id.edit_datetime, id, request.user.id)
+            return HttpResponseRedirect('/assets/list_id/'+ id )
+            # return render_to_response('server_idc/edit.html',content,context_instance=RequestContext(request))
         else:
             print "is over"
             print uf.is_valid()
@@ -301,8 +302,11 @@ def server_id_delete(request,id):
         uf = Host_from(request.POST)   #绑定POST动作
         delete_id = request.POST.getlist("delete_id")
         delete_id = int(delete_id[0])
+        delete_name = request.POST.getlist("delete_name")
+        for i in delete_name:
+            print i
         Host.objects.get(id=delete_id).delete()
-        # return render_to_response('server_idc/delete.html',content,context_instance=RequestContext(request))
+        idc_log(request.user.username, edit_id.node_name,"删除", edit_id.edit_username, edit_id.edit_datetime, id, request.user.id)
         return HttpResponseRedirect("/assets/server/type/notid/")
     else:
         content["edit_brand"] = Server_System

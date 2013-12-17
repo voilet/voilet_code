@@ -5,26 +5,19 @@ import re
 #import md5
 import json
 
-from django.http import HttpResponse, Http404
+
 from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
 from django.template import RequestContext
-from django.db import connection
-from django.http import HttpResponse
-#from salt_ui.api import salt_api
-from salt_ui.models import *
 from django.contrib.auth.decorators import login_required
 import commands,json,yaml
-import subprocess
-from salt_ui.api import *
-from server_idc.models import  Host,IDC,Server_System,Cores,System_os,system_arch,MyForm
+from server_idc.models import  MyForm
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 from django.shortcuts import get_object_or_404
-from salt_ui.api.salt_token_id import salt_api_token
 from salt_ui.api.salt_token_id import *
 from salt_ui.api.salt_https_api import salt_api_jobs
 from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
+from server_idc.models import  Host
 
 #日志记录
 from salt_ui.log_class.api_log_class import salt_log
@@ -38,6 +31,12 @@ def salt_index(request):
 def salt_status(request,id):
     context = {}
     id = int(id)
+    node_name_all = []
+    node_name_update = []
+    node_name = Host.objects.values_list("node_name")
+    for test in node_name:
+        test = "%s" % (test)
+        node_name_all.append(test.encode("utf-8"))
     service_user = request.user.myform_set.all()
     context['service_name'] = service_user
     if id == 1:
@@ -57,8 +56,11 @@ def salt_status(request,id):
             context['up']= i['up']
             context["live"] = len(i['up'])
             context["live_down"] = len(i['down'])
+        for node in context['up']:
+            if node not in node_name_all:
+                node_name_update.append(node)
+        context["node_name_update"] = node_name_update
         context.update(csrf(request))
-
         return render_to_response('saltstack/salt_status.html',context,context_instance=RequestContext(request))
     if id == 2:
         token_api_id = token_id()
