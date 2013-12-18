@@ -62,7 +62,7 @@ class Host(models.Model):
     mac = models.CharField(max_length=20,verbose_name=u"MAC")
     internal_ip = models.IPAddressField(blank=True, null=True,verbose_name=u'远控卡')
     status = models.SmallIntegerField(blank=True, null=True,choices=SERVER_STATUS)
-    brand = models.CharField(max_length=64, choices=Server_System,blank=True,null=True,verbose_name=u'硬件厂商')
+    brand = models.CharField(max_length=64, choices=Server_System,blank=True,verbose_name=u'硬件厂商')
     cpu = models.CharField(max_length=64,blank=True, null=True,verbose_name=u'cpu型号')
     core_num = models.SmallIntegerField(choices=Cores,blank=True, null=True,verbose_name=u'CPU核数')
     hard_disk = models.IntegerField(blank=True, null=True,verbose_name=u'硬盘')
