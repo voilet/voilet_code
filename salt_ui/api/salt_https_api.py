@@ -15,7 +15,7 @@ import urllib2,cookielib,urllib,yaml,json
 import salt_data
 
 class salt_api_token(object):
-    def __init__(self,data,url,token=None):
+    def __init__(self, data, url, token=None):
         self.data = data
         self.url = url
         self.headers = {
@@ -30,7 +30,7 @@ class salt_api_token(object):
         cj = cookielib.CookieJar()
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
         urllib2.install_opener(opener)
-        req = urllib2.Request(self.url,urllib.urlencode(self.data),self.headers)
+        req = urllib2.Request(self.url,urllib.urlencode(self.data, doseq=True), self.headers)
         req.add_header("Referer","http://opts.jumei.com")
         resp = urllib2.urlopen(req)
         context = resp.read()

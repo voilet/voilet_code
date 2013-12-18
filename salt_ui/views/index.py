@@ -33,11 +33,17 @@ def salt_status(request,id):
     id = int(id)
     node_name_all = []
     node_name_update = []
+    user_node_list = []
     node_name = Host.objects.values_list("node_name")
     for test in node_name:
         test = "%s" % (test)
         node_name_all.append(test.encode("utf-8"))
     service_user = request.user.myform_set.all()
+    for server_type_node in service_user:
+        # type_node = "%s" % (str(server_type_node).encode("utf-8"))
+        user_node = server_type_node.host_set.all()
+        user_node_list.append({server_type_node:user_node})
+    context["node_list"] = user_node_list
     context['service_name'] = service_user
     if id == 1:
         token_api_id = token_id()
@@ -85,35 +91,34 @@ def salt_status(request,id):
 def salt_cmd(request):
     context = {}
     type_node = ""
+    node_list = []
     if request.method == 'POST':
         salt_text = request.POST
-        service_type = salt_text.getlist("business")
+        service_type = salt_text.getlist("business_node")
+        # for i in service_type:
+        #     service_name_type = get_object_or_404(MyForm,service_name = i)
+        #     server_list = service_name_type.host_set.all()
+        #     for s in server_list:
+        #         type_node += "%s," % (s.node_name)
+        # context["type_node"] = type_node
         for i in service_type:
-            service_name_type = get_object_or_404(MyForm,service_name = i)
-            server_list = service_name_type.host_set.all()
-            for s in server_list:
-                type_node += "%s," % (s.node_name)
-        context["type_node"] = type_node
-        print type_node
+            i = '%s' % (i)
+            node_list.append(i.encode("utf-8"))
         salt_api_type = salt_text['comm_shell']
-        if salt_api_type == "cmd" :
+        if salt_api_type == "cmd":
             salt_cmd_lr = salt_text['salt_cmd']
-            if len(salt_text["salt_node_name"]) >0:
-                salt_node_name = salt_text["salt_node_name"]
+            if len(service_type) > 0:
+                salt_node_name = node_list
+            elif len(salt_text["salt_node_name"]) >0:
+                for i in salt_text["salt_node_name"]:
+                    i = '%s ' % (i)
+                    node_list.append(i.encode("utf-8"))
             else:
                 salt_node_name = "*"
             token_api_id = token_id()
-            list_all = salt_api_token(
-            {
-            # 'client': 'local',
-            'fun': 'cmd.run',
-            'tgt':salt_node_name,
-            'arg':salt_cmd_lr ,
-                           },
-            salt_api_url,
-            {"X-Auth-Token": token_api_id}
-            )
+            list_all = salt_api_token({'fun': 'cmd.run', 'tgt': salt_node_name, 'arg': salt_cmd_lr}, salt_api_url, { 'X-Auth-Token' : token_api_id})
             list_all = list_all.run()
+            print list_all
             for i in list_all["return"]:
                 context["jid"] =  i["jid"]
                 context["minions"] = i["minions"]

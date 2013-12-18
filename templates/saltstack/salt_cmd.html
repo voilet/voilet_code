@@ -1,29 +1,57 @@
 
-<style>
-clear{clear:both;}
-.voilet{height:90px;width:auto;}
-.navbar-form{height:90px;width:100%;}
-    .voilet_node_active{width:200px;}
-</style>
+{#<style>#}
+{#clear{clear:both;}#}
+{#.voilet{height:90px;width:auto;}#}
+{#.navbar-form{height:90px;width:100%;}#}
+{#    .voilet_node_active{width:200px;}#}
+{#</style>#}
 <pre>请选择需要执行命令的主机</pre>
-<div class="alert alert-dismissable alert-info">
-     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <h4>
-        使用方法:
-    </h4> <strong>例：</strong>输入主机名和需要执行的命令，如果主机名为空，默认为所有主机执行命令<br>
-        如需同时执行多个命令，可使用pwd;ls;ifconfig即可，命令和命令中间用";"号区分
-</div>
+
 <div class="voilet">
     <form method="POST" id="reasonform"  class="navbar-form navbar-left" role="search" onsubmit="return false" >{% csrf_token %}
-        <div><ul class="list-unstyled list-inline">
-            {% if service_name  %}
-                {% for i in service_name %}
-                    <li><input id="id_business_0" type="checkbox" value="{{ i }}" name="business">{{ i }}<li>
-                {% endfor %}
-             {% else %}
-                <li>您还没有可选业务组，请找管理员添加相应业务服务器</li>
-        {% endif %}
-        </ul></div><div class="clear"></div>
+{#        <div><ul class="list-unstyled list-inline">#}
+{#            {% if service_name  %}#}
+{#                {% for i in service_name %}#}
+{#                    <li><input id="id_business_0" type="checkbox" value="{{ i }}" name="business">{{ i }}<li>#}
+{#                {% endfor %}#}
+{#             {% else %}#}
+{#                <li>您还没有可选业务组，请找管理员添加相应业务服务器</li>#}
+{#        {% endif %}#}
+{#        </ul></div><div class="clear"></div>#}
+        <div class="tabbable" id="tabs-682448">
+				<ul class="nav nav-tabs">
+                        <li class="active"><a href="#panel-205003" data-toggle="tab">说明：</a></li>
+                        {% for i in service_name %}
+                            <li><a href="#panel-977178{{ i.id }}" data-toggle="tab">{{ i }}</a></li>
+                        {% endfor %}
+				</ul>
+				<div class="tab-content">
+                    <div class="tab-pane active" id="panel-205003">
+                        <div class="alert alert-dismissable alert-info">
+{#                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>#}
+                            <h4>
+                                使用方法:
+                            </h4>先到相关业务选择需要执行命令的主机，输入指令方法如例子所示<br><br> <strong>例：</strong>输入主机名和需要执行的命令，如果主机名为空，默认为所有主机执行命令<br>
+                                如需同时执行多个命令，可使用pwd;ls;ifconfig即可，命令和命令中间用";"号区分
+                        </div>
+                    </div>
+                    {% for i in service_name %}
+                        <div class="tab-pane" id="panel-977178{{ i.id }}">
+                            <p>
+                            {% for v in node_list %}
+                                {% for k,l in v.items %}
+                                    {% if k == i %}
+                                        {% for a in l %}
+                                            <input id="id_business_0" type="checkbox" value="{{ a }}" name="business_node"> {{ a }}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </p>
+                        </div>
+                    {% endfor %}
+				</div>
+			</div>
         <div class="row">
           <div class="col-lg-6">
             <div class="input-group">
