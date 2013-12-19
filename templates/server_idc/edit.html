@@ -141,27 +141,31 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">版本</label>
                 <div class="col-sm-10">
-                    <select id="id_system_arch" name="system_arch" >
-                        {% for i,i in edit_system_arch %}
+                    <select id="id_system_cpuarch" name="system_cpuarch" >
+                        {% for i,i in edit_system_cpuarch %}
                             <option {% ifequal i edit_id.system %} selected="selected"{% endifequal%} value="{{ i }}">{{ i }}</option>
                         {% endfor %}
                     </select>
                 </div>
             </div>
             <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">系统版本号</label>
+                <div class="col-sm-10">
+                    <input class="form-control"  id="id_system_version" type="text" name="system_version" value="{{ edit_id.system_version }}" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">业务</label>
                 <div class="col-sm-10">
 {#                {{ uf.business }}#}
-                    <ul>
                     {% for list  in server_type %}
 {#                        {{ server_type }}#}
                         {% if list in edit_id.business.all %}
-                            <li><label for="id_business_4"><input  name="business" checked type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
+                            <label for="checkbox-inline"><input id="inlineCheckbox1" name="business" checked type="checkbox" value="{{ list.id }}" /> {{ list.service_name }}</label>
                             {% else %}
-                            <li><label for="id_business_4"><input  name="business" type="checkbox" value="{{ list.id }}" />{{ list.service_name }}</label></li>
+                            <label for="checkbox-inline"><input id="inlineCheckbox1" name="business" type="checkbox" value="{{ list.id }}" /> {{ list.service_name }}</label>
                         {% endif %}
                     {% endfor %}
-                    </ul>
 {#                    <select  id="id_service_type" name="service_type" >#}
 {#                        {% for i in server_type %}#}
 {#                            <option {% ifequal i.id edit_id.service_type_id %} selected="selected"{% endifequal%} value="{{ i.id }}">{{i.name}}</option>#}

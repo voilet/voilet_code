@@ -103,22 +103,28 @@ def salt_update_node(request):
             try:
                 ipinfo = i[update_name]["ipinfo"]
                 for mac in ipinfo:
-                    mac = mac["MAC"].replace(":","-")
+                    mac = mac["MAC"].replace(":", "-")
             except KeyError:
                 mac = ""
+            context["eth0"] = i[update_name]["ipv4"][1]
+            try:
+                context["eth1"] = i[update_name]["ipv4"][2]
+            except IndexError:
+                context["eth1"] = False
             context["update_name"] = update_name
             context["mac"] = mac
             print context["mac"]
             context["system_os"] = system_os
             context["osarch"] = osarch
             context["uf"] = uf
+            context["os"] = i[update_name]["os"]
             context["edit_brand"] = Server_System
             context["edit_Cores"] = Cores
             context["edit_system"] = System_os
             context["edit_system_arch"] = system_arch
             context["server_type"] = MyForm.objects.all()
             context.update(csrf(request))
-
+        print context["edit_system"]
         return render_to_response('saltstack/node_add.html',context,context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect("/assets/server/list/")

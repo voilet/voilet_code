@@ -42,7 +42,7 @@
                                 {% for k,l in v.items %}
                                     {% if k == i %}
                                         {% for a in l %}
-                                            <input id="id_business_0" type="checkbox" value="{{ a }}" name="business_node"> {{ a }}
+                                            <label class="checkbox-inline"><input id="inlineCheckbox1" type="checkbox" value="{{ a }}" name="business_node"> {{ a }}</label>
                                         {% endfor %}
                                     {% endif %}
                                 {% endfor %}

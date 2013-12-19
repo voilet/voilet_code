@@ -79,7 +79,6 @@ def Index_add(request):
             return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
     else:
         uf = Host_from()
-        #content['business'] = MyForm.objects.all()
         content['uf'] = uf
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
@@ -142,7 +141,7 @@ def server_edit(request,id):
         content["edit_brand"] = Server_System
         content["edit_Cores"] = Cores
         content["edit_system"] = System_os
-        content["edit_system_arch"] = system_arch
+        content["edit_system_cpuarch"] = system_arch
         content["server_type"] = server_type
         content["edit_id"] = edit_id
         content["server_name"] = idc_name
@@ -232,6 +231,8 @@ def auth_server_type_list(request):
             return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
     else:
         business_name = MyForm.objects.all().order_by("-id")
+        print "*" * 100
+        print business_name
         list_api_return = []
         for i in business_name:
             server_list = i.host_set.all()
@@ -242,13 +243,17 @@ def auth_server_type_list(request):
             content["server_user_all"] = server_user_all
             content["business_name"] = business_name
             list_api_return.append({"server_user_all":server_user_all,"server_type":i,"type_id":i.id})
-        if len(content['list']) >0:
-            content["test_error"] = True
-        else:
+        try:
+            if len(content['list']) >0:
+                content["test_error"] = True
+            else:
+                content["test_error"] = False
+        except KeyError:
             content["test_error"] = False
         content["list_server_type"] = list_api_return
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
+        print "* " * 100
         return render_to_response('server_idc/server_type_list.html',content,context_instance=RequestContext(request))
 
 #业务修改
@@ -312,7 +317,7 @@ def server_id_delete(request,id):
         content["edit_brand"] = Server_System
         content["edit_Cores"] = Cores
         content["edit_system"] = System_os
-        content["edit_system_arch"] = system_arch
+        content["edit_system_cpuarch"] = system_arch
         content["server_type"] = server_type
         content["edit_id"] = edit_id
         content["server_name"] = idc_name

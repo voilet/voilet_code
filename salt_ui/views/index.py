@@ -116,9 +116,8 @@ def salt_cmd(request):
             else:
                 salt_node_name = "*"
             token_api_id = token_id()
-            list_all = salt_api_token({'fun': 'cmd.run', 'tgt': salt_node_name, 'arg': salt_cmd_lr}, salt_api_url, { 'X-Auth-Token' : token_api_id})
+            list_all = salt_api_token({'fun': 'cmd.run', 'tgt': salt_node_name, 'arg': salt_cmd_lr, 'expr_form':'list'}, salt_api_url, { 'X-Auth-Token' : token_api_id})
             list_all = list_all.run()
-            print list_all
             for i in list_all["return"]:
                 context["jid"] =  i["jid"]
                 context["minions"] = i["minions"]

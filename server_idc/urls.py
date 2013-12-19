@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     #资产管理
     url(r'edit_id/(?P<id>\d+)/$', 'server_idc.value_class.index.server_edit'),
     url(r'update_id/(?P<id>\d+)/$', 'server_idc.value_class.service_update.server_update'),
-    url(r'server_type/(?P<id>\d+)/$', 'server_idc.value_class.index.server_type_list'),
+    url(r'server/server_type/(?P<id>\d+)/$', 'server_idc.value_class.index.server_type_list'),
     url(r'server/node_id/(?P<id>\d+)/$', 'server_idc.value_class.index.services_list_id'),
     url(r'server/type/add/', 'server_idc.value_class.index.server_type_add'),
     url(r'server/type/list/', 'server_idc.value_class.index.auth_server_type_list'),

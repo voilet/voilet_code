@@ -57,7 +57,7 @@
                     {{ i.idc }}
                 </td>
                 <td width="150">
-                    {{ i.ip }}
+                    {{ i.eth1 }}
                 </td>
                 <td width="80">
                     {{ i.memory }} M
@@ -72,7 +72,7 @@
                     {{ i.brand }}
                 </td>
                 <td width="160">
-                    {{ i.system }} - {{ i.system_arch }}
+                    {{ i.system }} - {{ i.system_cpuarch }}
                 </td>
                 <td width="100">
                     {% for test in i.business.all %}

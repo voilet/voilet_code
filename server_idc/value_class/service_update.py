@@ -70,7 +70,7 @@ def server_update(request,id):
         context["edit_brand"] = Server_System
         context["edit_Cores"] = Cores
         context["edit_system"] = System_os
-        context["edit_system_arch"] = system_arch
+        context["edit_system_cpuarch"] = system_arch
         context["server_type"] = server_type
         context["edit_id"] = edit_id
         context["server_name"] = idc_name
@@ -107,20 +107,27 @@ def server_update(request,id):
             except IndexError:
                 return render_to_response('server_idc/update_error.html',context,context_instance=RequestContext(request))
             context["cmd_run"] = i[update_key]
+        context["eth0"] = context["cmd_run"]["ipv4"][1]
         try:
-            context["eth0"] = context["cmd_run"]["ip_interfaces"]["eth0"][0]
-        except KeyError:
-            context["eth0"] = context["cmd_run"]["ip_interfaces"]["em1"][0]
-        try:
-            if context["cmd_run"]["ip_interfaces"]["eth1"]:
-                context["eth1"] = context["cmd_run"]["ip_interfaces"]["eth1"][0]
-        except KeyError:
-            print "eth1 网卡不存在 error"
+            context["eth1"] = context["cmd_run"]["ipv4"][2]
+        except IndexError:
             context["eth1"] = False
+        # try:
+        #     context["eth0"] = context["cmd_run"]["ip_interfaces"]["eth0"][0]
+        # except KeyError:
+        #     context["eth0"] = context["cmd_run"]["ip_interfaces"]["em1"][0]
+        # try:
+        #     if context["cmd_run"]["ip_interfaces"]["eth1"]:
+        #         context["eth1"] = context["cmd_run"]["ip_interfaces"]["eth1"][0]
+        # except KeyError:
+        #     print "eth1 网卡不存在 error"
+        #     context["eth1"] = False
         context["mem_total"] = context["cmd_run"]["mem_total"]
         context["num_cpus"] = int(context["cmd_run"]["num_cpus"])
-        context["osarch"] = context["cmd_run"]["osarch"]
+        context["os"] = context["cmd_run"]["os"]
+        context["lsb_distrib_release"] = context["cmd_run"]["lsb_distrib_release"]
         context["cpu_model"] = context["cmd_run"]["cpu_model"]
+        print context["cmd_run"]
         context.update(csrf(request))
         # print yaml.dump(context["cmd_run"])
         #日志入库
