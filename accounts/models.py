@@ -12,9 +12,14 @@
 #=============================================================================
 
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.db import models
+from django.db.models.signals import post_save
 
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+import xadmin
 
 class UserCreateForm(UserCreationForm):
     # email = forms.EmailField(required=True)
@@ -32,3 +37,41 @@ class UserCreateForm(UserCreationForm):
             user.save()
         return user
 
+#==================扩展用户====================================
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    major = models.CharField(max_length=100,default='', blank=True,verbose_name="扩展字段1")
+    address = models.CharField(max_length=200,default='',blank=True,verbose_name="地址")
+
+    def __unicode__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = u"扩展字段"
+        verbose_name_plural = verbose_name
+
+def create_user_profile(sender, instance, created, **kwargs):
+    """Create the UserProfile when a new User is saved"""
+    if created:
+        profile = UserProfile()
+        profile.user = instance
+        profile.save()
+
+post_save.connect(create_user_profile, sender=User)
+#==================扩展用户结束================================
+
+
+
+"""用户模块扩展"""
+class ProfileInline(admin.StackedInline):
+    model = UserProfile
+    fk_name = 'user'
+    max_num = 1
+    can_delete = False
+
+class CustomUserAdmin(UserAdmin):
+    inlines = [ProfileInline,]
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+"""用户模块扩展"""
