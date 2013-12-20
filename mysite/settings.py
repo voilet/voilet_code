@@ -24,7 +24,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('苦咖啡', 'voilet@qq.com'),
 )
 
 MANAGERS = ADMINS
@@ -171,6 +171,10 @@ INSTALLED_APPS = (
 DATE_FORMAT = 'Y-m-d'
 DATETIME_FORMAT = 'Y-m-d H:i'
 TIME_FORMAT = 'H:i'
+
+u"""用户模块扩展部分"""
+AUTH_PROFILE_MODULE = 'djangoadmin.accounts.UserProfile'
+u"""用户模块扩展完成"""
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

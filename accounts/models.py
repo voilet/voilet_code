@@ -12,66 +12,75 @@
 #=============================================================================
 
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.db import models
-from django.db.models.signals import post_save
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm
 
-from django.contrib import admin
+
+from django.db import models
+from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
-import xadmin
+import datetime
+# from accounts.models import ProfileBase
+
+
+manager_demo = [(i, i) for i in (u"经理", u"主管", u"项目责任人",u"管理员",u"BOOS")]
+
+
+class ProfileBase(type):
+    def __new__(cls, name, bases, attrs):
+        module = attrs.pop('__module__')
+        parents = [b for b in bases if isinstance(b, ProfileBase)]
+        if parents:
+            fields = []
+            for obj_name, obj in attrs.items():
+                if isinstance(obj, models.Field): fields.append(obj_name)
+                User.add_to_class(obj_name, obj)
+            UserAdmin.fieldsets = list(UserAdmin.fieldsets)
+            UserAdmin.fieldsets.append((name, {'fields': fields}))
+        return super(ProfileBase, cls).__new__(cls, name, bases, attrs)
+
+class Profile(object):
+    __metaclass__ = ProfileBase
+
+class department_Mode(models.Model):
+    department_name = models.CharField(max_length=64, blank=True, null=True, verbose_name=u'部门名称')
+    description = models.TextField(verbose_name=u"介绍",blank=True, null=True,)
+
+    def __unicode__(self):
+        return self.department_name
+
+    class Meta:
+        verbose_name = u"IDC机房"
+        verbose_name_plural = verbose_name
+
+class MyProfile(Profile):
+    department = models.ForeignKey(department_Mode, max_length=60, blank=True, null=True, verbose_name=u"部门")
+    jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, verbose_name=u"职位")
+
+    def __unicode__(self):
+        return self.department
+    class Meta:
+        verbose_name = u"新增字段"
+        verbose_name_plural = verbose_name
 
 class UserCreateForm(UserCreationForm):
-    # email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=20, required=True,)
+    first_name = forms.CharField(max_length=20, required=True)
+    department = forms.CharField(max_length=20, required=True)
+    jobs = forms.CharField(max_length=20, required=True, )
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'password1', 'password2',  )
+        fields = ('username', 'first_name', 'password1', 'password2', 'department',  'jobs')
 
     def save(self, commit=True):
+        print "save is ................"
         user = super(UserCreateForm, self).save(commit)
-        # user.email = self.cleaned_data["email"]
         user.first_name = self.cleaned_data["first_name"]
+        user.department = self.cleaned_data["department"]
+        user.jobs = self.cleaned_data["jobs"]
         if commit:
             user.save()
         return user
 
-#==================扩展用户====================================
-class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-    major = models.CharField(max_length=100,default='', blank=True,verbose_name="扩展字段1")
-    address = models.CharField(max_length=200,default='',blank=True,verbose_name="地址")
-
-    def __unicode__(self):
-        return self.user.username
-
-    class Meta:
-        verbose_name = u"扩展字段"
-        verbose_name_plural = verbose_name
-
-def create_user_profile(sender, instance, created, **kwargs):
-    """Create the UserProfile when a new User is saved"""
-    if created:
-        profile = UserProfile()
-        profile.user = instance
-        profile.save()
-
-post_save.connect(create_user_profile, sender=User)
-#==================扩展用户结束================================
 
 
-
-"""用户模块扩展"""
-class ProfileInline(admin.StackedInline):
-    model = UserProfile
-    fk_name = 'user'
-    max_num = 1
-    can_delete = False
-
-class CustomUserAdmin(UserAdmin):
-    inlines = [ProfileInline,]
-
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
-"""用户模块扩展"""

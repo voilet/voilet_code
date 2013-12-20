@@ -79,6 +79,7 @@ from models import IDC, Host, MyForm
 class HostAdmin(object):
    def open_web(self, instance):
        return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
+
    open_web.short_description = "Acts"
    open_web.allow_tags = True
    open_web.is_column = True
@@ -88,6 +89,7 @@ class HostAdmin(object):
 class MyForm_typesAdmin(object):
    def open_web(self, instance):
        return "<a href='http://%s' target='_blank'>Open</a>" % instance.ip
+
    open_web.short_description = "Acts"
    open_web.allow_tags = True
    open_web.is_column = True

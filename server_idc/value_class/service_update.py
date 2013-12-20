@@ -63,7 +63,6 @@ def server_update(request,id):
             return HttpResponseRedirect('/assets/server/node_id/'+id)
         else:
             print "is over"
-            print uf.is_valid()
     else:
         uf = Host_from()
         context["uf"] = uf
@@ -112,24 +111,12 @@ def server_update(request,id):
             context["eth1"] = context["cmd_run"]["ipv4"][2]
         except IndexError:
             context["eth1"] = False
-        # try:
-        #     context["eth0"] = context["cmd_run"]["ip_interfaces"]["eth0"][0]
-        # except KeyError:
-        #     context["eth0"] = context["cmd_run"]["ip_interfaces"]["em1"][0]
-        # try:
-        #     if context["cmd_run"]["ip_interfaces"]["eth1"]:
-        #         context["eth1"] = context["cmd_run"]["ip_interfaces"]["eth1"][0]
-        # except KeyError:
-        #     print "eth1 网卡不存在 error"
-        #     context["eth1"] = False
         context["mem_total"] = context["cmd_run"]["mem_total"]
         context["num_cpus"] = int(context["cmd_run"]["num_cpus"])
         context["os"] = context["cmd_run"]["os"]
         context["lsb_distrib_release"] = context["cmd_run"]["lsb_distrib_release"]
         context["cpu_model"] = context["cmd_run"]["cpu_model"]
-        print context["cmd_run"]
         context.update(csrf(request))
-        # print yaml.dump(context["cmd_run"])
         #日志入库
         return render_to_response('server_idc/update.html',context,context_instance=RequestContext(request))
 

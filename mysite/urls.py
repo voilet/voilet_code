@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     #用户登录注册
     #(r'^accounts/login/$', 'django.contrib.auth.views.login',{'template_name': 'login.html'}),
     (r'^accounts/login/$', 'accounts.account.user_login',),
-    (r'^accounts/register/$', 'accounts.views.register'),
+    (r'^accounts/register/$', 'accounts.user_mode.register_class.register'),
     (r'^accounts/loginout/$', 'accounts.views.logout_view'),
     url(r'^$', 'salt_ui.views.index.salt_index'),
 

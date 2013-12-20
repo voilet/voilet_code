@@ -231,8 +231,6 @@ def auth_server_type_list(request):
             return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
     else:
         business_name = MyForm.objects.all().order_by("-id")
-        print "*" * 100
-        print business_name
         list_api_return = []
         for i in business_name:
             server_list = i.host_set.all()
@@ -253,7 +251,6 @@ def auth_server_type_list(request):
         content["list_server_type"] = list_api_return
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
-        print "* " * 100
         return render_to_response('server_idc/server_type_list.html',content,context_instance=RequestContext(request))
 
 #业务修改

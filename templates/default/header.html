@@ -56,7 +56,11 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
                         <li>
+                            {% if user.first_name %}
+                            <a><strong>欢迎， {{ user.first_name }}</strong></a>
+                            {% else %}
                             <a><strong>欢迎， {{ user.username }}</strong></a>
+                            {% endif %}
                         </li>
                         <li>
                             <a href="/accounts/loginout/"><strong>注销</strong></a>
