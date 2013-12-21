@@ -50,22 +50,23 @@ class department_Mode(models.Model):
         return self.department_name
 
     class Meta:
-        verbose_name = u"IDC机房"
+        verbose_name = u"部门"
         verbose_name_plural = verbose_name
 
 class MyProfile(Profile):
     department = models.ForeignKey(department_Mode, max_length=60, blank=True, null=True, verbose_name=u"部门")
-    jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, verbose_name=u"职位")
+    jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, default=u'职位', verbose_name=u"职位")
 
     def __unicode__(self):
         return self.department
+
     class Meta:
         verbose_name = u"新增字段"
         verbose_name_plural = verbose_name
 
 class UserCreateForm(UserCreationForm):
     first_name = forms.CharField(max_length=20, required=True)
-    department = forms.ModelChoiceField(queryset=department_Mode.objects.all(), empty_label="Please choose a university")
+    department = forms.ModelChoiceField(queryset=department_Mode.objects.all(), empty_label=u"请选择部门")
     jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, verbose_name=u"职位")
 
     class Meta:

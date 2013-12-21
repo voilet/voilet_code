@@ -32,9 +32,13 @@ def register(request):
             # perhaps set permissions of the new user
             # return render(request, 'registration/success.html') # need to create success.html
             return HttpResponseRedirect('/')
+        else:
+            content["form"] = form
+            content.update(csrf(request))
+            return render_to_response('user/reg.html',content,context_instance=RequestContext(request))
     else:
-        form = UserCreateForm() # UserCreationForm()
-        content["form"] = form
+        data = UserCreateForm() # UserCreationForm()
+        content["data"] = data
         content.update(csrf(request))
         # return render(request, 'user/reg.html', context_instance=RequestContext(request))
         return render_to_response('user/reg.html',content,context_instance=RequestContext(request))

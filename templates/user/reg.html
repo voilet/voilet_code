@@ -1,7 +1,10 @@
 {% include 'default/header.html' %}
 {% include 'default/index_left.html' %}
 <div class="col-md-10 column"><pre>添加帐户</pre></div>
-<div class="col-md-4 column">
+<div class="col-md-5 column">
+    {% if form %}
+    <pre>两次输入密码不同</pre>
+    {% endif %}
     <form class="form-horizontal" method="post" action="" role="form">{% csrf_token %}
         <div class="form-group">
              <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
@@ -30,13 +33,13 @@
         <div class="form-group">
              <label for="inputEmail3" class="col-sm-2 control-label">部门</label>
             <div class="col-sm-10">
-                {{ form.department }}
+                {{ data.department }}
             </div>
         </div>
         <div class="form-group">
              <label for="inputEmail3" class="col-sm-2 control-label">职位</label>
             <div class="col-sm-10">
-                {{ form.jobs }}
+                {{ data.jobs }}
             </div>
         </div>
 {#        <input id="initial-id_date_joined" name="last_login" value="{{ data_time }}" type="hidden" />#}
@@ -51,7 +54,7 @@
 
 {#    {{ form }}#}
 </div>
-<div class="col-md-6 column"></div>
+<div class="col-md-5 column"></div>
 {% include 'default/footer.html' %}
 <style>
     .col-sm-10 ul{list-style-type:none;line-height:33px;}
