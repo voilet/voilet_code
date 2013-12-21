@@ -19,8 +19,11 @@ def index(request):
 
 @csrf_protect
 def register(request):
+    content = {}
     if request.method == 'POST':
+        print u"注册数据"
         form = UserCreateForm(request.POST) # UserCreationForm(request.POST)
+        print u"验证完成"
         if form.is_valid():
             # form.is_staff = 1
             new_user = form.save(commit=False)
@@ -31,7 +34,10 @@ def register(request):
             return HttpResponseRedirect('/')
     else:
         form = UserCreateForm() # UserCreationForm()
-    return render(request, 'user/register.html', {'form':form})
+        content["form"] = form
+        content.update(csrf(request))
+        # return render(request, 'user/reg.html', context_instance=RequestContext(request))
+        return render_to_response('user/reg.html',content,context_instance=RequestContext(request))
 
 #注销
 def logout_view(request):

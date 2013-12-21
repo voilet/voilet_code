@@ -65,12 +65,12 @@ class MyProfile(Profile):
 
 class UserCreateForm(UserCreationForm):
     first_name = forms.CharField(max_length=20, required=True)
-    department = forms.CharField(max_length=20, required=True)
-    jobs = forms.CharField(max_length=20, required=True, )
+    department = forms.ModelChoiceField(queryset=department_Mode.objects.all(), empty_label="Please choose a university")
+    jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, verbose_name=u"职位")
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'password1', 'password2', 'department',  'jobs')
+        fields = ('username', 'first_name', 'password1', 'password2', 'department', 'jobs')
 
     def save(self, commit=True):
         print "save is ................"
@@ -78,6 +78,7 @@ class UserCreateForm(UserCreationForm):
         user.first_name = self.cleaned_data["first_name"]
         user.department = self.cleaned_data["department"]
         user.jobs = self.cleaned_data["jobs"]
+        user.is_staff = 1
         if commit:
             user.save()
         return user
