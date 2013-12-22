@@ -96,7 +96,7 @@
     <pre>以下用户拥有此业务权限</pre>
     <ul class="list-unstyled list-inline">
         {% for i in server_user_all %}
-				<li><button type="button" class="btn btn-default">{{ i }}</button></li>
+				<li><button type="button" class="btn btn-default">{{ i.first_name }}</button></li>
         {% endfor %}
 	</ul>
     <div  class="voilet_page">
@@ -107,7 +107,7 @@
     <pre>以下用户拥有此业务权限</pre>
     <ul class="list-unstyled list-inline">
         {% for i in server_user_all %}
-				<li><button type="button" class="btn btn-default">{{ i }}</button></li>
+				<li><button type="button" class="btn btn-default">{{ i.first_name }}</button></li>
         {% endfor %}
 	</ul>
     {% endif %}

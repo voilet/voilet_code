@@ -6,7 +6,7 @@
     <pre>业务列表</pre>
     <div id="salt_type_list">
     {% for i in list_server_type %}
-        <pre><h4> 业务：{{ i.server_type }}</h4>{% for v in i.server_user_all %} <button type="button" class="btn btn-success btn-xs">{{ v }}</button>{% endfor %}
+        <pre><h4> 业务：{{ i.server_type }}</h4>{% for v in i.server_user_all %} <button type="button" class="btn btn-success btn-xs">{{ v.first_name }}</button>{% endfor %}
 
 <a href="/assets/server/type/edit/{{ i.server_type.id }}/" class="btn btn-xs btn-info">修改</a> <button type="button" class="btn btn-xs btn-danger">删除</button></pre>
     {% endfor %}

@@ -113,7 +113,6 @@ def salt_update_node(request):
                 context["eth1"] = False
             context["update_name"] = update_name
             context["mac"] = mac
-            print context["mac"]
             context["system_os"] = system_os
             context["osarch"] = osarch
             context["uf"] = uf
@@ -124,7 +123,6 @@ def salt_update_node(request):
             context["edit_system_arch"] = system_arch
             context["server_type"] = MyForm.objects.all()
             context.update(csrf(request))
-        print context["edit_system"]
         return render_to_response('saltstack/node_add.html',context,context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect("/assets/server/list/")

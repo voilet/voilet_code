@@ -33,7 +33,12 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">所属用户</label>
                 <div class="col-sm-10">
-                    {{ uf.service_user }}
+                    <ul>
+                          {% for i in user %}
+                        <li><label for="id_service_user_{{ i.id }}"><input id="id_service_user_{{ i.id }}" type="checkbox" value="{{ i.id }}" name="service_user">{{ i.first_name }}</label></li>
+                          {% endfor %}
+                    </ul>
+{#                    {{ uf.service_user }}#}
                 </div>
             </div>
             <div class="form-group">

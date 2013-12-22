@@ -26,7 +26,7 @@ from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_ap
 from server_idc.idc_edit_log.idc_log import idc_log
 
 class Host_from(forms.ModelForm):
-    FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
+    FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id", "service_name")
     business = forms.MultipleChoiceField(required=False,
         widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
     class Meta:
@@ -45,7 +45,7 @@ def Index_add(request):
         usage = request.POST.getlist("usage")
         # create_time = time.strftime('%Y-%m-%d',time.localtime(time.time())) # %H:%M:%S
         if uf.is_valid(): #验证数据有效性
-            '''向pxe提交数据'''
+            u'''向pxe提交数据'''
             pxe_data = pxe_api({
                 "hostname":node_name[0].encode("utf8"),
                 "operating":operating[0].encode("utf8").lower() + "_6u4_64",
@@ -174,7 +174,7 @@ def server_type_list(request,id):
 
 
 class Service_type_from(forms.ModelForm):
-    FAVORITE_COLORS_CHOICES = User.objects.values_list("id","username")
+    FAVORITE_COLORS_CHOICES = User.objects.values_list("id", "username",)
     service_user = forms.MultipleChoiceField(required=False,
         widget=forms.CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
     class Meta:
@@ -187,13 +187,16 @@ def server_type_add(request):
     content = {}
     if request.method == 'POST':    #验证post方法
         uf = Service_type_from(request.POST)   #绑定POST动作
+        print uf
         if uf.is_valid(): #验证数据有效性
             uf.save()
             uf = Service_type_from()
             content['uf'] = uf
             content["server_type"] = MyForm.objects.all()
+            content["user"]=User.objects.all()
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+            print "server_type save is ok"
+            return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
         else:
             print "save error"
             uf = Service_type_from()
@@ -204,6 +207,7 @@ def server_type_add(request):
     else:
         uf = Service_type_from()
         content['uf'] = uf
+        content["user"]=User.objects.all()
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
         return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
@@ -259,6 +263,7 @@ def auth_server_type_list(request):
 def auth_server_type_edit(request,id):
     business_name = MyForm.objects.get(id=id)
     content = {}
+    server_type_user = []
     if request.method == 'POST':    #验证post方法
         uf = Service_type_from(request.POST)   #绑定POST动作
         if uf.is_valid(): #验证数据有效性
@@ -282,13 +287,17 @@ def auth_server_type_edit(request,id):
     else:
         user_all = User.objects.all()
         server_list = business_name.host_set.all()
-        server_user_all = business_name.service_user.all()
+        server_user_all = business_name.service_user.values("first_name")
         content["server_type"] = MyForm.objects.all()
         content["list"] = server_list
         content["user_all"] = user_all
         content["server_user_all"] = server_user_all
         content["business_name"] = business_name
         content["server_type"] = MyForm.objects.all()
+
+        for i in server_user_all:
+            server_type_user.append(str(i["first_name"]).encode("utf-8"))
+        content["server_type_user"] = server_type_user
         content.update(csrf(request))
         return render_to_response('server_idc/server_type_edit.html',content,context_instance=RequestContext(request))
 
