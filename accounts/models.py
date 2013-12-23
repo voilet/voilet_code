@@ -42,9 +42,21 @@ class ProfileBase(type):
 class Profile(object):
     __metaclass__ = ProfileBase
 
+class DepartmentGroup(models.Model):
+    department_groups_name = models.CharField(max_length=64, blank=True, null=True, verbose_name=u'组名')
+    description = models.TextField(verbose_name=u"介绍",blank=True, null=True,)
+
+    def __unicode__(self):
+        return self.department_groups_name
+
+    class Meta:
+        verbose_name = u"部门组"
+        verbose_name_plural = verbose_name
+
 class department_Mode(models.Model):
     department_name = models.CharField(max_length=64, blank=True, null=True, verbose_name=u'部门名称')
-    description = models.TextField(verbose_name=u"介绍",blank=True, null=True,)
+    dt_group = models.ForeignKey(DepartmentGroup, blank=True, null=True, verbose_name=u"部门组")
+    description = models.TextField(verbose_name=u"介绍", blank=True, null=True,)
 
     def __unicode__(self):
         return self.department_name
