@@ -53,12 +53,13 @@ class department_Mode(models.Model):
         verbose_name = u"部门"
         verbose_name_plural = verbose_name
 
+
 class MyProfile(Profile):
     department = models.ForeignKey(department_Mode, max_length=60, blank=True, null=True, verbose_name=u"部门")
-    jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, default=u'职位', verbose_name=u"职位")
+    jobs = models.CharField(max_length=20, choices=manager_demo, blank=True, null=True, verbose_name=u"职位")
 
     def __unicode__(self):
-        return self.department
+        return self.first_name
 
     class Meta:
         verbose_name = u"新增字段"
@@ -83,6 +84,11 @@ class UserCreateForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+
+
+
 
 
 

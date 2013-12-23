@@ -53,6 +53,22 @@
                         <li>
 							<a href="/assets/server/">资产管理</a>
 						</li>
+                        {% if user.is_superuser %}
+                        <li class="dropdown">
+							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">管理审计<strong class="caret"></strong></a>
+							<ul class="dropdown-menu">
+                                <li>
+									<a href="/accounts/adduser/">添加用户</a>
+								</li>
+								<li>
+									<a href="/assets/server/edit/log/">资产管理操作日志</a>
+								</li>
+								<li>
+									<a href="/salt/logs/">saltstack操作日志</a>
+								</li>
+							</ul>
+						</li>
+                        {% endif %}
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
                         <li>
@@ -70,3 +86,4 @@
 				
 			</nav>
 			<!-- head end -->
+

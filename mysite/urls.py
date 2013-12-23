@@ -18,6 +18,7 @@ import xadmin
 import salt_ui.urls
 import op.urls
 import server_idc.urls
+import accounts.urls
 xadmin.autodiscover()
 
 # from xadmin.plugins import xversion
@@ -28,10 +29,10 @@ urlpatterns = patterns('',
     # url(r'^voilet/test/$', 'server_idc.value_class.index.Index'),
     #用户登录注册
     #(r'^accounts/login/$', 'django.contrib.auth.views.login',{'template_name': 'login.html'}),
-    (r'^accounts/login/$', 'accounts.account.user_login',),
-    (r'^accounts/register/$', 'accounts.user_mode.register_class.register'),
-    (r'^accounts/reg/$', 'accounts.views.register'),
-    (r'^accounts/loginout/$', 'accounts.views.logout_view'),
+    # (r'^accounts/login/$', 'accounts.account.user_login',),
+    # (r'^accounts/adduser/$', 'accounts.views.register'),
+    # (r'^accounts/loginout/$', 'accounts.views.logout_view'),
+    url(r'accounts/', include(accounts.urls)),
     url(r'^$', 'salt_ui.views.index.salt_index'),
 
     #搜索

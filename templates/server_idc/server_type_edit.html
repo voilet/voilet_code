@@ -36,9 +36,17 @@
                     <ul>
                         {% for i in user_all %}
                                 {% if i.first_name in server_type_user %}
-                                <li><label for="id_service_user_{{ i.id }}"><input  name="service_user" type="checkbox" checked="checked" value="{{ i.id }}" /> {{ i.first_name }}</label></li>
+                                    {% if i.first_name %}
+                                        <li><label for="id_service_user_{{ i.id }}"><input  name="service_user" type="checkbox" checked="checked" value="{{ i.id }}" /> {{ i.first_name }}</label></li>
+                                        {% else %}
+                                        <li><label for="id_service_user_{{ i.id }}"><input  name="service_user" type="checkbox" checked="checked" value="{{ i.id }}" /> {{ i.username }}</label></li>
+                                    {% endif %}
                                 {% else %}
-                                <li><label for="id_service_user_{{ i.id }}"><input  name="service_user" type="checkbox" value="{{ i.id }}" /> {{ i.first_name }}</label></li>
+                                    {% if i.first_name %}
+                                        <li><label for="id_service_user_{{ i.id }}"><input  name="service_user" type="checkbox" value="{{ i.id }}" /> {{ i.first_name }}</label></li>
+                                        {% else %}
+                                        <li><label for="id_service_user_{{ i.id }}"><input  name="service_user" type="checkbox" value="{{ i.id }}" /> {{ i.username }}</label></li>
+                                    {% endif %}
                                 {% endif %}
                         {% endfor %}
 

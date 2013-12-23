@@ -129,7 +129,7 @@ def server_edit(request,id):
             zw.save()
             uf.save_m2m()
             print "保存数据"
-            idc_log(request.user.username, edit_id.node_name,"修改", edit_id.edit_username, edit_id.edit_datetime, id, request.user.id)
+            idc_log(request.user.username, edit_id.node_name, "修改", edit_id.edit_username, edit_id.edit_datetime, id, request.user.id)
             return HttpResponseRedirect('/assets/list_id/'+ id )
             # return render_to_response('server_idc/edit.html',content,context_instance=RequestContext(request))
         else:
@@ -147,7 +147,7 @@ def server_edit(request,id):
         content["server_name"] = idc_name
         content["edit_usage"] = System_usage
         content.update(csrf(request))
-        return render_to_response('server_idc/edit.html',content,context_instance=RequestContext(request))
+        return render_to_response('server_idc/edit.html', content, context_instance=RequestContext(request))
 
 #更新
 
@@ -159,7 +159,7 @@ def server_type_list(request,id):
     business_name = MyForm.objects.get(id=id)
     server_list = business_name.host_set.all()
     server_user_all = business_name.service_user.all()
-    user = request.user.myform_set.all()
+    # user = request.user.myform_set.all()
     content["server_type"] = MyForm.objects.all()
     content["list"] = server_list
     content["server_user_all"] = server_user_all
@@ -170,7 +170,7 @@ def server_type_list(request,id):
         content["test_error"] = False
     content.update(csrf(request))
 
-    return render_to_response('server_idc/server_type.html',content,context_instance=RequestContext(request))
+    return render_to_response('server_idc/server_type.html', content, context_instance=RequestContext(request))
 
 
 class Service_type_from(forms.ModelForm):
@@ -193,24 +193,25 @@ def server_type_add(request):
             uf = Service_type_from()
             content['uf'] = uf
             content["server_type"] = MyForm.objects.all()
-            content["user"]=User.objects.all()
+            content["user_list"]=User.objects.all()
             content.update(csrf(request))
             print "server_type save is ok"
-            return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
+            # return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
+            return HttpResponseRedirect("/assets/server/type/list/",context_instance=RequestContext(request))
         else:
             print "save error"
             uf = Service_type_from()
             content["server_type"] = MyForm.objects.all()
             content['uf'] = uf
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+            return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
     else:
         uf = Service_type_from()
         content['uf'] = uf
-        content["user"]=User.objects.all()
+        content["user_list"]=User.objects.all()
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
-        return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+        return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
 
 #业务管理
 @login_required
@@ -225,14 +226,14 @@ def auth_server_type_list(request):
             content['uf'] = uf
             content["server_type"] = MyForm.objects.all()
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+            return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
         else:
             print "save error"
             uf = Service_type_from()
             content["server_type"] = MyForm.objects.all()
             content['uf'] = uf
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+            return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
     else:
         business_name = MyForm.objects.all().order_by("-id")
         list_api_return = []
@@ -244,7 +245,7 @@ def auth_server_type_list(request):
             content["list"] = server_list
             content["server_user_all"] = server_user_all
             content["business_name"] = business_name
-            list_api_return.append({"server_user_all":server_user_all,"server_type":i,"type_id":i.id})
+            list_api_return.append({"server_user_all":server_user_all, "server_type":i, "type_id":i.id})
         try:
             if len(content['list']) >0:
                 content["test_error"] = True
@@ -255,7 +256,7 @@ def auth_server_type_list(request):
         content["list_server_type"] = list_api_return
         content["server_type"] = MyForm.objects.all()
         content.update(csrf(request))
-        return render_to_response('server_idc/server_type_list.html',content,context_instance=RequestContext(request))
+        return render_to_response('server_idc/server_type_list.html', content, context_instance=RequestContext(request))
 
 #业务修改
 @login_required
@@ -283,7 +284,7 @@ def auth_server_type_edit(request,id):
             content["server_type"] = MyForm.objects.all()
             content['uf'] = uf
             content.update(csrf(request))
-            return render_to_response('server_idc/server_type_add.html',content,context_instance=RequestContext(request))
+            return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
     else:
         user_all = User.objects.all()
         server_list = business_name.host_set.all()
@@ -299,7 +300,7 @@ def auth_server_type_edit(request,id):
             server_type_user.append(str(i["first_name"]).encode("utf-8"))
         content["server_type_user"] = server_type_user
         content.update(csrf(request))
-        return render_to_response('server_idc/server_type_edit.html',content,context_instance=RequestContext(request))
+        return render_to_response('server_idc/server_type_edit.html', content, context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect
@@ -329,4 +330,4 @@ def server_id_delete(request,id):
         content["server_name"] = idc_name
         content["edit_usage"] = System_usage
         content.update(csrf(request))
-        return render_to_response('server_idc/delete.html',content,context_instance=RequestContext(request))
+        return render_to_response('server_idc/delete.html', content, context_instance=RequestContext(request))

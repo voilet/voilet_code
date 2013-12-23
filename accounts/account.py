@@ -30,7 +30,8 @@ def change_password(request):
     if request.method == "POST":
         # print request.POST
         form = ChangePasswordForm(user=request.user, data=request.POST)
-        # print form.is_valid()
+        # print form
+        print form.is_valid()
         if form.is_valid():
             form.save()
             ret = {"status": 1, "msg": "is ok"}

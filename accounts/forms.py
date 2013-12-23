@@ -53,14 +53,14 @@ class ChangePasswordForm(forms.Form):
         renewpassword = self.cleaned_data.get('renewpassword')
         if newpassword and renewpassword:
             if newpassword != renewpassword:
-                raise forms.ValidationError("此处必须输入和上栏密码相同的内容")
+                raise forms.ValidationError(u"此处必须输入和上栏密码相同的内容")
         return renewpassword
 
     def save(self, commit=True):
         """
         Saves the new password.
         """
-        print self.user.set_password(self.cleaned_data["newpassword"])
+        # print self.user.set_password(self.cleaned_data["newpassword"])
         if commit:
             self.user.save()
         return self.user

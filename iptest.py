@@ -30,3 +30,5 @@ print "网段 - 掩码","-" * 5,IP(ip_list).strNormal(2)
 print "网段 - 掩码","-" * 5,IP(ip_list).strNormal(1)
 
 print "=" * 60
+
+

@@ -12,36 +12,36 @@ from django.core.context_processors import csrf
 from django.contrib import auth
 
 
-@login_required
-def index(request):
-    title = 'Toolkits &middot; 管理 - 首页'
-    return render_to_response('main.html', locals(), context_instance=RequestContext(request))
 
+@login_required
 @csrf_protect
 def register(request):
     content = {}
-    if request.method == 'POST':
-        print u"注册数据"
-        form = UserCreateForm(request.POST) # UserCreationForm(request.POST)
-        print u"验证完成"
-        if form.is_valid():
-            # form.is_staff = 1
-            new_user = form.save(commit=False)
-            new_user.is_staff = 1
-            new_user.save()
-            # perhaps set permissions of the new user
-            # return render(request, 'registration/success.html') # need to create success.html
-            return HttpResponseRedirect('/')
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            print u"注册数据"
+            form = UserCreateForm(request.POST) # UserCreationForm(request.POST)
+            print u"验证完成"
+            if form.is_valid():
+                # form.is_staff = 1
+                new_user = form.save(commit=False)
+                new_user.is_staff = 1
+                new_user.save()
+                # perhaps set permissions of the new user
+                # return render(request, 'registration/success.html') # need to create success.html
+                return HttpResponseRedirect('/')
+            else:
+                content["form"] = form
+                content.update(csrf(request))
+                return render_to_response('user/reg.html',content,context_instance=RequestContext(request))
         else:
-            content["form"] = form
+            data = UserCreateForm() # UserCreationForm()
+            content["data"] = data
             content.update(csrf(request))
+            # return render(request, 'user/reg.html', context_instance=RequestContext(request))
             return render_to_response('user/reg.html',content,context_instance=RequestContext(request))
-    else:
-        data = UserCreateForm() # UserCreationForm()
-        content["data"] = data
-        content.update(csrf(request))
-        # return render(request, 'user/reg.html', context_instance=RequestContext(request))
-        return render_to_response('user/reg.html',content,context_instance=RequestContext(request))
+
+    return render_to_response('user/auth_error_index.html', context_instance=RequestContext(request))
 
 #注销
 def logout_view(request):

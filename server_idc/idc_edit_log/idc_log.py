@@ -28,8 +28,11 @@ def idc_log(edit_user_name, edit_server_nodename, edit_server_type, old_editname
 
 def server_log_list(request):
     context = {}
-    log_list = service_log.objects.all().order_by("-id")
-    context["log"] = log_list
-    context["server_type"] = MyForm.objects.all()
-    context.update(csrf(request))
-    return render_to_response('server_idc/log.html',context,context_instance=RequestContext(request))
+    if request.user.is_superuser:
+        log_list = service_log.objects.all().order_by("-id")
+        context["log"] = log_list
+        context["server_type"] = MyForm.objects.all()
+        context.update(csrf(request))
+        return render_to_response('server_idc/log.html',context,context_instance=RequestContext(request))
+    else:
+        return render_to_response('user/auth_error_index.html',context,context_instance=RequestContext(request))

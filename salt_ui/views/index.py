@@ -16,8 +16,8 @@ from django.core.context_processors import csrf
 from django.shortcuts import get_object_or_404
 from salt_ui.api.salt_token_id import *
 from salt_ui.api.salt_https_api import salt_api_jobs
-from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
-from server_idc.models import  Host
+from mysite.settings import  salt_api_pass,salt_api_user, salt_api_url ,pxe_url_api
+from server_idc.models import Host
 
 #日志记录
 from salt_ui.log_class.api_log_class import salt_log
@@ -25,7 +25,7 @@ from salt_ui.log_class.api_log_class import salt_log
 #songxs add
 @login_required
 def salt_index(request):
-    return render_to_response('saltstack/salt_index.html',context_instance=RequestContext(request))
+    return render_to_response('saltstack/salt_index.html', context_instance=RequestContext(request))
 
 @login_required
 def salt_status(request,id):
@@ -67,7 +67,7 @@ def salt_status(request,id):
                 node_name_update.append(node)
         context["node_name_update"] = node_name_update
         context.update(csrf(request))
-        return render_to_response('saltstack/salt_status.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_status.html', context, context_instance=RequestContext(request))
     if id == 2:
         token_api_id = token_id()
         list = salt_api_token(
@@ -81,10 +81,10 @@ def salt_status(request,id):
         list = list.run()
         context["salt_key"]=list["return"]
         context.update(csrf(request))
-        return render_to_response('saltstack/salt_key.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_key.html', context, context_instance=RequestContext(request))
     if id == 3:
         context.update(csrf(request))
-        return render_to_response('saltstack/salt_cmd.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_cmd.html', context, context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect
@@ -137,7 +137,7 @@ def salt_cmd(request):
             # print yaml.dump(context["cmd_run"])
             #日志入库
             salt_log(request.user.username, context["minions"], int(jobs_id), salt_api_type, context["len_node"], salt_cmd_lr, context["cmd_run"])
-            return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
+            return render_to_response('saltstack/salt_cmd_run.html', context, context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
         elif salt_api_type == "grains" :
             salt_cmd_lr = salt_text['salt_cmd']
@@ -176,10 +176,10 @@ def salt_cmd(request):
             context.update(csrf(request))
             #日志入库
             salt_log(request.user.username, context["minions"], int(jobs_id), salt_api_type, context["len_node"], salt_cmd_lr, context["cmd_run"])
-            return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
-        elif salt_api_type == "ping" :
+            return render_to_response('saltstack/salt_cmd_grains_run.html', context, context_instance=RequestContext(request))
+        elif salt_api_type == "ping":
             salt_cmd_lr = salt_text['salt_cmd']
-            if len(salt_text["salt_node_name"]) >0:
+            if len(salt_text["salt_node_name"]) > 0:
                 salt_node_name = salt_text["salt_node_name"]
             else:
                 salt_node_name = "*"
@@ -213,9 +213,9 @@ def salt_cmd(request):
             context.update(csrf(request))
             #日志入库
             salt_log(request.user.username, context["minions"], int(jobs_id), salt_api_type, context["len_node"], salt_cmd_lr, context["cmd_run"])
-            return render_to_response('saltstack/test_ping.html',context,context_instance=RequestContext(request))
+            return render_to_response('saltstack/test_ping.html', context, context_instance=RequestContext(request))
         else:
-            return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
+            return render_to_response('saltstack/salt_cmd_run.html', context, context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect
@@ -243,19 +243,19 @@ def salt_garins(request):
             context["cmd_Advanced"]=False
             context["salt_cmd"]=salt_text['salt_cmd']
             context.update(csrf(request))
-            return render_to_response('saltstack/salt_cmd_grains_run.html',context,context_instance=RequestContext(request))
+            return render_to_response('saltstack/salt_cmd_grains_run.html', context, context_instance=RequestContext(request))
             #     #return HttpResponse(json.dumps(cmd))
 
     else:
         context.update(csrf(request))
-        return render_to_response('saltstack/salt_garins.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_garins.html', context, context_instance=RequestContext(request))
 
 #自动化部署
 @login_required
 @csrf_protect
 def salt_nginx(request):
      context = {}
-     return render_to_response('saltstack/salt_cmd_run.html',context,context_instance=RequestContext(request))
+     return render_to_response('saltstack/salt_cmd_run.html', context, context_instance=RequestContext(request))
 
 #系统初始化
 @login_required
@@ -264,7 +264,7 @@ def salt_check_install(request):
      context = {}
      if request.method == 'POST':
         salt_text = request.POST
-        return render_to_response('saltstack/salt_check_install.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_check_install.html', context, context_instance=RequestContext(request))
      else:
          server_list = open("/srv/salt/check_install/hostname.jinja","r")
          server = server_list.read()
@@ -276,7 +276,7 @@ def salt_check_install(request):
          context["node"] = node
          context["cmd_Advanced"]=True
          context.update(csrf(request))
-         return render_to_response('saltstack/salt_check_install.html',context,context_instance=RequestContext(request))
+         return render_to_response('saltstack/salt_check_install.html', context, context_instance=RequestContext(request))
 
 #jinja
 @login_required
@@ -290,7 +290,7 @@ def salt_check_jinja(request):
         server_list.write(salt_text['salt_content_jinja'])
         server_list.close()
         context["cmd_Advanced"] = True
-        return render_to_response('saltstack/salt_check_over.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_check_over.html', context, context_instance=RequestContext(request))
 
 
 
@@ -307,7 +307,7 @@ def salt_check_node(request):
         server_list.close()
         context["server_list"] = server_list
         context["cmd_Advanced"] = True
-        return render_to_response('saltstack/salt_check_over.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_check_over.html', context, context_instance=RequestContext(request))
 
 #salt_node_shell
 @login_required
@@ -321,7 +321,7 @@ def salt_check_setup(request):
         context['salt_cmd'] = cmd
         context["cmd_Advanced"] = True
         context.update(csrf(request))
-        return render_to_response('saltstack/salt_check_setup.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_check_setup.html', context, context_instance=RequestContext(request))
 
 
 #salt_node_shell
@@ -350,11 +350,11 @@ def salt_state_sls(request):
         context["cmd_Advanced"] = True
         context.update(csrf(request))
         #return HttpResponse(json.dumps(context["salt_cmd"]),context_instance=RequestContext(request))
-        return render_to_response('saltstack/salt_check_setup.html',context,context_instance=RequestContext(request))
+        return render_to_response('saltstack/salt_check_setup.html', context, context_instance=RequestContext(request))
      else:
          context["cmd_Advanced"] = False
          context.update(csrf(request))
-         return render_to_response('saltstack/salt_state_sls.html',context,context_instance=RequestContext(request))
+         return render_to_response('saltstack/salt_state_sls.html', context, context_instance=RequestContext(request))
 
 
 
