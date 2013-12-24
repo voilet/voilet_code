@@ -54,6 +54,7 @@ def server_update(request,id):
             zw.old_editname = edit_id.edit_username
             zw.old_editdatetime = edit_id.edit_datetime
             zw.create_time = edit_id.create_time
+            zw.auto_install = edit_id.auto_install
             zw.id=edit_id.id
             zw.save()
             uf.save_m2m()

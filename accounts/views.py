@@ -10,7 +10,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.core.context_processors import csrf
 from django.contrib import auth
+from accounts.models import department_Mode, manager_demo
 
+from forms import UserEditForm
 
 
 @login_required
@@ -47,3 +49,12 @@ def register(request):
 def logout_view(request):
     auth.logout(request)
     return HttpResponseRedirect("/")
+
+def Test_voilet(request):
+    content = {}
+    voilet = UserEditForm()
+    content["voilet"] = voilet
+    content["department"] = department_Mode.objects.all()
+    content["jobs_name"] = manager_demo
+    content.update(csrf(request))
+    return render_to_response('user/test.html',content,context_instance=RequestContext(request))

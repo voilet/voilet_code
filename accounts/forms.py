@@ -4,7 +4,7 @@
 from django import forms
 from fields import UsernameField,PasswordField
 from django.contrib.auth import authenticate,login
-
+from accounts.models import User
 
 class LoginForm(forms.Form):
     username = UsernameField(required=True, max_length=12, min_length=4)
@@ -21,9 +21,9 @@ class LoginForm(forms.Form):
         if username and password:
             self.user_cache = authenticate(username=username, password=password)
             if self.user_cache is None:
-                raise forms.ValidationError("您输入的用户名或密码不正确!")
+                raise forms.ValidationError(u"您输入的用户名或密码不正确!")
             elif not self.user_cache.is_active or not self.user_cache.is_staff:
-                raise forms.ValidationError("您输入的用户名或密码不正确!")
+                raise forms.ValidationError(u"您输入的用户名或密码不正确!")
             else:
                 login(self.request, self.user_cache)
         return self.cleaned_data
@@ -64,3 +64,9 @@ class ChangePasswordForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
+
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'department', 'jobs']

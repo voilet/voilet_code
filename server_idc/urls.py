@@ -31,6 +31,8 @@ urlpatterns = patterns('',
     url(r'server/type/notid/', 'server_idc.value_class.service_type.server_type_notnode'),
     url(r'server/edit/log/', 'server_idc.idc_edit_log.idc_log.server_log_list'),
     url(r'server/list/', 'server_idc.value_class.index.services_list_all'),
+    url(r'server/install/', 'server_idc.value_class.index.services_install_all'),
+    url(r'server/install_error/', 'server_idc.value_class.index.services_install_error'),
     url(r'server/add/', 'server_idc.value_class.index.Index_add'),
     url(r'server/node_del/(?P<id>\d+)/$', 'server_idc.value_class.index.server_id_delete'),
 

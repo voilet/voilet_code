@@ -45,31 +45,31 @@ def Index_add(request):
         usage = request.POST.getlist("usage")
         # create_time = time.strftime('%Y-%m-%d',time.localtime(time.time())) # %H:%M:%S
         if uf.is_valid(): #验证数据有效性
-            u'''向pxe提交数据'''
-            pxe_data = pxe_api({
-                "hostname":node_name[0].encode("utf8"),
-                "operating":operating[0].encode("utf8").lower() + "_6u4_64",
-                "mac":mac[0].encode("utf8"),
-                "usage":usage[0].encode("utf8"),
-                "model":model[0].encode("utf8").lower(),
-            },pxe_url_api)
-            pxe_post_data = json.load(pxe_data.run())
-            if pxe_post_data["status"] !=200:
-                print "is over"
-                return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
-            else:
-                uf.save()
-                """
-                如果commit为False,则ManyToMany就需要使用以下方法
-                """
-                zw = uf.save(commit=False)
-                zw.edit_username = request.user.username
-                zw.save()
-                uf.save_m2m()
-                uf = Host_from()
-                content['uf'] = uf
-                content.update(csrf(request))
-                return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
+            # u'''向pxe提交数据'''
+            # pxe_data = pxe_api({
+            #     "hostname":node_name[0].encode("utf8"),
+            #     "operating":operating[0].encode("utf8").lower() + "_6u4_64",
+            #     "mac":mac[0].encode("utf8"),
+            #     "usage":usage[0].encode("utf8"),
+            #     "model":model[0].encode("utf8").lower(),
+            # },pxe_url_api)
+            # pxe_post_data = json.load(pxe_data.run())
+            # if pxe_post_data["status"] !=200:
+            #     print "is over"
+            #     return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
+            # else:
+            uf.save()
+            """
+            如果commit为False,则ManyToMany就需要使用以下方法
+            """
+            zw = uf.save(commit=False)
+            zw.edit_username = request.user.username
+            zw.save()
+            uf.save_m2m()
+            uf = Host_from()
+            content['uf'] = uf
+            content.update(csrf(request))
+            return render_to_response('server_idc/index.html',content,context_instance=RequestContext(request))
         else:
             print "save error"
             uf = Host_from()
@@ -95,6 +95,30 @@ def services_list_all(request):
     content.update(csrf(request))
     # return render_to_response('server_idc/list_test.html',content,context_instance=RequestContext(request))
     return render_to_response('server_idc/list.html',content,context_instance=RequestContext(request))
+
+@login_required
+@csrf_protect
+def services_install_all(request):
+    content = {}
+    server_list = Host.objects.filter(auto_install=0).order_by("-id")
+    server_type = MyForm.objects.all()
+    content["server_type"] = server_type
+    content["list"] = server_list
+    content.update(csrf(request))
+    # return render_to_response('server_idc/list_test.html',content,context_instance=RequestContext(request))
+    return render_to_response('server_idc/install_list.html',content,context_instance=RequestContext(request))
+
+@login_required
+@csrf_protect
+def services_install_error(request):
+    content = {}
+    server_list = Host.objects.filter(auto_install=2).order_by("-id")
+    server_type = MyForm.objects.all()
+    content["server_type"] = server_type
+    content["list"] = server_list
+    content.update(csrf(request))
+    # return render_to_response('server_idc/list_test.html',content,context_instance=RequestContext(request))
+    return render_to_response('server_idc/install_error.html',content,context_instance=RequestContext(request))
 
 @login_required
 @csrf_protect

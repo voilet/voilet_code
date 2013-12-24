@@ -23,7 +23,7 @@ import datetime
 # from accounts.models import ProfileBase
 
 
-manager_demo = [(i, i) for i in (u"经理", u"主管", u"项目责任人",u"管理员",u"BOOS")]
+manager_demo = [(i, i) for i in (u"经理", u"主管", u"项目责任人", u"管理员", u"BOOS")]
 
 
 class ProfileBase(type):
@@ -55,7 +55,7 @@ class DepartmentGroup(models.Model):
 
 class department_Mode(models.Model):
     department_name = models.CharField(max_length=64, blank=True, null=True, verbose_name=u'部门名称')
-    dt_group = models.ForeignKey(DepartmentGroup, blank=True, null=True, verbose_name=u"部门组")
+    # dt_group = models.ForeignKey(DepartmentGroup, blank=True, null=True, verbose_name=u"部门组")
     description = models.TextField(verbose_name=u"介绍", blank=True, null=True,)
 
     def __unicode__(self):
@@ -87,7 +87,6 @@ class UserCreateForm(UserCreationForm):
         fields = ('username', 'first_name', 'password1', 'password2', 'department', 'jobs')
 
     def save(self, commit=True):
-        print "save is ................"
         user = super(UserCreateForm, self).save(commit)
         user.first_name = self.cleaned_data["first_name"]
         user.department = self.cleaned_data["department"]

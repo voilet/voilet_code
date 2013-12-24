@@ -96,7 +96,11 @@
     <pre>以下用户拥有此业务权限</pre>
     <ul class="list-unstyled list-inline">
         {% for i in server_user_all %}
-				<li><button type="button" class="btn btn-default">{{ i.first_name }}</button></li>
+            {% if i.first_name %}
+				<a href="/accounts/user/{{ i.id }}"><li><button type="button" class="btn btn-default">{{ i.first_name }}</button></li></a>
+                {% else %}
+                <a href="/accounts/user/{{ i.id }}"><li><button type="button" class="btn btn-default">{{ i.username }}</button></li></a>
+            {% endif %}
         {% endfor %}
 	</ul>
     <div  class="voilet_page">

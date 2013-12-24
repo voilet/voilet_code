@@ -61,6 +61,7 @@ def salt_update_node(request):
             # uf.save()
             zw = uf.save(commit=False)
             zw.edit_username = request.user.username
+            zw.auto_install = 1
             zw.save()
             uf.save_m2m()
             uf = Host_from()

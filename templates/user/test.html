@@ -8,6 +8,24 @@
     {% endif %}
     <form class="form-horizontal" method="post" action="" role="form">{% csrf_token %}
         <div class="form-group">
+             <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-10">
+                <input class="form-control" id="id_username" type="text" value="{{ user_list.username }}" name="username" />
+            </div>
+        </div>
+        <div class="form-group">
+             <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-10">
+                <input class="form-control" id="id_password1"  name="password1" type="password" />
+            </div>
+        </div>
+        <div class="form-group">
+             <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+            <div class="col-sm-10">
+                <input class="form-control" id="id_password2"  name="password2" type="password" />
+            </div>
+        </div>
+        <div class="form-group">
              <label for="inputEmail3" class="col-sm-2 control-label">姓名</label>
             <div class="col-sm-10">
                 <input class="form-control" id="id_first_name" type="text" value="{{ user_list.first_name }}" name="first_name" />
@@ -18,13 +36,10 @@
             <div class="col-sm-10">
                 <select id="id_department" name="department">
                     {% for i in department %}
-                        {% if i == user_list.department  %}
-                            <option selected="selected" value="{{ i.id }}">{{ i.department_name }}</option>
-                            {% else %}
-                            <option value="{{ i.id }}">{{ i.department_name }}</option>
-                        {% endif %}
+                    <option value="{{ i.id }}">{{ i.department_name }}</option>
                     {% endfor %}
                 </select>
+{#                {{ user_list.department }}#}
             </div>
         </div>
         <div class="form-group">
@@ -32,16 +47,13 @@
             <div class="col-sm-10">
                 <select id="id_jobs" name="jobs">
                     {% for i,v in jobs_name %}
-                            {% if i == user_list.jobs %}
-                            <option selected="selected" value="{{ i}}">{{ i }}</option>
-                            {% else %}
-                            <option value="{{ i}}">{{ i }}</option>
-                            {% endif %}
+                    <option value="{{ i}}">{{ i }}</option>
                     {% endfor %}
-
                 </select>
             </div>
         </div>
+        <input id="initial-id_last_login" name="date_joined" value="{{ data_time }}" type="hidden" />
+        <input id="initial-id_date_joined" name="last_login" value="{{ data_time }}" type="hidden" />
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                  <button type="submit" class="btn btn-success btn-default btn-block">提交</button>

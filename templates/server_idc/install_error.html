@@ -4,7 +4,7 @@
 {% autopaginate list 10 %}
 <div id="content-block" class="col-sm-11 col-md-10">
 <table class="table table-bordered">
-    <pre>服务器列表</pre>
+    <pre>安装系统失败服务器列表</pre>
 	<thead>
 		<tr>
 			<th>
@@ -38,16 +38,13 @@
 				资产编号
 			</th>
             <th>
-				修改
-			</th>
-            <th>
-				更新
+				状态
 			</th>
 
 		</tr>
 	</thead>
     {% for i in list %}
-        {% if i.auto_install == 1 %}
+{#        {% if i.auto_install == 0 %}#}
 	<tbody>
 		<tr >
 			<td width="200">
@@ -87,15 +84,11 @@
 				{{ i.number }}
 			</td>
             <td width="50">
-				<a href="/assets/edit_id/{{ i.id }}/" class="btn btn-xs btn-primary" data-toggle="modal">修改</a>
-			</td>
-            <td width="50">
-				<a href="/assets/update_id/{{ i.id }}/" class="btn btn-success btn-xs" data-toggle="modal">更新</a>
-{#				<button class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal{{ i.id }}">更新</button>#}
+				<button class="btn btn-danger btn-xs" data-toggle="modal">系统安装失败</button>
 			</td>
 		</tr>
 	</tbody>
-        {% endif %}
+{#        {% endif %}#}
     {% endfor %}
     </table>
     <div  class="voilet_page">

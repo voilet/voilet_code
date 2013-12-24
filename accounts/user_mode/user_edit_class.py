@@ -19,6 +19,7 @@ from django.contrib.auth.hashers import make_password
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_protect
 from accounts.models import *
+from accounts.forms import UserEditForm
 import time,json
 
 class edit_user_from(forms.ModelForm):
@@ -51,22 +52,17 @@ def user_edit(request, id):
     if request.user.is_superuser:
         if request.method == 'POST':
             if request.POST.getlist("password1") == request.POST.getlist("password2"):
-                uf = edit_user_from(request.POST)
+                uf = UserEditForm(request.POST)
                 if uf.is_valid():
-                    print "is ok"
-                    zw = uf.save(commit=False)
-                    zw.last_login = data_time
-                    zw.date_joined = data_time
-                    zw.id = id
-                    zw.password = make_password(request.POST.getlist("password1"))
-                    zw.save()
-                    content["user_list"] = voilet_list
-                    content.update(csrf(request))
-                    return render_to_response('user/user_edit.html',content,context_instance=RequestContext(request))
+                    voilet_list.department = uf.instance.department
+                    voilet_list.jobs = uf.instance.jobs
+                    voilet_list.first_name = uf.instance.first_name
+                    voilet_list.save()
+                    return HttpResponseRedirect('/accounts/user/' + id + '/')
                 else:
                     print "is over"
         else:
-            content["data_time"] = data_time
+            content["userall"] = UserEditForm()
             content["user_list"] = voilet_list
             content["department"] = department_Mode.objects.all()
             content["jobs_name"] = manager_demo
@@ -74,6 +70,36 @@ def user_edit(request, id):
             return render_to_response('user/user_edit.html',content,context_instance=RequestContext(request))
     else:
         return render_to_response('user/auth_error_index.html', context_instance=RequestContext(request))
+
+@login_required
+@csrf_protect
+def user_id(request, id):
+    voilet_list = User.objects.get(id=id)
+    content = {}
+    data_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+    if request.method == 'POST':
+        if request.POST.getlist("password1") == request.POST.getlist("password2"):
+            uf = edit_user_from(request.POST)
+            if uf.is_valid():
+                print "is ok"
+                zw = uf.save(commit=False)
+                zw.last_login = data_time
+                zw.date_joined = data_time
+                zw.id = id
+                zw.password = make_password(request.POST.getlist("password1"))
+                zw.save()
+                content["user_list"] = voilet_list
+                content.update(csrf(request))
+                return render_to_response('user/user_edit.html',content,context_instance=RequestContext(request))
+            else:
+                print "is over"
+    else:
+        content["data_time"] = data_time
+        content["user_list"] = voilet_list
+        content["department"] = department_Mode.objects.all()
+        content["jobs_name"] = manager_demo
+        content.update(csrf(request))
+        return render_to_response('user/user_page.html',content,context_instance=RequestContext(request))
 
 class department_from(forms.ModelForm):
     class Meta:
