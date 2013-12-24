@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'server/install/', 'server_idc.value_class.index.services_install_all'),
     url(r'server/install_error/', 'server_idc.value_class.index.services_install_error'),
     url(r'server/add/', 'server_idc.value_class.index.Index_add'),
+    url(r'server/room/', 'server_idc.value_class.Engine_room.Engine_Room'),
     url(r'server/node_del/(?P<id>\d+)/$', 'server_idc.value_class.index.server_id_delete'),
 
     url(r'/', 'server_idc.value_class.index.services_list_all'),

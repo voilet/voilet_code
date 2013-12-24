@@ -148,6 +148,7 @@ def server_edit(request,id):
             zw.edit_username = request.user.username
             zw.old_editname = edit_id.edit_username
             zw.old_editdatetime = edit_id.edit_datetime
+            zw.auto_install = edit_id.auto_install
             zw.id=edit_id.id
             zw.create_time = edit_id.create_time
             zw.save()

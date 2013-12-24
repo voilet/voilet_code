@@ -97,9 +97,9 @@
     <ul class="list-unstyled list-inline">
         {% for i in server_user_all %}
             {% if i.first_name %}
-				<a href="/accounts/user/{{ i.id }}"><li><button type="button" class="btn btn-default">{{ i.first_name }}</button></li></a>
+				<a href="/accounts/user/{{ i.id }}"><button type="button" class="btn btn-default"><li>{{ i.first_name }}</li></button></a>
                 {% else %}
-                <a href="/accounts/user/{{ i.id }}"><li><button type="button" class="btn btn-default">{{ i.username }}</button></li></a>
+                <a href="/accounts/user/{{ i.id }}"><button type="button" class="btn btn-default"><li>{{ i.username }}</li></button></a>
             {% endif %}
         {% endfor %}
 	</ul>
@@ -111,7 +111,11 @@
     <pre>以下用户拥有此业务权限</pre>
     <ul class="list-unstyled list-inline">
         {% for i in server_user_all %}
-				<li><button type="button" class="btn btn-default">{{ i.first_name }}</button></li>
+            {% if i.first_name %}
+				<a href="/accounts/user/{{ i.id }}"><button type="button" class="btn btn-default"><li>{{ i.first_name }}</li></button></a>
+                {% else %}
+                <a href="/accounts/user/{{ i.id }}"><button type="button" class="btn btn-default"><li>{{ i.username }}</li></button></a>
+            {% endif %}
         {% endfor %}
 	</ul>
     {% endif %}
