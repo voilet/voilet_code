@@ -127,4 +127,13 @@ def salt_update_node(request):
         return render_to_response('saltstack/node_add.html',context,context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect("/assets/server/list/")
-        # return render_to_response('saltstack/node_add.html',context,context_instance=RequestContext(request))
+
+#判断选择了多少台主机
+@login_required
+@csrf_protect
+def salt_delete_key(request):
+    delete_name = request.GET['node_name']
+    token_api_id = token_id()
+    list = salt_api_token({'client' : 'wheel', 'fun': 'key.delete', 'match':delete_name}, salt_api_url, {"X-Auth-Token": token_api_id})
+    list.run()
+    return HttpResponseRedirect("/salt/1/")

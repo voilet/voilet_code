@@ -48,6 +48,7 @@
 		</tr>
 	</thead>
         {% for i in list %}
+            {% if i.auto_install == 1 %}
         <tbody>
             <tr >
                 <td width="160">
@@ -91,6 +92,7 @@
 			</td>
             </tr>
         </tbody>
+            {% endif %}
         {% endfor %}
     </table>
     <pre>以下用户拥有此业务权限</pre>

@@ -3,20 +3,61 @@
 <div class="col-md-10 column" id="salt_cmd">
 {#    <div class="jumbotron" id="salt_cmd">#}
         <pre>当前存活主机{{ live }}台</pre>
-        <div class="thumbnail">
-        {% for i in up %}
-            {% if i in node_name_update %}
-            <p>{{ i|safe }} <a href="/salt/update_node/?node_name={{ i|safe }}" class="btn btn-success btn-xs" data-toggle="modal">上报资产</a></p>
+{#        <div class="thumbnail">#}
+{#        {% for i in up %}#}
+{#            {% if i in node_name_update %}#}
+{#            <p>{{ i|safe }} <a href="/salt/update_node/?node_name={{ i|safe }}" class="btn btn-success btn-xs" data-toggle="modal">上报资产</a></p>#}
+{#                {% else %}#}
+{#            <p>{{ i|safe }} <button  class="btn btn-warning btn-xs" data-toggle="modal">已入库</button></p>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#        </div>#}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        主机名
+                    </th>
+                    <th>
+                        是否入库
+                    </th>
+                </tr>
+            </thead>
+            {% for i in up %}
+                {% if i in node_name_update %}
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ i|safe }}
+                        </td>
+                        <td>
+                            <a href="/salt/update_node/?node_name={{ i|safe }}" class="btn btn-success btn-xs" data-toggle="modal">上报资产</a>
+                        </td>
+                    </tr>
+                </tbody>
                 {% else %}
-            <p>{{ i|safe }} <button  class="btn btn-warning btn-xs" data-toggle="modal">已入库</button></p>
-            {% endif %}
-        {% endfor %}
-        </div>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ i|safe }}
+                        </td>
+                        <td>
+                            <button  class="btn btn-warning btn-xs" data-toggle="modal">已入库</button>
+                        </td>
+                    </tr>
+                </tbody>
+                {% endif %}
+            {% endfor %}
+        </table>
         <pre>不在线主机{{ live_down }}台</pre>
+        {% if live_down != 0  %}
         <div class="thumbnail">
-        {% for i in down %}
-            <p>{{ i|safe }}</p>
-        {% endfor %}
+            {% for i in down %}
+                <p>{{ i|safe }} <a href="/salt/delete_key/?node_name={{ i|safe }}" class="btn btn-success btn-xs" data-toggle="modal">删除key</a></p>
+            {% endfor %}
+           {% else %}
+            <p>没有无效主机<p>
+        {% endif %}
         </div>
 {#        {{ master_status.up }}#}
 {#        {% for i in master_status.up %}#}

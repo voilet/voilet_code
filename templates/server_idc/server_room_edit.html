@@ -27,19 +27,19 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">机房名称</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_name" value="{{ room_list.name }}" type="text" name="name" />
+                    <input class="form-control" id="id_name" type="text" name="name" />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">机房电话</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_telphone" value="{{ room_list.telphone }}" type="text" name="telphone"  />
+                    <input class="form-control" id="id_telphone" type="text" name="telphone"  />
                 </div>
             </div>
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label">备注</label>
                 <div class="col-sm-10">
-                    <textarea id="id_description" class="form-control"  rows="10" name="description" cols="83">{{ room_list.description }}</textarea>
+                    <textarea id="id_description" class="form-control" rows="10" name="description" cols="83"></textarea>
                 </div>
             </div>
         <div class="form-group">
@@ -48,7 +48,9 @@
             </div>
         </div>
     </div>
+
 </form>
+{#{{ uf }}#}
 {% include 'default/footer.html' %}
 
 
