@@ -1,8 +1,8 @@
 {% include "default/header.html" %}
 {% include "default/index_left.html" %}
 <div class="col-md-10 column" id="salt_cmd">
-<pre>{% for i in salt_key %}{% for k,v in i.items %}{{ v }}{% if k == "down" %}<button type="button" class="btn btn-success btn-xs">异常</button>{% else %}<button type="button" class="btn btn-success btn-xs">正常</button>{% endif %}
-{% endfor %}
+<pre>所有saltstack主机列表</pre>
+<pre>{% for i in salt_key %}{{ i }}
 {% endfor %}</pre>
 </div>
 {% include "default/footer.html" %}

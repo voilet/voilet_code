@@ -34,9 +34,9 @@
 			<th>
 				业务
 			</th>
-{#			<th>#}
-{#				资产编号#}
-{#			</th>#}
+			<th>
+				资产编号
+			</th>
             <th>
 				修改
 			</th>
@@ -47,7 +47,7 @@
 		</tr>
 	</thead>
     {% for i in list %}
-{#        {% if i.auto_install == 1 %}#}
+        {% if i.auto_install == 1 %}
 	<tbody>
 		<tr >
 			<td width="200">
@@ -83,9 +83,9 @@
                     <a href="/assets/server/server_type/{{ test.id }}/ ">{{ test.service_name }}</a>
                 {% endfor %}
 			</td>
-{#			<td>#}
-{#				{{ i.number }}#}
-{#			</td>#}
+			<td>
+				{{ i.number }}
+			</td>
             <td width="50">
 				<a href="/assets/edit_id/{{ i.id }}/" class="btn btn-xs btn-primary" data-toggle="modal">修改</a>
 			</td>
@@ -95,7 +95,7 @@
 			</td>
 		</tr>
 	</tbody>
-{#        {% endif %}#}
+        {% endif %}
     {% endfor %}
     </table>
     <div  class="voilet_page">

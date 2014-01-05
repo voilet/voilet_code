@@ -72,14 +72,16 @@ def salt_status(request,id):
         token_api_id = token_id()
         list = salt_api_token(
         {
-        "client":'runner',
-        "fun":"manage.status",
+        "client":'wheel',
+        "fun":"key.list_all",
                    },
         salt_api_url,
         {"X-Auth-Token": token_api_id}
         )
         list = list.run()
-        context["salt_key"]=list["return"]
+        for i in list["return"]:
+            minions = i["data"]["return"]["minions"]
+        context["salt_key"] = minions
         context.update(csrf(request))
         return render_to_response('saltstack/salt_key.html', context, context_instance=RequestContext(request))
     if id == 3:
