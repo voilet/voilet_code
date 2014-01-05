@@ -83,7 +83,7 @@ class Host(models.Model):
     edit_datetime = models.DateTimeField(u"修改时间", blank=True, null=True, auto_now=True)
     old_editname = models.CharField(max_length=32, blank=True, null=True, verbose_name=u"上次修改人")
     old_editdatetime = models.DateTimeField(u"上次修改时间", blank=True, null=True,)
-    auto_install = models.CharField(verbose_name=u"是否初始化", max_length=5, blank=True, null=True, default=0)
+    auto_install = models.IntegerField(verbose_name=u"是否初始化", max_length=1, blank=True, null=True, default=0)
 
     def __unicode__(self):
         return self.node_name

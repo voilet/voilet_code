@@ -18,17 +18,29 @@
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     vertical-align: middle;
     width: 100%;
+
 }
 </style>
+<script type="text/javascript" src="/static/js/from_js/jquery.validVal.js"></script>
+    <script type="text/javascript" src="/static/js/from_js/jquery.validVal-customValidations.js"></script>
+    <script type="text/javascript" src="/static/js/from_js/jquery.validVal-debugger.js"></script>
+
+<script type="text/javascript">
+			$(function() {
+				//$('form[name="form1"]').validVal().validValDebug();
+				$('form[name="form2"]').validVal();
+			});
+		</script>
+
 <div id="content-block" class="col-sm-11 col-md-10"><pre>红色为必填项</pre></div>
-<form class="form-horizontal"  method="post" role="form">
+<form class="form-horizontal"  method="post" role="form" name="form2">
 {#    <form class="exform form-horizontal" action="opadd" method="post" id="post_form" style="padding-top:8px;">#}
     {% csrf_token %}
     <div id="content-block" class="col-sm-11 col-md-5">
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: #ff0000">主机名</span></label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_node_name" name="node_name" type="text" />
+                    <input class="form-control" id="id_node_name" name="node_name" required type="text" />
                 </div>
             </div>
             <div class="form-group">
@@ -46,7 +58,7 @@
             <div class="form-group">
                  <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: #ff0000">MAC地址</span></label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="id_mac" maxlength="20" name="mac"  placeholder="格式:FA-16-3E-41-0B-BA" type="text" />
+                    <input class="form-control" id="id_mac" maxlength="20" name="mac"  placeholder="格式:FA-16-3E-41-0B-BA" required type="text" />
                 </div>
             </div>
             <div class="form-group">
@@ -120,7 +132,7 @@
 {#        </div>#}
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                 <button type="submit" class="btn btn-success btn-block">保存</button>
+                 <button type="submit" value="Submit" class="btn btn-success btn-block">保存</button>
             </div>
         </div>
     </div>
@@ -242,6 +254,4 @@
 </script>
 
 <!-- baidu ueditor end -->
-
-
 
