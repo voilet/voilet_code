@@ -24,14 +24,17 @@ config.py为所有配置文件
     </pre>
 
 # 生成库结构
+
     <pre>
     python manage.py syncdb
     </pre>
 
 # 启动django
+
     <pre>
     python manage.py runserver
     </pre>
+
 # 下载服务维护脚本
     <pre>
     wget https://raw.github.com/saltstack/salt-api/develop/pkg/rpm/salt-api -O /etc/init.d/salt-api
@@ -42,6 +45,7 @@ config.py为所有配置文件
     生成自签名证书(用于ssl)
 
 # 配置salt-api
+
     cd  /etc/pki/tls/certs
     生成自签名证书
     过程中需要输入key密码及RDNs
@@ -62,7 +66,8 @@ config.py为所有配置文件
         sa:
           - .*
 
-# 配置Salt-API,
+# 配置Salt-API
+
     <pre>
     /etc/salt/master.d/api.conf
     rest_cherrypy:
@@ -70,7 +75,9 @@ config.py为所有配置文件
       ssl_crt: /etc/pki/tls/certs/localhost.crt
       ssl_key: /etc/pki/tls/private/localhost_nopass.key
     </pre>
+
 # 启动Salt-API
+
     </pre>
     service salt-api start
     curl -k https://192.168.38.10/login -H "Accept: application/x-yaml" \
