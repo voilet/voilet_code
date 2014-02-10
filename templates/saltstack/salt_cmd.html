@@ -20,9 +20,9 @@
 {#        </ul></div><div class="clear"></div>#}
         <div class="tabbable" id="tabs-682448">
 				<ul class="nav nav-tabs">
-                        <li class="active"><a href="#panel-205003" data-toggle="tab">说明：</a></li>
+                        <li class="active"><a href="#panel-977178" data-toggle="tab">说明：</a></li>
                         {% for i in service_name %}
-                            <li><a href="#panel-977178{{ i.id }}" data-toggle="tab">{{ i }}</a></li>
+                            <li><a href="#panel-977178" data-toggle="tab">{{ i }}</a></li>
                         {% endfor %}
 				</ul>
 				<div class="tab-content">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     {% for i in service_name %}
-                        <div class="tab-pane" id="panel-977178{{ i.id }}">
+                        <div class="tab-pane" id="panel-977178">
                             <p>
                             {% for v in node_list %}
                                 {% for k,l in v.items %}
