@@ -3,14 +3,14 @@
 # 安装pip
 然后安装python所需扩展
 
-<pre>
+
 pip install -r requirements.txt
 </pre>
 
 config.py为所有配置文件
 
 # 安装saltstack
-    <pre>
+    
     wget -O - http://bootstrap.saltstack.org | sudo sh
     </pre>
 
@@ -19,28 +19,27 @@ config.py为所有配置文件
 
 
 # 安装salt-api
-    <pre>
+    
     pip install salt-api
     </pre>
 
 # 生成库结构
 
-    <pre>
     python manage.py syncdb
-    </pre>
+
 
 # 启动django
 
-    <pre>
+    
     python manage.py runserver
-    </pre>
+    
 
 # 下载服务维护脚本
-    <pre>
+    
     wget https://raw.github.com/saltstack/salt-api/develop/pkg/rpm/salt-api -O /etc/init.d/salt-api
     chmod +x /etc/init.d/salt-api
     chkconfig salt-api on
-    </pre>
+   
 
     生成自签名证书(用于ssl)
 
@@ -68,7 +67,7 @@ config.py为所有配置文件
 
 # 配置Salt-API
 
-    <pre>
+    
     /etc/salt/master.d/api.conf
     rest_cherrypy:
       port: 443
@@ -86,7 +85,7 @@ config.py为所有配置文件
          -d eauth='pam'
     </pre>
 
-    <pre>
+    
     return:
     - eauth: pam
       expire: 1385579710.806725
