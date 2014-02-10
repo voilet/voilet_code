@@ -222,7 +222,7 @@ def server_type_add(request):
             content.update(csrf(request))
             print "server_type save is ok"
             # return render_to_response('server_idc/server_type_add.html', content, context_instance=RequestContext(request))
-            return HttpResponseRedirect("/assets/server/type/list/",context_instance=RequestContext(request))
+            return HttpResponseRedirect("/assets/server/type/list/")
         else:
             print "save error"
             uf = Service_type_from()

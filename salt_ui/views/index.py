@@ -72,8 +72,8 @@ def salt_status(request,id):
         token_api_id = token_id()
         list = salt_api_token(
         {
-        "client":'wheel',
-        "fun":"key.list_all",
+        "client": 'wheel',
+        "fun": "key.list_all",
                    },
         salt_api_url,
         {"X-Auth-Token": token_api_id}
