@@ -1,22 +1,79 @@
-#说明:
-import salt.config
-opts = salt.config.client_config('/etc/salt/master')
-import salt.runner
-rclient = salt.runner.RunnerClient(opts)
-rclient.cmd('jobs.list_jobs', '')
-
-分页
-https://django-pagination.googlecode.com/files/django-pagination-1.0.5.tar.gz
-
-两地代码重新合并提交
-
-#转成json
-mimetype="application/json"
 
 
-date1 = datetime.datetime.now()
-this_week_start_dt = date1-datetime.timedelta(days=date1.weekday())
-this_week_end_dt = date1+datetime.timedelta(days=6-date1.weekday())
+安装pip
+然后安装python所需扩展
+
+pip install -r requirements.txt
+
+config.py为所有配置文件
+
+安装saltstack
+wget -O - http://bootstrap.saltstack.org | sudo sh
+安装参考:http://wiki.saltstack.cn/installation
+
+配置salt-api
+
+# 安装salt-api
+pip install salt-api
+
+生成库结构
+python manage.py syncdb
+
+启动django
+python manage.py runserver
+
+# 下载服务维护脚本
+wget https://raw.github.com/saltstack/salt-api/develop/pkg/rpm/salt-api -O /etc/init.d/salt-api
+chmod +x /etc/init.d/salt-api
+chkconfig salt-api on
+
+生成自签名证书(用于ssl)
+
+cd  /etc/pki/tls/certs
+# 生成自签名证书, 过程中需要输入key密码及RDNs
+make testcert
+cd /etc/pki/tls/private/
+# 解密key文件，生成无密码的key文件, 过程中需要输入key密码，该密码为之前生成证书时设置的密码
+openssl rsa -in localhost.key -out localhost_nopass.key
+Salt-API配置
+
+创建用于salt-api的用户
+useradd -M -s /sbin/nologin pengyao
+echo "pengyao_pass" | passwd pengyao —stdin
+配置eauth, /etc/salt/master.d/eauth.conf
+帐号为系统帐号，不可使用root帐号
+
+external_auth:
+  pam:
+    sa:
+      - .*
+
+配置Salt-API, /etc/salt/master.d/api.conf
+rest_cherrypy:
+  port: 443
+  ssl_crt: /etc/pki/tls/certs/localhost.crt
+  ssl_key: /etc/pki/tls/private/localhost_nopass.key
+启动Salt-API
+service salt-api start
+
+curl -k https://192.168.38.10/login -H "Accept: application/x-yaml" \
+     -d username='sa' \
+     -d password='centos' \
+     -d eauth='pam'
 
 
-psutil
+
+return:
+- eauth: pam
+  expire: 1385579710.806725
+  perms:
+  - .*
+  start: 1385536510.8067241
+  token: 784ee23c63794576a50ca5d3d890eb71efb0de6f
+  user: sa
+
+saltstack api更多使用方法请参考:http://wiki.saltstack.cn/reproduction/salt-api-deploy-and-use
+
+saltstack使用方法参考:http://wiki.saltstack.cn/docs
+
+

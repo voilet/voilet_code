@@ -12,6 +12,7 @@
 
 import sys
 import os.path
+from config import *
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -29,17 +30,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        #'NAME': os.path.join(PROJECT_ROOT, 'data.db'),                      # Or path to database file if using sqlite3.
-        'NAME': 'saltstack',                      # Or path to database file if using sqlite3.
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = '*'
@@ -224,20 +215,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
-#salt api config
-salt_api_url = "https://192.168.49.14/"
-salt_api_user = "sa"
-salt_api_pass = "centos"
-pxe_url_api = "http://192.168.9.80:6666/clone/create-physical-instances"
 
-#smtp
-
-EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = '25'
-EMAIL_HOST_USER = 'voilet@qq.com'
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = True
-#EMAIL_USE_TLS = False
 
 
 

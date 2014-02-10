@@ -1,7 +1,11 @@
-Jinja2
+jinja2
+MySQLdb
 M2Crypto
 msgpack-python
 pycrypto
-PyYAML
+pyyaml
 pyzmq >= 2.1.9
 markupsafe
+django
+django-xadmin
+requests

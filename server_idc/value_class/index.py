@@ -22,7 +22,7 @@ from django.core.context_processors import csrf
 
 from django.contrib.auth.models import User
 from salt_ui.api.salt_https_api import salt_api_jobs,pxe_api
-from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
+from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url
 from server_idc.idc_edit_log.idc_log import idc_log
 
 class Host_from(forms.ModelForm):

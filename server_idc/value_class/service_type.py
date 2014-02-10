@@ -23,7 +23,7 @@ from django.core.context_processors import csrf
 
 from django.contrib.auth.models import User
 from salt_ui.api.salt_https_api import salt_api_jobs,pxe_api
-from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url,pxe_url_api
+from mysite.settings import  salt_api_pass,salt_api_user,salt_api_url
 
 class Host_from(forms.ModelForm):
     FAVORITE_COLORS_CHOICES = MyForm.objects.values_list("id","service_name")
