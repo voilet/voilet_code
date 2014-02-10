@@ -1,18 +1,13 @@
-
-
 # 安装pip
 然后安装python所需扩展
 
-
-pip install -r requirements.txt
-</pre>
+    pip install -r requirements.txt
 
 config.py为所有配置文件
 
 # 安装saltstack
     
     wget -O - http://bootstrap.saltstack.org | sudo sh
-    </pre>
 
     安装参考:http://wiki.saltstack.cn/installation
 
@@ -21,7 +16,6 @@ config.py为所有配置文件
 # 安装salt-api
     
     pip install salt-api
-    </pre>
 
 # 生成库结构
 
@@ -73,17 +67,14 @@ config.py为所有配置文件
       port: 443
       ssl_crt: /etc/pki/tls/certs/localhost.crt
       ssl_key: /etc/pki/tls/private/localhost_nopass.key
-    </pre>
 
 # 启动Salt-API
 
-    </pre>
     service salt-api start
     curl -k https://192.168.38.10/login -H "Accept: application/x-yaml" \
          -d username='sa' \
          -d password='centos' \
          -d eauth='pam'
-    </pre>
 
     
     return:
@@ -94,7 +85,7 @@ config.py为所有配置文件
       start: 1385536510.8067241
       token: 784ee23c63794576a50ca5d3d890eb71efb0de6f
       user: sa
-    </pre>
+
 
 # 参考
 http://wiki.saltstack.cn/reproduction/salt-api-deploy-and-use
