@@ -16,7 +16,7 @@ from django.core.context_processors import csrf
 from django.shortcuts import get_object_or_404
 from salt_ui.api.salt_token_id import *
 from salt_ui.api.salt_https_api import salt_api_jobs
-from mysite.settings import  salt_api_pass,salt_api_user, salt_api_url ,pxe_url_api
+from mysite.settings import  salt_api_pass,salt_api_user, salt_api_url
 from server_idc.models import Host
 
 #日志记录
