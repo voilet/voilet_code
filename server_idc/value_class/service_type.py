@@ -68,42 +68,13 @@ def server_type_notnode(request):
 #业务删除
 @login_required
 @csrf_protect
-def auth_server_type_delete(request):
-    content = {}
-    if request.method == 'POST':    #验证post方法
-        uf = Service_type_from(request.POST)   #绑定POST动作
-        if uf.is_valid(): #验证数据有效性
-            uf.save()
-            uf = Service_type_from()
-            content['uf'] = uf
-            content["server_type"] = MyForm.objects.all()
-            content.update(csrf(request))
-            return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
-        else:
-            print "save error"
-            uf = Service_type_from()
-            content["server_type"] = MyForm.objects.all()
-            content['uf'] = uf
-            content.update(csrf(request))
-            return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
-    else:
-        business_name = MyForm.objects.all().order_by("-id")
-        list_api_return = []
-        for i in business_name:
-            server_list = i.host_set.all()
-            server_user_all = i.service_user.all()
-            user = request.user.myform_set.all()
-            content["server_type"] = MyForm.objects.all()
-            content["list"] = server_list
-            content["server_user_all"] = server_user_all
-            content["business_name"] = business_name
-            list_api_return.append({"server_user_all":server_user_all,"server_type":i,"type_id":i.id})
-        if len(content['list']) >0:
-            content["test_error"] = True
-        else:
-            content["test_error"] = False
-        content["list_server_type"] = list_api_return
-        content["server_type"] = MyForm.objects.all()
+def auth_server_type_delete(request,id):
+   if MyForm.objects.filter(id=id).count() > 0:
+        # id_servername = MyForm.objects.get(id=id)
+        # del_username = User.objects.get(username=request.session["auth_username"])
+        # idc_log(request.session["auth_username"], id_servername.service_name,"业务删除", request.session["auth_username"], time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())), id, del_username.id)
+        MyForm.objects.get(id=id).delete()
+        content = {}
         content.update(csrf(request))
-        return render_to_response('server_idc/server_type_del.html',content,context_instance=RequestContext(request))
+        return HttpResponseRedirect("/assets/server/type/list/")
 
