@@ -1,13 +1,13 @@
 
 
-安装pip
+# 安装pip
 然后安装python所需扩展
 
 pip install -r requirements.txt
 
 config.py为所有配置文件
 
-安装saltstack
+# 安装saltstack
 wget -O - http://bootstrap.saltstack.org | sudo sh
 安装参考:http://wiki.saltstack.cn/installation
 
@@ -30,10 +30,11 @@ chkconfig salt-api on
 生成自签名证书(用于ssl)
 
 cd  /etc/pki/tls/certs
-# 生成自签名证书, 过程中需要输入key密码及RDNs
+# 生成自签名证书
+过程中需要输入key密码及RDNs
 make testcert
 cd /etc/pki/tls/private/
-# 解密key文件，生成无密码的key文件, 过程中需要输入key密码，该密码为之前生成证书时设置的密码
+解密key文件，生成无密码的key文件, 过程中需要输入key密码，该密码为之前生成证书时设置的密码
 openssl rsa -in localhost.key -out localhost_nopass.key
 Salt-API配置
 
@@ -48,7 +49,8 @@ external_auth:
     sa:
       - .*
 
-配置Salt-API, /etc/salt/master.d/api.conf
+# 配置Salt-API,
+/etc/salt/master.d/api.conf
 rest_cherrypy:
   port: 443
   ssl_crt: /etc/pki/tls/certs/localhost.crt
