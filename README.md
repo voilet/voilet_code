@@ -9,6 +9,7 @@ config.py为所有配置文件
 
 # 安装saltstack
 wget -O - http://bootstrap.saltstack.org | sudo sh
+
 安装参考:http://wiki.saltstack.cn/installation
 
 配置salt-api
