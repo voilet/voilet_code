@@ -86,7 +86,6 @@ config.py为所有配置文件
       token: 784ee23c63794576a50ca5d3d890eb71efb0de6f
       user: sa
 
-
 # 参考
 http://wiki.saltstack.cn/reproduction/salt-api-deploy-and-use
 saltstack使用方法参考:http://wiki.saltstack.cn/docs
